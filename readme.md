@@ -26,6 +26,12 @@ The processor supports the following triggers that will generate meta classes:
 
 The annotation processor is still in early stages of development
 
+#### Building
+Because this is an annotation processor there are some hoops to jump through compared to other projects. Namely, the project has to be installed like this:
+    mvn install -Dmaven.test.skip=true
+After the above command has been executed normal commands can be used, such as
+    mvn eclipse:eclipse
+
 #### Installation
 Add the following dependencies into your pom.xml
 		<dependency>

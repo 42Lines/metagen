@@ -76,7 +76,7 @@
 						</goals>
 						<phase>generate-test-sources</phase>
 						<configuration>
-							<outputDirectory>target/testMetamodel</outputDirectory>
+							<outputDirectory>target/metamodel</outputDirectory>
 						</configuration>
 					</execution>
 				</executions>
@@ -84,7 +84,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>1.3</version>
+				<version>1.5</version>
 				<executions>
 					<execution>
 						<id>add-source</id>
@@ -103,17 +103,17 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>1.3</version>
+				<version>1.5</version>
 				<executions>
 					<execution>
-						<id>add-source</id>
-						<phase>generate-sources</phase>
+						<id>add-test-source</id>
+						<phase>generate-test-sources</phase>
 						<goals>
-							<goal>add-source</goal>
+							<goal>add-test-source</goal>
 						</goals>
 						<configuration>
 							<sources>
-								<source>target/testMetamodel</source>
+								<source>target/metamodel</source>
 							</sources>
 						</configuration>
 					</execution>

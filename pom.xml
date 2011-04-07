@@ -10,11 +10,20 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-<modules>
-<module>metagen-core</module>
-<module>metagen-processor</module>
-<module>metagen-wicket</module>
-</modules>
+	
+	 <licenses>
+	  <license>
+	   <name>The Apache Software License, Version 2.0</name>
+	   <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+	   <distribution>repo</distribution>
+	  </license>
+	 </licenses>
+	
+	<modules>
+		<module>metagen-core</module>
+		<module>metagen-processor</module>
+		<module>metagen-wicket</module>
+	</modules>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -36,8 +45,34 @@
 				</configuration>
 				<version>2.0.2</version>
 			</plugin>
-
+			<plugin>
+				<groupId>com.mycila.maven-license-plugin</groupId>
+				<artifactId>maven-license-plugin</artifactId>
+				<configuration>
+					<header>license-header.txt</header>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 
+	<pluginRepositories>
+		<pluginRepository>
+			<id>mc-release</id>
+			<name>Local Maven repository of releases</name>
+			<url>http://mc-repo.googlecode.com/svn/maven2/releases</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</pluginRepository>
+	</pluginRepositories>
 </project>

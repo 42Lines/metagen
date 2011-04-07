@@ -25,8 +25,8 @@ The processor supports the following triggers that will generate meta classes:
 The annotation processor is still in early stages of development
 
 TODO
-* The code is messy, especially with regard to ElementExt and friends. Clean it up.
-* Need unit tests for current feature set
-* Meta classes do not properly follow hierarchy (do not extend each other where appropriate)
-* Meta classes do not support inner classes
+*	The code is messy, especially with regard to ElementExt and friends. Clean it up.
+*	Need unit tests for current feature set
+*	Meta classes do not properly follow hierarchy (do not extend each other where appropriate)
+*	Meta classes do not support inner classes
 

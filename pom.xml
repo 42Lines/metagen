@@ -50,6 +50,11 @@
 				<artifactId>maven-license-plugin</artifactId>
 				<configuration>
 					<header>license-header.txt</header>
+					<failIfMissing>true</failIfMissing>
+					<excludes>
+						<exclude>license-header.txt</exclude>
+						<exclude>build-number.txt</exclude>
+					</excludes>
 				</configuration>
 				<executions>
 					<execution>

@@ -12,18 +12,27 @@
  * limitations under the License.
  */
 
-package net.ftlines.metagen.processor;
+package net.ftlines.metagen.processor.annot.ignore;
 
-public class Constants
-{
-	public static final String PROPERTY = "net.ftlines.metagen.annot.Property";
-	public static final String BEAN = "net.ftlines.metagen.annot.Bean";
-	public static final String IGNORE = "net.ftlines.metagen.annot.Ignore";
-	
-	public static final String ENTITY = "javax.persistence.Entity";
-	public static final String MAPPED_SUPERCLASS="javax.persistence.MappedSuperclass";
-	
-	public static final String SINGULAR = "net.ftlines.metagen.SingularProperty";
-	public static final String MARKER = "Meta";
-	
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.io.FileNotFoundException;
+
+import net.ftlines.metagen.processor.MetaPackageTest;
+
+import org.junit.Test;
+
+public class IgnoreTest extends MetaPackageTest {
+
+	@Test
+	public void test() {
+		assertTrue(result.isClean());
+		try {
+			assertTrue(result.getMetaSource(Bean.class).exists());
+			fail("Beans with @Ignore should not produce a meta class");
+		} catch (FileNotFoundException e) {
+			// expected
+		}
+	}
 }

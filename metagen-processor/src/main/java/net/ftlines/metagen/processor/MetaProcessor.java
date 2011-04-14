@@ -15,6 +15,7 @@
 package net.ftlines.metagen.processor;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -40,7 +41,6 @@ import net.ftlines.metagen.processor.property.resolver.PropertyResolvers;
 import net.ftlines.metagen.processor.util.Optional;
 import net.ftlines.metagen.processor.util.SourceWriter;
 
-
 @SupportedAnnotationTypes({ Constants.PROPERTY, Constants.ENTITY,
 		Constants.MAPPED_SUPERCLASS })
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
@@ -60,7 +60,14 @@ public class MetaProcessor implements Processor {
 	}
 
 	private void processType(TypeElement type) {
-		QualifiedName qn = new QualifiedName(type.getQualifiedName().toString()+Constants.MARKER);
+
+		Collection<Property> properties = resolvers.findProperties(type);
+		if (properties.isEmpty()) {
+			return;
+		}
+
+		QualifiedName qn = new QualifiedName(type.getQualifiedName().toString()
+				+ Constants.MARKER);
 		try {
 
 			JavaFileObject file = environment.getFiler().createSourceFile(
@@ -72,7 +79,7 @@ public class MetaProcessor implements Processor {
 			writer.line("public class %s", qn.getLocal());
 			writer.startBlock();
 
-			for (Property property : resolvers.findProperties(type)) {
+			for (Property property : properties) {
 				property.generateSource(writer);
 			}
 

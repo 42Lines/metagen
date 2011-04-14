@@ -12,18 +12,16 @@
  * limitations under the License.
  */
 
-package net.ftlines.metagen.processor;
+package net.ftlines.metagen.processor.annot.ignore;
 
-public class Constants
-{
-	public static final String PROPERTY = "net.ftlines.metagen.annot.Property";
-	public static final String BEAN = "net.ftlines.metagen.annot.Bean";
-	public static final String IGNORE = "net.ftlines.metagen.annot.Ignore";
-	
-	public static final String ENTITY = "javax.persistence.Entity";
-	public static final String MAPPED_SUPERCLASS="javax.persistence.MappedSuperclass";
-	
-	public static final String SINGULAR = "net.ftlines.metagen.SingularProperty";
-	public static final String MARKER = "Meta";
-	
+import java.util.ArrayList;
+
+import net.ftlines.metagen.annot.Ignore;
+import net.ftlines.metagen.annot.Property;
+
+
+@Ignore
+public class Bean<T> {
+	@Property
+	protected ArrayList<T> field2;
 }

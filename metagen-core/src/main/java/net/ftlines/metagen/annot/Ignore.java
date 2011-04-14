@@ -12,18 +12,24 @@
  * limitations under the License.
  */
 
-package net.ftlines.metagen.processor;
+package net.ftlines.metagen.annot;
 
-public class Constants
-{
-	public static final String PROPERTY = "net.ftlines.metagen.annot.Property";
-	public static final String BEAN = "net.ftlines.metagen.annot.Bean";
-	public static final String IGNORE = "net.ftlines.metagen.annot.Ignore";
-	
-	public static final String ENTITY = "javax.persistence.Entity";
-	public static final String MAPPED_SUPERCLASS="javax.persistence.MappedSuperclass";
-	
-	public static final String SINGULAR = "net.ftlines.metagen.SingularProperty";
-	public static final String MARKER = "Meta";
-	
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/**
+ * Instructs the processor to skipthe class. Useful for when the processor has a
+ * bug and generates a binding that causes compilation errors.
+ * 
+ * @author igor
+ * 
+ */
+@Retention(RetentionPolicy.CLASS)
+@Target({ ElementType.TYPE })
+@Inherited
+public @interface Ignore {
+
 }

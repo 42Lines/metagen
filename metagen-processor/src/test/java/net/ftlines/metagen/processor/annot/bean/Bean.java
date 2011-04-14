@@ -12,16 +12,11 @@
  * limitations under the License.
  */
 
-package net.ftlines.metagen.processor.framework;
+package net.ftlines.metagen.processor.annot.bean;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+@net.ftlines.metagen.annot.Bean
+public class Bean<T> {
 
-public interface CompilationResult {
-
-	boolean isClean();
-
-	File getFile(Class<?> clazz, String suffix) throws FileNotFoundException;
-
-	ClassLoader getCompilationClassLoader();
+	public Integer property1;
+	public Integer property2;
 }

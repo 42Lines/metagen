@@ -18,6 +18,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Collections;
 import java.util.List;
 
@@ -27,11 +30,20 @@ import javax.tools.DiagnosticCollector;
 public class DefaultCompilationResult implements CompilationResult {
 	private final File outputDir;
 	private final DiagnosticCollector collector;
+	private final ClassLoader cloader;
 
 	public DefaultCompilationResult(File outputDir,
 			DiagnosticCollector collector) {
 		this.outputDir = outputDir;
 		this.collector = collector;
+
+		try {
+			URL url = outputDir.toURL();
+			cloader = new URLClassLoader(new URL[] { url });
+		} catch (MalformedURLException e) {
+			throw new RuntimeException(e);
+		}
+
 	}
 
 	public List<Diagnostic<?>> getDiagnostics() {
@@ -87,6 +99,11 @@ public class DefaultCompilationResult implements CompilationResult {
 			System.out.write(buff, 0, c);
 		}
 		in.close();
+	}
+
+	@Override
+	public ClassLoader getCompilationClassLoader() {
+		return cloader;
 	}
 
 }

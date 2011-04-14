@@ -33,4 +33,9 @@ public class ForwardingCompilationResult implements CompilationResult {
 		return result.getFile(clazz, suffix);
 	}
 
+	@Override
+	public ClassLoader getCompilationClassLoader() {
+		return result.getCompilationClassLoader();
+	}
+
 }

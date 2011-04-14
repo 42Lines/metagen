@@ -16,11 +16,11 @@ package net.ftlines.metagen.processor;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.lang.reflect.Field;
 
-import net.ftlines.metagen.processor.Constants;
+import net.ftlines.metagen.Property;
 import net.ftlines.metagen.processor.framework.CompilationResult;
 import net.ftlines.metagen.processor.framework.ForwardingCompilationResult;
-
 
 public class MetaCompilationResult extends ForwardingCompilationResult {
 
@@ -30,6 +30,22 @@ public class MetaCompilationResult extends ForwardingCompilationResult {
 
 	public File getMetaSource(Class<?> source) throws FileNotFoundException {
 		return getFile(source, Constants.MARKER + ".java");
+	}
+
+	public Class<?> getMetaClass(Class<?> source) throws FileNotFoundException,
+			ClassNotFoundException {
+		return getCompilationClassLoader().loadClass(
+				source.getName() + Constants.MARKER);
+	}
+
+	public Property getMetaProperty(Class<?> source, String propertyName)
+			throws FileNotFoundException, ClassNotFoundException,
+			SecurityException, NoSuchFieldException, IllegalArgumentException,
+			IllegalAccessException {
+		Class<?> meta = getMetaClass(source);
+		Field field = meta.getField(propertyName);
+		field.setAccessible(true);
+		return (Property) field.get(null);
 	}
 
 }

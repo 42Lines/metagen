@@ -38,7 +38,7 @@ public class PropertyResolvers implements Iterable<PropertyResolver>,
 	public PropertyResolvers() {
 		resolvers = new ArrayList<PropertyResolver>();
 		resolvers.add(new BeanResolver());
-		resolvers.add(new EntityProcessor());
+		resolvers.add(new JpaEntityResolver());
 		resolvers.add(new AnnotatedResolver());
 	}
 

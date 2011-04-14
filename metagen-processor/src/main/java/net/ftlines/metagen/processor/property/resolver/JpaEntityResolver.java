@@ -29,7 +29,7 @@ import net.ftlines.metagen.processor.property.PropertiesCollector;
 import net.ftlines.metagen.processor.property.Property;
 
 
-public class EntityProcessor implements PropertyResolver {
+public class JpaEntityResolver implements PropertyResolver {
 	private static final Set<String> annots = new HashSet<String>();
 	{
 		annots.add(Constants.ENTITY);

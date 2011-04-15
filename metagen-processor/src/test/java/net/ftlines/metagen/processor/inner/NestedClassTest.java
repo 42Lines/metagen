@@ -47,4 +47,11 @@ public class NestedClassTest extends MetaPackageTest {
 						BeanStartingWithGap.BeanWithNoProps.AnotherBeanWithNoProps.BeanWithProp.class,
 						"int2"));
 	}
+
+	@Test
+	public void beansWithMultipleInnerClasses() throws Exception {
+		assertNotNull(result.getMetaProperty(BeanWithMulti.One.class, "p"));
+		assertNotNull(result.getMetaProperty(BeanWithMulti.Two.class, "p"));
+		assertNotNull(result.getMetaProperty(BeanWithMulti.Three.Four.class, "p"));
+	}
 }

@@ -53,7 +53,7 @@ public class MetaCompilationResult extends ForwardingCompilationResult {
 			SecurityException, NoSuchFieldException, IllegalArgumentException,
 			IllegalAccessException {
 		Class<?> meta = getMetaClass(source);
-		Field field = meta.getField(propertyName);
+		Field field = meta.getDeclaredField(propertyName);
 		field.setAccessible(true);
 		return (Property) field.get(null);
 	}

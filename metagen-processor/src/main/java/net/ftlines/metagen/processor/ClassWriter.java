@@ -15,7 +15,6 @@
 package net.ftlines.metagen.processor;
 
 import java.io.IOException;
-import java.lang.annotation.ElementType;
 import java.util.Collection;
 import java.util.Stack;
 
@@ -43,7 +42,6 @@ class ClassWriter {
 
 	private Stack<TypeElement> types;
 	private int written;
-	private int processing;
 	JavaFileObject file;
 	SourceWriter writer;
 
@@ -57,7 +55,6 @@ class ClassWriter {
 	public void write() throws IOException {
 		types = new Stack<TypeElement>();
 		written = 0;
-		processing = 0;
 		file = null;
 		writer = null;
 
@@ -66,6 +63,7 @@ class ClassWriter {
 		processType(root);
 
 		if (writer != null) {
+			writer.endBlock();
 			writer.flush();
 			writer.close();
 		}
@@ -100,41 +98,36 @@ class ClassWriter {
 			}
 
 			types.push(nested);
-			processing++;
 			processType(nested);
 			types.pop();
-			processing--;
-			
 		}
 
 		if (wrote) {
-			for (int i = 0; i < (written - originalWritten); i++) {
+			for (int i = 0; i < (written - originalWritten ); i++) {
 				writer.endClass();
 			}
 			written = originalWritten;
 		}
 
-		
 	}
 
 	private void writeClassLeadins() throws IOException {
-		for (int i = written; i <= processing; i++) {
+		if (file == null) {
+			TypeElement type = types.get(0);
+			QualifiedName qn = new QualifiedName(type.getQualifiedName()
+					.toString() + Constants.MARKER);
+			file = env.getFiler().createSourceFile(qn.getQualified(), type);
+			writer = new SourceWriter(file.openOutputStream());
+
+			writer.header(qn.getNamespace());
+			writer.startClass(Visibility.PUBLIC, qn.getLocal());
+		}
+
+		for (int i = written + 1; i < types.size(); i++) {
 			TypeElement type = types.get(i);
-			if (i == 0) {
-				QualifiedName qn = new QualifiedName(type.getQualifiedName()
-						.toString() + Constants.MARKER);
-
-				file = env.getFiler().createSourceFile(qn.getQualified(), type);
-				writer = new SourceWriter(file.openOutputStream());
-
-				writer.header(qn.getNamespace());
-				writer.startClass(Visibility.PUBLIC, qn.getLocal());
-				written++;
-			} else {
-				writer.startNestedClass(Visibility.PUBLIC, type.getSimpleName()
-						.toString()+Constants.MARKER);
-				written++;
-			}
+			writer.startNestedClass(Visibility.PUBLIC, type.getSimpleName()
+					.toString() + Constants.MARKER);
+			written++;
 		}
 	}
 }

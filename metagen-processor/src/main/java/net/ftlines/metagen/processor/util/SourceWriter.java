@@ -17,6 +17,8 @@ package net.ftlines.metagen.processor.util;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import net.ftlines.metagen.processor.model.Visibility;
+
 public class SourceWriter {
 	private final OutputStream out;
 	private int indent = 0;
@@ -48,6 +50,29 @@ public class SourceWriter {
 		indent--;
 		line("}");
 		return this;
+	}
+
+	public SourceWriter startClass(Visibility v, String cn) throws IOException {
+		line("@SuppressWarnings({ \"rawtypes\", \"unchecked\" })");
+		line("%s class %s", v.getKeyword(), cn);
+		return startBlock();
+	}
+
+	public SourceWriter startNestedClass(Visibility v, String cn)
+			throws IOException {
+		line("");
+		line("@SuppressWarnings({ \"rawtypes\", \"unchecked\" })");
+		line("%s static class %s", v.getKeyword(), cn);
+		return startBlock();
+	}
+
+	public SourceWriter endClass() throws IOException {
+		return endBlock();
+	}
+
+	public SourceWriter header(String packageName) throws IOException {
+		line("package %s;", packageName);
+		return line("");
 	}
 
 	public SourceWriter flush() throws IOException {

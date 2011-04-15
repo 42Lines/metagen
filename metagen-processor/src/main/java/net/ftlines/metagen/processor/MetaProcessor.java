@@ -15,7 +15,6 @@
 package net.ftlines.metagen.processor;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -32,14 +31,10 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic.Kind;
-import javax.tools.JavaFileObject;
 
 import net.ftlines.metagen.processor.model.ModelExt;
-import net.ftlines.metagen.processor.model.QualifiedName;
-import net.ftlines.metagen.processor.property.Property;
 import net.ftlines.metagen.processor.property.resolver.PropertyResolvers;
 import net.ftlines.metagen.processor.util.Optional;
-import net.ftlines.metagen.processor.util.SourceWriter;
 
 @SupportedAnnotationTypes({ Constants.PROPERTY, Constants.ENTITY,
 		Constants.MAPPED_SUPERCLASS })
@@ -60,35 +55,14 @@ public class MetaProcessor implements Processor {
 	}
 
 	private void processType(TypeElement type) {
-
-		Collection<Property> properties = resolvers.findProperties(type);
-		if (properties.isEmpty()) {
-			return;
-		}
-
-		QualifiedName qn = new QualifiedName(type.getQualifiedName().toString()
-				+ Constants.MARKER);
 		try {
 
-			JavaFileObject file = environment.getFiler().createSourceFile(
-					qn.getQualified(), type);
-			SourceWriter writer = new SourceWriter(file.openOutputStream());
-
-			writer.line("package %s;", qn.getNamespace());
-			writer.line("@SuppressWarnings({ \"rawtypes\", \"unchecked\" })");
-			writer.line("public class %s", qn.getLocal());
-			writer.startBlock();
-
-			for (Property property : properties) {
-				property.generateSource(writer);
-			}
-
-			writer.endBlock().close();
+			new ClassWriter(type, resolvers, environment).write();
 		} catch (IOException e) {
 			environment.getMessager().printMessage(
 					Kind.ERROR,
-					"Could not write source for: " + qn.getQualified() + ": "
-							+ e.getMessage());
+					"Could not write source for: " + type.getQualifiedName()
+							+ ": " + e.getMessage());
 		}
 
 	}

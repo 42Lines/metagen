@@ -2,13 +2,13 @@ package net.ftlines.metagen.processor.tree;
 
 import javax.lang.model.element.Element;
 
-public class PropertyNode implements Node {
+public class Property implements Node {
 	private final String name;
 	private Element field;
 	private Element getter;
 	private Element setter;
 
-	public PropertyNode(String name) {
+	public Property(String name) {
 		this.name = name;
 	}
 

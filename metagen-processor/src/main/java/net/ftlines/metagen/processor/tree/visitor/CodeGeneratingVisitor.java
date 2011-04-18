@@ -14,7 +14,7 @@ import net.ftlines.metagen.processor.model.TypeResolver;
 import net.ftlines.metagen.processor.model.Visibility;
 import net.ftlines.metagen.processor.tree.BeanSpace;
 import net.ftlines.metagen.processor.tree.NestedBean;
-import net.ftlines.metagen.processor.tree.PropertyNode;
+import net.ftlines.metagen.processor.tree.Property;
 import net.ftlines.metagen.processor.tree.TopLevelBean;
 import net.ftlines.metagen.processor.tree.Visitor;
 import net.ftlines.metagen.processor.util.SourceWriter;
@@ -93,7 +93,7 @@ public class CodeGeneratingVisitor implements Visitor {
 	}
 
 	@Override
-	public void enterProperty(PropertyNode node) {
+	public void enterProperty(Property node) {
 		Element element = node.getGetter();
 		if (element == null) {
 			element = node.getField();
@@ -116,7 +116,7 @@ public class CodeGeneratingVisitor implements Visitor {
 	}
 
 	@Override
-	public void exitProperty(PropertyNode node) {
+	public void exitProperty(Property node) {
 
 	}
 

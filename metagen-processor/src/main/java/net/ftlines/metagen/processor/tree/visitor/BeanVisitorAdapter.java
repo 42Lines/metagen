@@ -3,7 +3,7 @@ package net.ftlines.metagen.processor.tree.visitor;
 import net.ftlines.metagen.processor.tree.AbstractBean;
 import net.ftlines.metagen.processor.tree.BeanSpace;
 import net.ftlines.metagen.processor.tree.NestedBean;
-import net.ftlines.metagen.processor.tree.PropertyNode;
+import net.ftlines.metagen.processor.tree.Property;
 import net.ftlines.metagen.processor.tree.TopLevelBean;
 import net.ftlines.metagen.processor.tree.Visitor;
 
@@ -42,11 +42,11 @@ public abstract class BeanVisitorAdapter implements Visitor {
 	}
 
 	@Override
-	public void enterProperty(PropertyNode node) {
+	public void enterProperty(Property node) {
 	}
 
 	@Override
-	public void exitProperty(PropertyNode node) {
+	public void exitProperty(Property node) {
 	}
 
 }

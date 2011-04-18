@@ -2,7 +2,7 @@ package net.ftlines.metagen.processor.tree.visitor;
 
 import net.ftlines.metagen.processor.tree.BeanSpace;
 import net.ftlines.metagen.processor.tree.NestedBean;
-import net.ftlines.metagen.processor.tree.PropertyNode;
+import net.ftlines.metagen.processor.tree.Property;
 import net.ftlines.metagen.processor.tree.TopLevelBean;
 import net.ftlines.metagen.processor.tree.Visitor;
 
@@ -54,12 +54,12 @@ public class PrintVisitor implements Visitor {
 	}
 
 	@Override
-	public void enterProperty(PropertyNode node) {
+	public void enterProperty(Property node) {
 		line("Property: %s", node.getName());
 	}
 
 	@Override
-	public void exitProperty(PropertyNode node) {
+	public void exitProperty(Property node) {
 	}
 
 }

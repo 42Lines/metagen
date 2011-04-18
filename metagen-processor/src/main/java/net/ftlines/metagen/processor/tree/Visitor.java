@@ -13,7 +13,7 @@ public interface Visitor {
 
 	void exitNestedBean(NestedBean node);
 
-	void enterProperty(PropertyNode node);
+	void enterProperty(Property node);
 
-	void exitProperty(PropertyNode node);
+	void exitProperty(Property node);
 }

@@ -12,7 +12,7 @@ public abstract class AbstractBean implements Node {
 
 	private final Map<TypeElement, NestedBean> nestedBeans = new HashMap<TypeElement, NestedBean>();
 
-	private final Map<String, PropertyNode> properties = new HashMap<String, PropertyNode>();
+	private final Map<String, Property> properties = new HashMap<String, Property>();
 
 	public AbstractBean(TypeElement element) {
 		this.element = element;
@@ -26,12 +26,12 @@ public abstract class AbstractBean implements Node {
 		return nestedBeans;
 	}
 
-	public Map<String, PropertyNode> getProperties() {
+	public Map<String, Property> getProperties() {
 		return properties;
 	}
 
 	protected void visitProperties(Visitor visitor) {
-		for (PropertyNode property : copyValues(properties)) {
+		for (Property property : copyValues(properties)) {
 			property.accept(visitor);
 		}
 	}

@@ -24,7 +24,7 @@ import net.ftlines.metagen.processor.Constants;
 import net.ftlines.metagen.processor.model.ElementExt;
 import net.ftlines.metagen.processor.model.ModelExt;
 import net.ftlines.metagen.processor.tree.AbstractBean;
-import net.ftlines.metagen.processor.tree.PropertyNode;
+import net.ftlines.metagen.processor.tree.Property;
 
 public class AnnotatedResolver implements PropertyResolver {
 
@@ -41,9 +41,9 @@ public class AnnotatedResolver implements PropertyResolver {
 			// TODO error if annotated and is not a property
 			if (ext.isProperty() && ext.hasAnnotation(Constants.PROPERTY)) {
 				String name = ext.getPropertyName();
-				PropertyNode property = bean.getProperties().get(name);
+				Property property = bean.getProperties().get(name);
 				if (property == null) {
-					property = new PropertyNode(name);
+					property = new Property(name);
 					bean.getProperties().put(name, property);
 				}
 				if (ext.isGetter()) {

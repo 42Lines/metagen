@@ -12,9 +12,8 @@
  * limitations under the License.
  */
 
-package net.ftlines.metagen.processor.property.resolver;
+package net.ftlines.metagen.processor.resolver;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 
@@ -24,29 +23,38 @@ import javax.lang.model.element.TypeElement;
 import net.ftlines.metagen.processor.Constants;
 import net.ftlines.metagen.processor.model.ElementExt;
 import net.ftlines.metagen.processor.model.ModelExt;
-import net.ftlines.metagen.processor.property.PropertiesCollector;
-import net.ftlines.metagen.processor.property.Property;
-
-
+import net.ftlines.metagen.processor.tree.AbstractBean;
+import net.ftlines.metagen.processor.tree.PropertyNode;
 
 public class AnnotatedResolver implements PropertyResolver {
-	
+
 	@Override
 	public Set<String> getSupportedAnnotationTypes() {
 		return Collections.singleton(Constants.PROPERTY);
 	}
 
 	@Override
-	public Collection<Property> findProperties(TypeElement type) {
-		PropertiesCollector collector=new PropertiesCollector();
-		for (Element enclosed:type.getEnclosedElements()) {
-			ElementExt ext=ModelExt.of(enclosed);
-			if (ext.isProperty()&&ext.hasAnnotation(Constants.PROPERTY)) {
-				collector.add(new Property(type, ext.getVisibility(), ext
-						.getPropertyType(), ext.getPropertyName()));
+	public void resolveProperties(AbstractBean bean) {
+		TypeElement type = bean.getElement();
+		for (Element enclosed : type.getEnclosedElements()) {
+			ElementExt ext = ModelExt.of(enclosed);
+			// TODO error if annotated and is not a property
+			if (ext.isProperty() && ext.hasAnnotation(Constants.PROPERTY)) {
+				String name = ext.getPropertyName();
+				PropertyNode property = bean.getProperties().get(name);
+				if (property == null) {
+					property = new PropertyNode(name);
+					bean.getProperties().put(name, property);
+				}
+				if (ext.isGetter()) {
+					property.setGetter(enclosed);
+				} else if (ext.isSetter()) {
+					property.setSetter(enclosed);
+				} else {
+					property.setField(enclosed);
+				}
 			}
 		}
-		return collector.getProperties();
 	}
 
 }

@@ -12,10 +12,8 @@
  * limitations under the License.
  */
 
-package net.ftlines.metagen.processor.property.resolver;
+package net.ftlines.metagen.processor.resolver;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,9 +23,8 @@ import javax.lang.model.element.TypeElement;
 import net.ftlines.metagen.processor.Constants;
 import net.ftlines.metagen.processor.model.ElementExt;
 import net.ftlines.metagen.processor.model.ModelExt;
-import net.ftlines.metagen.processor.property.PropertiesCollector;
-import net.ftlines.metagen.processor.property.Property;
-
+import net.ftlines.metagen.processor.tree.AbstractBean;
+import net.ftlines.metagen.processor.tree.PropertyNode;
 
 public class JpaEntityResolver implements PropertyResolver {
 	private static final Set<String> annots = new HashSet<String>();
@@ -42,22 +39,30 @@ public class JpaEntityResolver implements PropertyResolver {
 	}
 
 	@Override
-	public Collection<Property> findProperties(TypeElement type) {
-
+	public void resolveProperties(AbstractBean bean) {
+		TypeElement type = bean.getElement();
 		if (!ModelExt.hasAnyAnnotation(type, annots)) {
-			return Collections.emptySet();
+			return;
 		}
 
-		PropertiesCollector collector = new PropertiesCollector();
 		for (Element enclosed : type.getEnclosedElements()) {
 			ElementExt ext = ModelExt.of(enclosed);
 			if (ext.isProperty()) {
-				collector.add(new Property(type, ext.getVisibility(), ext
-						.getPropertyType(), ext.getPropertyName()));
+				String name = ext.getPropertyName();
+				PropertyNode property = bean.getProperties().get(name);
+				if (property == null) {
+					property = new PropertyNode(name);
+					bean.getProperties().put(name, property);
+				}
+				if (ext.isGetter()) {
+					property.setGetter(enclosed);
+				} else if (ext.isSetter()) {
+					property.setSetter(enclosed);
+				} else {
+					property.setField(enclosed);
+				}
 			}
 		}
-
-		return collector.getProperties();
 	}
 
 }

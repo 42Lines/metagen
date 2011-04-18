@@ -14,9 +14,7 @@
 
 package net.ftlines.metagen.processor;
 
-import java.io.IOException;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.annotation.processing.Completion;
@@ -28,11 +26,12 @@ import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
-import javax.tools.Diagnostic.Kind;
 
-import net.ftlines.metagen.processor.model.ModelExt;
-import net.ftlines.metagen.processor.property.resolver.PropertyResolvers;
-import net.ftlines.metagen.processor.util.Optional;
+import net.ftlines.metagen.processor.resolver.PropertyResolvers;
+import net.ftlines.metagen.processor.tree.BeanSpace;
+import net.ftlines.metagen.processor.tree.visitor.CodeGeneratingVisitor;
+import net.ftlines.metagen.processor.tree.visitor.PropertyResolvingVisitor;
+import net.ftlines.metagen.processor.tree.visitor.TrimmingVisitor;
 
 public class MetaProcessor implements Processor {
 	private ProcessingEnvironment environment;
@@ -42,44 +41,34 @@ public class MetaProcessor implements Processor {
 	public boolean process(Set<? extends TypeElement> annotations,
 			RoundEnvironment round) {
 
-		Set<TypeElement> types = findTypes(annotations, round);
-		for (TypeElement type : types) {
-			processType(type);
-		}
-		return true;
-	}
+		BeanSpace beans = new BeanSpace();
 
-	private void processType(TypeElement type) {
-		try {
-
-			new ClassWriter(type, resolvers, environment).write();
-		} catch (IOException e) {
-			environment.getMessager().printMessage(
-					Kind.ERROR,
-					"Could not write source for: " + type.getQualifiedName()
-							+ ": " + e.getMessage());
-		}
-
-	}
-
-	private Set<TypeElement> findTypes(Set<? extends TypeElement> annotations,
-			RoundEnvironment round) {
-
-		Set<TypeElement> types = new HashSet<TypeElement>();
-
+		// TODO this should prob delegate to beanspace.add(element);
+		// TODO beanspace should check if element is supported and error
+		// otherwise
 		for (TypeElement annotation : annotations) {
-			Set<? extends Element> annotated = round
-					.getElementsAnnotatedWith(annotation);
-
-			for (Element element : annotated) {
-
-				Optional<TypeElement> top = ModelExt.findTopLevelType(element);
-				if (top.isSet())
-					types.add(top.get());
+			for (Element annotated : round.getElementsAnnotatedWith(annotation)) {
+				switch (annotated.getKind()) {
+				case CLASS:
+				case ENUM:
+					beans.add((TypeElement) annotated);
+					break;
+				case FIELD:
+				case METHOD:
+					beans.add((TypeElement) annotated.getEnclosingElement());
+					break;
+				}
 			}
 		}
 
-		return types;
+		beans.accept(new PropertyResolvingVisitor(resolvers));
+		beans.accept(new TrimmingVisitor());
+		// beans.accept(new PrintVisitor());
+		beans.accept(new CodeGeneratingVisitor(environment));
+
+		// return false so we do not claim annotaitons like @Entity and
+		// @MappedSuperClass
+		return false;
 	}
 
 	@Override

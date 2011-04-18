@@ -12,17 +12,34 @@
  * limitations under the License.
  */
 
-package net.ftlines.metagen.processor.property.resolver;
+package net.ftlines.metagen.processor.trim;
 
-import java.util.Collection;
-import java.util.Set;
+import net.ftlines.metagen.annot.Property;
 
-import javax.lang.model.element.TypeElement;
+public class Bean2 {
 
-import net.ftlines.metagen.processor.property.Property;
+	public static class One {
 
+		public static class Two {
+			@Property
+			int p;
 
-public interface PropertyResolver {
-	Set<String> getSupportedAnnotationTypes();
-	Collection<Property> findProperties(TypeElement type);
+			public static class Three {
+
+			}
+		}
+
+		public static class Four {
+
+		}
+	}
+
+	public static class Five {
+		@Property
+		int p;
+
+		public static class Six {
+
+		}
+	}
 }

@@ -12,23 +12,17 @@
  * limitations under the License.
  */
 
-package net.ftlines.metagen.processor.property.resolver;
+package net.ftlines.metagen.processor.resolver;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-
-import javax.lang.model.element.TypeElement;
 
 import net.ftlines.metagen.processor.Constants;
 import net.ftlines.metagen.processor.model.ModelExt;
-import net.ftlines.metagen.processor.property.Property;
+import net.ftlines.metagen.processor.tree.AbstractBean;
 
 public class PropertyResolvers implements Iterable<PropertyResolver>,
 		PropertyResolver {
@@ -56,19 +50,13 @@ public class PropertyResolvers implements Iterable<PropertyResolver>,
 	}
 
 	@Override
-	public Collection<Property> findProperties(TypeElement type) {
-
-		if (ModelExt.hasAnnotation(type, Constants.IGNORE)) {
-			return Collections.emptySet();
+	public void resolveProperties(AbstractBean bean) {
+		if (ModelExt.hasAnnotation(bean.getElement(), Constants.IGNORE)) {
+			return;
 		}
 
-		Map<String, Property> properties = new HashMap<String, Property>();
 		for (PropertyResolver resolver : resolvers) {
-			Collection<Property> resolved = resolver.findProperties(type);
-			for (Property property : resolved) {
-				properties.put(property.getName(), property);
-			}
+			resolver.resolveProperties(bean);
 		}
-		return new HashSet<Property>(properties.values());
 	}
 }

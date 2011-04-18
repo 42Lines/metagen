@@ -42,15 +42,14 @@ public class CodeGeneratingVisitor implements Visitor {
 		TypeElement element = node.getElement();
 		try {
 			JavaFileObject source = env.getFiler().createSourceFile(
-					node.getElement().getQualifiedName() + Constants.MARKER
-							, node.getElement());
+					node.getName().getQualified() + Constants.MARKER, node.getElement());
 
 			writer = new SourceWriter(source.openOutputStream());
 
-			writer.header(new QualifiedName(element).getNamespace());
+			writer.header(node.getName().getNamespace());
 			writer.line();
 			writer.startClass(Visibility.PUBLIC, element.getSimpleName()
-					+ Constants.MARKER );
+					+ Constants.MARKER);
 
 		} catch (IOException e) {
 			// TODO handle this
@@ -94,16 +93,12 @@ public class CodeGeneratingVisitor implements Visitor {
 
 	@Override
 	public void enterProperty(Property node) {
-		Element element = node.getGetter();
-		if (element == null) {
-			element = node.getField();
-		}
+		Element element = node.getAccessor();
 
-		String type = element.asType().accept(new TypeResolver(), null);
+		String type = node.getType().accept(new TypeResolver(), null);
 		Visibility visibility = Visibility.max(ModelExt.of(element)
 				.getVisibility(), Visibility.DEFAULT);
-		QualifiedName containerName = new QualifiedName(
-				(TypeElement) element.getEnclosingElement());
+		QualifiedName containerName = new QualifiedName(node.getContainer());
 		try {
 			writer.line("%s static final %s<%s,%s> %s = new %s(\"%s\");",
 					visibility.getKeyword(), Constants.SINGULAR,

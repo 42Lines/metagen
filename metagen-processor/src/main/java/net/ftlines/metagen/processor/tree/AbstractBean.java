@@ -7,6 +7,8 @@ import java.util.Map;
 
 import javax.lang.model.element.TypeElement;
 
+import net.ftlines.metagen.processor.model.QualifiedName;
+
 public abstract class AbstractBean implements Node {
 	private final TypeElement element;
 
@@ -40,6 +42,10 @@ public abstract class AbstractBean implements Node {
 		for (NestedBean bean : copyValues(nestedBeans)) {
 			bean.accept(visitor);
 		}
+	}
+	
+	public QualifiedName getName() {
+		return new QualifiedName(element);
 	}
 
 	public static final <T> Collection<T> copyValues(Map<?, T> map) {

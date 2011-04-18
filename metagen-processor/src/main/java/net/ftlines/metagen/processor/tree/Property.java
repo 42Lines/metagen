@@ -1,6 +1,8 @@
 package net.ftlines.metagen.processor.tree;
 
 import javax.lang.model.element.Element;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.TypeMirror;
 
 public class Property implements Node {
 	private final String name;
@@ -40,9 +42,21 @@ public class Property implements Node {
 		return name;
 	}
 
+	public TypeElement getContainer() {
+		return (TypeElement) getAccessor().getEnclosingElement();
+	}
+
+	public TypeMirror getType() {
+		return getAccessor().asType();
+	}
+
 	@Override
 	public void accept(Visitor visitor) {
 		visitor.enterProperty(this);
 		visitor.exitProperty(this);
+	}
+
+	public Element getAccessor() {
+		return (getter != null) ? getter : field;
 	}
 }

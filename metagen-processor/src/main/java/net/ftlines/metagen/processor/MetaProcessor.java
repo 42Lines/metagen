@@ -23,8 +23,6 @@ import javax.annotation.processing.Completion;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
-import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;
@@ -36,9 +34,6 @@ import net.ftlines.metagen.processor.model.ModelExt;
 import net.ftlines.metagen.processor.property.resolver.PropertyResolvers;
 import net.ftlines.metagen.processor.util.Optional;
 
-@SupportedAnnotationTypes({ Constants.PROPERTY, Constants.ENTITY,
-		Constants.MAPPED_SUPERCLASS })
-@SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class MetaProcessor implements Processor {
 	private ProcessingEnvironment environment;
 	private PropertyResolvers resolvers;

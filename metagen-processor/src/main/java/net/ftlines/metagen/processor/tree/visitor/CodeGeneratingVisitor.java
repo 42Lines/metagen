@@ -41,15 +41,16 @@ public class CodeGeneratingVisitor implements Visitor {
 	public void enterTopLevelBean(TopLevelBean node) {
 		TypeElement element = node.getElement();
 		try {
+			QualifiedName name = Constants.getMetaClassName(node.getElement());
+
 			JavaFileObject source = env.getFiler().createSourceFile(
-					node.getName().getQualified() + Constants.MARKER, node.getElement());
+					name.getQualified(), node.getElement());
 
 			writer = new SourceWriter(source.openOutputStream());
 
 			writer.header(node.getName().getNamespace());
 			writer.line();
-			writer.startClass(Visibility.PUBLIC, element.getSimpleName()
-					+ Constants.MARKER);
+			writer.startClass(Visibility.PUBLIC, name.getLocal());
 
 		} catch (IOException e) {
 			// TODO handle this
@@ -74,8 +75,8 @@ public class CodeGeneratingVisitor implements Visitor {
 	@Override
 	public void enterNestedBean(NestedBean node) {
 		try {
-			writer.startNestedClass(Visibility.PUBLIC, node.getElement()
-					.getSimpleName() + Constants.MARKER);
+			QualifiedName name=Constants.getMetaClassName(node.getElement());
+			writer.startNestedClass(Visibility.PUBLIC, name.getLocal());
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

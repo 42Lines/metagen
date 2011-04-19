@@ -30,22 +30,16 @@ public class MetaCompilationResult extends ForwardingCompilationResult {
 
 	public File getMetaSource(Class<?> source) throws FileNotFoundException {
 		// TODO broken for nested classes
-		return getFile(source, Constants.MARKER + ".java");
+		return getOutputFile(Constants.getMetaClassName(source).getQualified()
+				.replace(".", "/")
+				+ ".java");
 	}
 
 	public Class<?> getMetaClass(Class<?> source) throws FileNotFoundException,
 			ClassNotFoundException {
 
-		String cn = source.getSimpleName() + Constants.MARKER;
-
-		while (source.getDeclaringClass() != null) {
-			source = source.getDeclaringClass();
-			cn = (source.getSimpleName() + Constants.MARKER) + "$" + cn;
-		}
-
-		cn = source.getPackage().getName() + "." + cn;
-
-		return getCompilationClassLoader().loadClass(cn);
+		return getCompilationClassLoader().loadClass(
+				Constants.getMetaClassName(source).getQualified());
 	}
 
 	public Property getMetaProperty(Class<?> source, String propertyName)

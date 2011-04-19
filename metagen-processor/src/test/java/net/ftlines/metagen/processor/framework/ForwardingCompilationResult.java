@@ -28,9 +28,9 @@ public class ForwardingCompilationResult implements CompilationResult {
 		return result.isClean();
 	}
 
-	public File getFile(Class<?> clazz, String suffix)
+	public File getOutputFile(String path)
 			throws FileNotFoundException {
-		return result.getFile(clazz, suffix);
+		return result.getOutputFile(path);
 	}
 
 	@Override

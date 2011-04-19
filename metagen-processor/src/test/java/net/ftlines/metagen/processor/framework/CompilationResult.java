@@ -21,7 +21,7 @@ public interface CompilationResult {
 
 	boolean isClean();
 
-	File getFile(Class<?> clazz, String suffix) throws FileNotFoundException;
+	File getOutputFile(String path) throws FileNotFoundException;
 
 	ClassLoader getCompilationClassLoader();
 }

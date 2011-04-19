@@ -68,11 +68,6 @@ public class DefaultCompilationResult implements CompilationResult {
 		return true;
 	}
 
-	private File getFile(File base, Class<?> clazz, String suffix) {
-		String name = clazz.getName();
-		name = name.replace('.', '/');
-		return new File(base, name + suffix);
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -81,17 +76,17 @@ public class DefaultCompilationResult implements CompilationResult {
 	 * java.lang.String)
 	 */
 	@Override
-	public File getFile(Class<?> clazz, String suffix)
+	public File getOutputFile(String path)
 			throws FileNotFoundException {
-		File file = getFile(outputDir, clazz, suffix);
+		File file = new File(outputDir, path);
 		if (!file.exists()) {
 			throw new FileNotFoundException(file.getAbsolutePath());
 		}
 		return file;
 	}
 
-	public void dumpFile(Class<?> clazz, String suffix) throws IOException {
-		File file = getFile(clazz, suffix);
+	public void dumpFile(String path) throws IOException {
+		File file = getOutputFile(path);
 		FileInputStream in = new FileInputStream(file);
 		byte[] buff = new byte[1024];
 		int c = 0;

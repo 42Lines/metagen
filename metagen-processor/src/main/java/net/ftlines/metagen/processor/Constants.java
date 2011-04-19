@@ -14,16 +14,38 @@
 
 package net.ftlines.metagen.processor;
 
-public class Constants
-{
+import javax.lang.model.element.TypeElement;
+
+import net.ftlines.metagen.processor.model.QualifiedName;
+
+public class Constants {
 	public static final String PROPERTY = "net.ftlines.metagen.annot.Property";
 	public static final String BEAN = "net.ftlines.metagen.annot.Bean";
 	public static final String IGNORE = "net.ftlines.metagen.annot.Ignore";
-	
+
 	public static final String ENTITY = "javax.persistence.Entity";
-	public static final String MAPPED_SUPERCLASS="javax.persistence.MappedSuperclass";
-	
+	public static final String MAPPED_SUPERCLASS = "javax.persistence.MappedSuperclass";
+
 	public static final String SINGULAR = "net.ftlines.metagen.SingularProperty";
-	public static final String MARKER = "Meta";
+	private static final String MARKER = "Meta";
+
+	public static QualifiedName getMetaClassName(TypeElement element) {
+		return new QualifiedName(element.getQualifiedName().toString() + MARKER);
+	}
 	
+	public static QualifiedName getMetaClassName(Class<?> source) {
+		String cn = source.getSimpleName() + Constants.MARKER;
+
+		while (source.getDeclaringClass() != null) {
+			source = source.getDeclaringClass();
+			cn = (source.getSimpleName() + Constants.MARKER) + "$" + cn;
+		}
+
+		cn = source.getPackage().getName() + "." + cn;
+
+		
+		return new QualifiedName(cn);
+	}
+	
+
 }

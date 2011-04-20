@@ -37,9 +37,22 @@ public class ValidatingVisitor extends BeanVisitorAdapter {
 					.printMessage(
 							Kind.ERROR,
 							String.format(
-									"Property '%s' inside class '%s' is invisible because the class is private.",
-									node.getName(), bean.getName().getQualified()));
+									"Property '%s' in class '%s' is invisible because the class is private.",
+									node.getName(), bean.getName()
+											.getQualified()));
 			bean.remove(node);
+		}
+
+		if (Visibility.PRIVATE.equals(node.getVisibility())) {
+			env.getMessager()
+					.printMessage(
+							Kind.ERROR,
+							String.format(
+									"Property '%s' in class '%s' is invisible because it is private.",
+									node.getName(), bean.getName()
+											.getQualified()));
+			bean.remove(node);
+
 		}
 
 	}

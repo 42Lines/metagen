@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-package net.ftlines.metagen.processor.unclean.privclazz;
+package net.ftlines.metagen.processor.unclean.privprop;
 
 import static net.ftlines.metagen.processor.MetaAsserts.assertDiagnostic;
 
@@ -27,6 +27,6 @@ public class PrivateClassTest extends MetaPackageTest {
 	@Test
 	public void test() {
 		assertDiagnostic(result, Diagnostic.Kind.ERROR, "'p'",
-				TestBean.class.getName() + ".One", "private", "invisible");
+				TestBean.class.getName(), "private", "invisible", "property");
 	}
 }

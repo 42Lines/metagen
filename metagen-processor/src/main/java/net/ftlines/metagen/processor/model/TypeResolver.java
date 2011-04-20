@@ -21,6 +21,7 @@ import java.util.Set;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.ExecutableType;
 import javax.lang.model.type.PrimitiveType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
@@ -64,6 +65,12 @@ public class TypeResolver extends AbstractTypeVisitor<String, Void>
 		return t.getComponentType().accept(this, p) + "[]";
 	}
 
+	@Override
+	public String visitExecutable(ExecutableType t, Void p) {
+		return t.getReturnType().accept(this, null);
+	}
+	
+	
 	@Override
 	public String visitDeclared(DeclaredType t, Void p)
 	{

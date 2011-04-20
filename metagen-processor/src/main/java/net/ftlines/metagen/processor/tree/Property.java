@@ -4,8 +4,11 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 
+import net.ftlines.metagen.processor.model.Visibility;
+
 public class Property implements Node {
 	private final String name;
+	private Visibility visibility;
 	private Element field;
 	private Element getter;
 	private Element setter;
@@ -59,4 +62,17 @@ public class Property implements Node {
 	public Element getAccessor() {
 		return (getter != null) ? getter : field;
 	}
+
+	public Visibility getVisibility() {
+		if (visibility != null) {
+			return visibility;
+		}
+		return Visibility.of(getAccessor());
+	}
+
+	public void setVisibility(Visibility visibility) {
+		this.visibility = visibility;
+	}
+	
+	
 }

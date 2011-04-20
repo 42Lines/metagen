@@ -8,7 +8,6 @@ import javax.lang.model.element.TypeElement;
 import javax.tools.JavaFileObject;
 
 import net.ftlines.metagen.processor.Constants;
-import net.ftlines.metagen.processor.model.ModelExt;
 import net.ftlines.metagen.processor.model.QualifiedName;
 import net.ftlines.metagen.processor.model.TypeResolver;
 import net.ftlines.metagen.processor.model.Visibility;
@@ -75,7 +74,7 @@ public class CodeGeneratingVisitor implements Visitor {
 	@Override
 	public void enterNestedBean(NestedBean node) {
 		try {
-			QualifiedName name=Constants.getMetaClassName(node.getElement());
+			QualifiedName name = Constants.getMetaClassName(node.getElement());
 			writer.startNestedClass(Visibility.PUBLIC, name.getLocal());
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -97,8 +96,7 @@ public class CodeGeneratingVisitor implements Visitor {
 		Element element = node.getAccessor();
 
 		String type = node.getType().accept(new TypeResolver(), null);
-		Visibility visibility = Visibility.max(ModelExt.of(element)
-				.getVisibility(), Visibility.DEFAULT);
+		Visibility visibility = node.getVisibility();
 		QualifiedName containerName = new QualifiedName(node.getContainer());
 		try {
 			writer.line("%s static final %s<%s,%s> %s = new %s(\"%s\");",

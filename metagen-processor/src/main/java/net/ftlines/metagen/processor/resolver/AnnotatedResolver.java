@@ -23,6 +23,7 @@ import javax.lang.model.element.TypeElement;
 import net.ftlines.metagen.processor.Constants;
 import net.ftlines.metagen.processor.model.ElementExt;
 import net.ftlines.metagen.processor.model.ModelExt;
+import net.ftlines.metagen.processor.model.Visibility;
 import net.ftlines.metagen.processor.tree.AbstractBean;
 import net.ftlines.metagen.processor.tree.Property;
 
@@ -53,8 +54,10 @@ public class AnnotatedResolver implements PropertyResolver {
 				} else {
 					property.setField(enclosed);
 				}
+
+				// force visibility
+				property.setVisibility(Visibility.of(enclosed));
 			}
 		}
 	}
-
 }

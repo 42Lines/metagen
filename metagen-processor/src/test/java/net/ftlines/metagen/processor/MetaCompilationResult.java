@@ -46,10 +46,17 @@ public class MetaCompilationResult extends ForwardingCompilationResult {
 			throws FileNotFoundException, ClassNotFoundException,
 			SecurityException, NoSuchFieldException, IllegalArgumentException,
 			IllegalAccessException {
-		Class<?> meta = getMetaClass(source);
-		Field field = meta.getDeclaredField(propertyName);
+		Field field = getMetaField(source, propertyName);
 		field.setAccessible(true);
 		return (Property) field.get(null);
+	}
+
+	public Field getMetaField(Class<?> source, String propertyName)
+			throws FileNotFoundException, ClassNotFoundException,
+			SecurityException, NoSuchFieldException, IllegalArgumentException,
+			IllegalAccessException {
+		Class<?> meta = getMetaClass(source);
+		return meta.getDeclaredField(propertyName);
 	}
 
 }

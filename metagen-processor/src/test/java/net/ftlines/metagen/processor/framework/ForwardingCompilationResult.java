@@ -16,6 +16,9 @@ package net.ftlines.metagen.processor.framework;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.List;
+
+import javax.tools.Diagnostic;
 
 public class ForwardingCompilationResult implements CompilationResult {
 	protected final CompilationResult result;
@@ -37,5 +40,11 @@ public class ForwardingCompilationResult implements CompilationResult {
 	public ClassLoader getCompilationClassLoader() {
 		return result.getCompilationClassLoader();
 	}
+
+	public List<Diagnostic<?>> getDiagnostics() {
+		return result.getDiagnostics();
+	}
+	
+	
 
 }

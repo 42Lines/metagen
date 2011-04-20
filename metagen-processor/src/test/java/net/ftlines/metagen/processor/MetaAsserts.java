@@ -6,6 +6,10 @@ import static org.junit.Assert.fail;
 
 import java.io.FileNotFoundException;
 
+import javax.tools.Diagnostic;
+
+import net.ftlines.metagen.processor.framework.CompilationResult;
+
 public class MetaAsserts {
 	public static void assertMetaClassNotGenerated(
 			MetaCompilationResult result, Class<?> clazz) {
@@ -44,6 +48,34 @@ public class MetaAsserts {
 			IllegalArgumentException, ClassNotFoundException,
 			NoSuchFieldException, IllegalAccessException {
 		assertNull(result.getMetaProperty(clazz, name));
+	}
+
+	public static void assertDiagnostic(CompilationResult result,
+			Diagnostic.Kind kind, String... keywords) {
+		boolean found = false;
+		for (Diagnostic diagnostic : result.getDiagnostics()) {
+			if (matches(diagnostic, kind, keywords)) {
+				found = true;
+				break;
+			}
+		}
+		if (!found) {
+			fail("Expected dignostic not found");
+		}
+	}
+
+	private static boolean matches(Diagnostic diag, Diagnostic.Kind kind,
+			String... keywords) {
+		if (!diag.getKind().equals(kind)) {
+			return false;
+		}
+		String m = diag.getMessage(null).toLowerCase();
+		for (String keyword : keywords) {
+			if (!m.contains(keyword.toLowerCase())) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 }

@@ -32,6 +32,7 @@ import net.ftlines.metagen.processor.tree.BeanSpace;
 import net.ftlines.metagen.processor.tree.visitor.CodeGeneratingVisitor;
 import net.ftlines.metagen.processor.tree.visitor.PropertyResolvingVisitor;
 import net.ftlines.metagen.processor.tree.visitor.TrimmingVisitor;
+import net.ftlines.metagen.processor.tree.visitor.ValidatingVisitor;
 
 public class MetaProcessor implements Processor {
 	private ProcessingEnvironment environment;
@@ -64,6 +65,8 @@ public class MetaProcessor implements Processor {
 		beans.accept(new PropertyResolvingVisitor(resolvers));
 		beans.accept(new TrimmingVisitor());
 		// beans.accept(new PrintVisitor());
+		beans.accept(new ValidatingVisitor(environment));
+		beans.accept(new TrimmingVisitor());
 		beans.accept(new CodeGeneratingVisitor(environment));
 
 		// return false so we do not claim annotaitons like @Entity and

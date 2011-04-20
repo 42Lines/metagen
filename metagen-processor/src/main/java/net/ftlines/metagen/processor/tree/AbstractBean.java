@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.lang.model.element.TypeElement;
 
 import net.ftlines.metagen.processor.model.QualifiedName;
+import net.ftlines.metagen.processor.model.Visibility;
 
 public abstract class AbstractBean implements Node {
 	private final TypeElement element;
@@ -43,13 +44,26 @@ public abstract class AbstractBean implements Node {
 			bean.accept(visitor);
 		}
 	}
-	
+
 	public QualifiedName getName() {
 		return new QualifiedName(element);
 	}
 
+	public Visibility getVisibility() {
+		return Visibility.of(element);
+	}
+
 	public static final <T> Collection<T> copyValues(Map<?, T> map) {
 		return new ArrayList<T>(map.values());
+	}
+
+	public void remove(Property property) {
+		Property removed = properties.remove(property.getName());
+		if (removed == null) {
+			throw new IllegalStateException(
+					"Attempted to remove property that was not part of the bean. Property name: "
+							+ property.getName());
+		}
 	}
 
 }

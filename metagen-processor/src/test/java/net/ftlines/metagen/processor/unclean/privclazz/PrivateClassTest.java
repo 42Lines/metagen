@@ -12,21 +12,21 @@
  * limitations under the License.
  */
 
-package net.ftlines.metagen.processor.framework;
+package net.ftlines.metagen.processor.unclean.privclazz;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.List;
+import static net.ftlines.metagen.processor.MetaAsserts.assertDiagnostic;
 
 import javax.tools.Diagnostic;
 
-public interface CompilationResult {
+import net.ftlines.metagen.processor.MetaPackageTest;
 
-	boolean isClean();
+import org.junit.Test;
 
-	File getOutputFile(String path) throws FileNotFoundException;
+public class PrivateClassTest extends MetaPackageTest {
 
-	ClassLoader getCompilationClassLoader();
-	
-	List<Diagnostic<?>> getDiagnostics();
+	@Test
+	public void test() {
+		assertDiagnostic(result, Diagnostic.Kind.ERROR, "'p'",
+				TestBean.class.getName() + ".One", "private", "invisible");
+	}
 }

@@ -12,21 +12,13 @@
  * limitations under the License.
  */
 
-package net.ftlines.metagen.processor.framework;
+package net.ftlines.metagen.processor.unclean.privclazz;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.List;
+import net.ftlines.metagen.annot.Bean;
 
-import javax.tools.Diagnostic;
-
-public interface CompilationResult {
-
-	boolean isClean();
-
-	File getOutputFile(String path) throws FileNotFoundException;
-
-	ClassLoader getCompilationClassLoader();
-	
-	List<Diagnostic<?>> getDiagnostics();
+public class TestBean {
+	@Bean
+	private static class One {
+		int p;
+	}
 }

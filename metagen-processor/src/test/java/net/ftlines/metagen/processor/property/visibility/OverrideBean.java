@@ -12,14 +12,31 @@
  * limitations under the License.
  */
 
-package net.ftlines.metagen.property.visibility;
+package net.ftlines.metagen.processor.property.visibility;
 
 import net.ftlines.metagen.annot.Bean;
+import net.ftlines.metagen.annot.Property;
 
 @Bean
-public class TestBean {
-	public int publicProperty;
-	protected int protectedProperty;
-	int defaultProperty;
-	private int privateProperty;
+public class OverrideBean {
+	int p1;
+	@Property
+	protected int p2;
+
+	public int getP1() {
+		return p1;
+	}
+
+	public void setP1(int p1) {
+		this.p1 = p1;
+	}
+
+	public int getP2() {
+		return p2;
+	}
+
+	public void setP2(int p2) {
+		this.p2 = p2;
+	}
+
 }

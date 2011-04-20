@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-package net.ftlines.metagen.property.visibility;
+package net.ftlines.metagen.processor.property.visibility;
 
 import static org.junit.Assert.assertTrue;
 

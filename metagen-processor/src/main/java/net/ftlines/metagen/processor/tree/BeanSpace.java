@@ -5,27 +5,33 @@ import java.util.Map;
 
 import javax.lang.model.element.TypeElement;
 
+import net.ftlines.metagen.processor.util.Optional;
+
 public class BeanSpace implements Node {
 	private final Map<TypeElement, TopLevelBean> beans = new HashMap<TypeElement, TopLevelBean>();
 
 	public void add(TypeElement element) {
-		recursiveAdd(element);
+		recursiveGetOrAdd(element, true);
 	}
 
-	private AbstractBean recursiveAdd(TypeElement element) {
+	public Optional<AbstractBean> get(TypeElement element) {
+		return Optional.of(recursiveGetOrAdd(element, false));
+	}
+
+	private AbstractBean recursiveGetOrAdd(TypeElement element, boolean add) {
 		switch (element.getNestingKind()) {
 		case TOP_LEVEL:
 			TopLevelBean node = beans.get(element);
-			if (node == null) {
+			if (node == null && add) {
 				node = new TopLevelBean(element);
 				beans.put(element, node);
 			}
 			return node;
 		case MEMBER:
-			AbstractBean parent = recursiveAdd((TypeElement) element
-					.getEnclosingElement());
+			AbstractBean parent = recursiveGetOrAdd(
+					(TypeElement) element.getEnclosingElement(), add);
 			NestedBean nested = parent.getNestedBeans().get(element);
-			if (nested == null) {
+			if (nested == null && add) {
 				nested = new NestedBean(element);
 				parent.getNestedBeans().put(element, nested);
 			}

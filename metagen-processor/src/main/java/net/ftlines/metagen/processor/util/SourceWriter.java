@@ -17,6 +17,7 @@ package net.ftlines.metagen.processor.util;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import net.ftlines.metagen.processor.model.QualifiedName;
 import net.ftlines.metagen.processor.model.Visibility;
 
 public class SourceWriter {
@@ -52,17 +53,29 @@ public class SourceWriter {
 		return this;
 	}
 
-	public SourceWriter startClass(Visibility v, String cn) throws IOException {
+	public SourceWriter startClass(Visibility v, String cn,
+			Optional<QualifiedName> scn) throws IOException {
 		line("@SuppressWarnings({ \"rawtypes\", \"unchecked\" })");
-		line("%s class %s", v.getKeyword(), cn);
+
+		String start = String.format("%s class %s", v.getKeyword(), cn);
+		if (scn.isSet()) {
+			start += " extends " + scn.get().getQualified();
+		}
+		line(start);
+
 		return startBlock();
 	}
 
-	public SourceWriter startNestedClass(Visibility v, String cn)
-			throws IOException {
+	public SourceWriter startNestedClass(Visibility v, String cn,
+			Optional<QualifiedName> scn) throws IOException {
 		line("");
 		line("@SuppressWarnings({ \"rawtypes\", \"unchecked\" })");
-		line("%s static class %s", v.getKeyword(), cn);
+
+		String start = String.format("%s static class %s", v.getKeyword(), cn);
+		if (scn.isSet()) {
+			start += " extends " + scn.get().getQualified();
+		}
+		line(start);
 		return startBlock();
 	}
 

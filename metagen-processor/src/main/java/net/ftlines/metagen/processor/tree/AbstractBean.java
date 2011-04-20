@@ -9,6 +9,7 @@ import javax.lang.model.element.TypeElement;
 
 import net.ftlines.metagen.processor.model.QualifiedName;
 import net.ftlines.metagen.processor.model.Visibility;
+import net.ftlines.metagen.processor.util.Optional;
 
 public abstract class AbstractBean implements Node {
 	private final TypeElement element;
@@ -16,6 +17,8 @@ public abstract class AbstractBean implements Node {
 	private final Map<TypeElement, NestedBean> nestedBeans = new HashMap<TypeElement, NestedBean>();
 
 	private final Map<String, Property> properties = new HashMap<String, Property>();
+
+	private AbstractBean superclass;
 
 	public AbstractBean(TypeElement element) {
 		this.element = element;
@@ -64,6 +67,14 @@ public abstract class AbstractBean implements Node {
 					"Attempted to remove property that was not part of the bean. Property name: "
 							+ property.getName());
 		}
+	}
+
+	public Optional<AbstractBean> getSuperclass() {
+		return Optional.of(superclass);
+	}
+
+	public void setSuperclass(AbstractBean superclass) {
+		this.superclass = superclass;
 	}
 
 }

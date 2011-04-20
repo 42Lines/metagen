@@ -16,6 +16,7 @@ import net.ftlines.metagen.processor.tree.NestedBean;
 import net.ftlines.metagen.processor.tree.Property;
 import net.ftlines.metagen.processor.tree.TopLevelBean;
 import net.ftlines.metagen.processor.tree.Visitor;
+import net.ftlines.metagen.processor.util.Optional;
 import net.ftlines.metagen.processor.util.SourceWriter;
 
 public class CodeGeneratingVisitor implements Visitor {
@@ -49,7 +50,12 @@ public class CodeGeneratingVisitor implements Visitor {
 
 			writer.header(node.getName().getNamespace());
 			writer.line();
-			writer.startClass(Visibility.PUBLIC, name.getLocal());
+
+			Optional<QualifiedName> scn = Optional.of(node.getSuperclass()
+					.isSet() ? Constants.getMetaClassName(node.getSuperclass()
+					.get().getElement()) : null);
+
+			writer.startClass(Visibility.PUBLIC, name.getLocal(), scn);
 
 		} catch (IOException e) {
 			// TODO handle this
@@ -75,7 +81,11 @@ public class CodeGeneratingVisitor implements Visitor {
 	public void enterNestedBean(NestedBean node) {
 		try {
 			QualifiedName name = Constants.getMetaClassName(node.getElement());
-			writer.startNestedClass(Visibility.PUBLIC, name.getLocal());
+			Optional<QualifiedName> scn = Optional.of(node.getSuperclass()
+					.isSet() ? Constants.getMetaClassName(node.getSuperclass()
+					.get().getElement()) : null);
+
+			writer.startNestedClass(Visibility.PUBLIC, name.getLocal(), scn);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

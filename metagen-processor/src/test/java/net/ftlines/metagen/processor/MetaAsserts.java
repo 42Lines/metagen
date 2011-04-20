@@ -34,6 +34,24 @@ public class MetaAsserts {
 		}
 	}
 
+	public static void assertMetaClassInhertance(MetaCompilationResult result,
+			Class<?> clazz, Class<?> superClazz) throws FileNotFoundException,
+			ClassNotFoundException {
+
+		Class<?> metaClass = result.getMetaClass(clazz);
+		Class<?> metaSuperClass = result.getMetaClass(superClazz);
+
+		Class<?> cursor = metaClass.getSuperclass();
+		while (cursor != null) {
+			if (cursor.equals(metaSuperClass)) {
+				return;
+			}
+			cursor=cursor.getSuperclass();
+		}
+		fail("Meta class: " + metaClass.getName() + " does not extend: "
+				+ metaSuperClass.getName());
+	}
+
 	public static void assertMetaPropertyGenerated(
 			MetaCompilationResult result, Class<?> clazz, String name)
 			throws FileNotFoundException, SecurityException,

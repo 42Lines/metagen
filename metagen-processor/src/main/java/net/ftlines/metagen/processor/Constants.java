@@ -14,6 +14,7 @@
 
 package net.ftlines.metagen.processor;
 
+import javax.lang.model.element.NestingKind;
 import javax.lang.model.element.TypeElement;
 
 import net.ftlines.metagen.processor.model.QualifiedName;
@@ -30,9 +31,18 @@ public class Constants {
 	private static final String MARKER = "Meta";
 
 	public static QualifiedName getMetaClassName(TypeElement element) {
-		return new QualifiedName(element.getQualifiedName().toString() + MARKER);
+
+		String cn = element.getSimpleName() + MARKER;
+		while (element.getNestingKind() != NestingKind.TOP_LEVEL) {
+			element = (TypeElement) element.getEnclosingElement();
+			cn = element.getSimpleName() + MARKER + "." + cn;
+		}
+		cn = new QualifiedName(element.getQualifiedName().toString())
+				.getNamespace() + "." + cn;
+
+		return new QualifiedName(cn);
 	}
-	
+
 	public static QualifiedName getMetaClassName(Class<?> source) {
 		String cn = source.getSimpleName() + Constants.MARKER;
 
@@ -43,9 +53,7 @@ public class Constants {
 
 		cn = source.getPackage().getName() + "." + cn;
 
-		
 		return new QualifiedName(cn);
 	}
-	
 
 }

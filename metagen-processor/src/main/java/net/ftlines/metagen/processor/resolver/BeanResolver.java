@@ -23,6 +23,7 @@ import javax.lang.model.element.TypeElement;
 import net.ftlines.metagen.processor.Constants;
 import net.ftlines.metagen.processor.model.ElementExt;
 import net.ftlines.metagen.processor.model.ModelExt;
+import net.ftlines.metagen.processor.model.Visibility;
 import net.ftlines.metagen.processor.tree.AbstractBean;
 import net.ftlines.metagen.processor.tree.Property;
 
@@ -46,7 +47,7 @@ public class BeanResolver implements PropertyResolver {
 
 		for (Element enclosed : type.getEnclosedElements()) {
 			ElementExt ext = ModelExt.of(enclosed);
-			if (ext.isProperty()) {
+			if (ext.isProperty() && ext.getVisibility() != Visibility.PRIVATE) {
 				String name = ext.getPropertyName();
 				Property property = bean.getProperties().get(name);
 				if (property == null) {

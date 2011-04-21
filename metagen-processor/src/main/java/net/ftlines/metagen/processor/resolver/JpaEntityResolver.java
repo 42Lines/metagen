@@ -48,7 +48,7 @@ public class JpaEntityResolver implements PropertyResolver {
 
 		for (Element enclosed : type.getEnclosedElements()) {
 			ElementExt ext = ModelExt.of(enclosed);
-			if (ext.isProperty()) {
+			if (ext.isProperty() && ext.getVisibility() != Visibility.PRIVATE) {
 				String name = ext.getPropertyName();
 				Property property = bean.getProperties().get(name);
 				if (property == null) {

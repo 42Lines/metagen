@@ -125,7 +125,7 @@ public class CodeGeneratingVisitor implements Visitor {
 		try {
 			writer.line("%s static final %s<%s,%s> %s = new %s(\"%s\");",
 					visibility.getKeyword(), Constants.SINGULAR,
-					containerName.getQualified(), type, node.getName(),
+					containerName.getQualified(), type, node.getHandle(),
 					Constants.SINGULAR, node.getName());
 		} catch (IOException e) {
 			throw new RuntimeException(e);

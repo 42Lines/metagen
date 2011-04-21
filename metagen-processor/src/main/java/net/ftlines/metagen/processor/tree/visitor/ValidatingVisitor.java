@@ -14,6 +14,9 @@
 
 package net.ftlines.metagen.processor.tree.visitor;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Stack;
 
 import javax.annotation.processing.ProcessingEnvironment;
@@ -55,6 +58,7 @@ public class ValidatingVisitor extends BeanVisitorAdapter {
 									node.getName(), bean.getName()
 											.getQualified()));
 			bean.remove(node);
+			return;
 		}
 
 		if (Visibility.PRIVATE.equals(node.getVisibility())) {
@@ -66,9 +70,52 @@ public class ValidatingVisitor extends BeanVisitorAdapter {
 									node.getName(), bean.getName()
 											.getQualified()));
 			bean.remove(node);
-
+			return;
 		}
 
+		final String name = node.getName();
+		final String handle = node.getHandle();
+		if (RESERVED.contains(handle)) {
+			String altHandle = handle + "_";
+			boolean altHandleTaken = false;
+			for (Property property : bean.getProperties().values()) {
+				if (altHandle.equals(property.getHandle())) {
+					altHandleTaken = true;
+					break;
+				}
+			}
+			if (altHandleTaken) {
+				env.getMessager()
+						.printMessage(
+								Kind.ERROR,
+								String.format(
+										"Property '%s' in class '%s' has the same name as a reserved word in Java. Alternate name '%s' has also been taken.",
+										name, bean.getName().getQualified(),
+										altHandle));
+				bean.remove(node);
+			} else {
+				node.setHandle(altHandle);
+				env.getMessager()
+						.printMessage(
+								Kind.WARNING,
+								String.format(
+										"Property '%s' in class '%s' has the same name as a reserved word in Java, renamed to '%s'",
+										name, bean.getName().getQualified(),
+										altHandle));
+			}
+			return;
+		}
 	}
 
+	private static final Set<String> RESERVED = new HashSet<String>(
+			Arrays.asList("abstract", "assert", "boolean", "break", "byte",
+					"case", "catch", "char", "class", "const", "continue",
+					"default", "do", "double", "else", "enum", "extends",
+					"final", "finally", "float", "for", "goto", "if",
+					"implements", "import", "instanceof", "int", "interface",
+					"long", "native", "new", "package", "private", "protected",
+					"public", "return", "short", "static", "strictfp", "super",
+					"switch", "synchronized", "this", "throw", "throws",
+					"transient", "try", "void", "volatile", "while", "false",
+					"null", "true"));
 }

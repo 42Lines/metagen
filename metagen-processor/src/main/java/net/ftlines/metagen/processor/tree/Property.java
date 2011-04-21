@@ -22,6 +22,12 @@ import net.ftlines.metagen.processor.model.Visibility;
 
 public class Property implements Node {
 	private final String name;
+
+	/**
+	 * name of the field that will hold the property definition in the meta
+	 * class
+	 */
+	private String handle;
 	private Visibility visibility;
 	private Element field;
 	private Element getter;
@@ -29,6 +35,7 @@ public class Property implements Node {
 
 	public Property(String name) {
 		this.name = name;
+		this.handle = name;
 	}
 
 	public Element getField() {
@@ -87,6 +94,13 @@ public class Property implements Node {
 	public void setVisibility(Visibility visibility) {
 		this.visibility = visibility;
 	}
-	
-	
+
+	public String getHandle() {
+		return handle;
+	}
+
+	public void setHandle(String handle) {
+		this.handle = handle;
+	}
+
 }

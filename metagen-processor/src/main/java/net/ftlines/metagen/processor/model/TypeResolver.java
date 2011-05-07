@@ -21,7 +21,6 @@ import java.util.Set;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.ErrorType;
 import javax.lang.model.type.ExecutableType;
 import javax.lang.model.type.PrimitiveType;
 import javax.lang.model.type.TypeKind;
@@ -29,35 +28,40 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.TypeVariable;
 import javax.lang.model.type.WildcardType;
 
-public class TypeResolver extends AbstractTypeVisitor<String, Void> {
+
+public class TypeResolver extends AbstractTypeVisitor<String, Void>
+{
 	private Set<DeclaredType> visited = new HashSet<DeclaredType>();
 
 	@Override
-	public String visitPrimitive(PrimitiveType t, Void p) {
-		switch (t.getKind()) {
-		case BOOLEAN:
-			return Boolean.class.getName();
-		case BYTE:
-			return Byte.class.getName();
-		case CHAR:
-			return Character.class.getName();
-		case DOUBLE:
-			return Double.class.getName();
-		case FLOAT:
-			return Float.class.getName();
-		case INT:
-			return Integer.class.getName();
-		case LONG:
-			return Long.class.getName();
-		case SHORT:
-			return Short.class.getName();
-		default:
-			throw new IllegalStateException();
+	public String visitPrimitive(PrimitiveType t, Void p)
+	{
+		switch (t.getKind())
+		{
+			case BOOLEAN :
+				return Boolean.class.getName();
+			case BYTE :
+				return Byte.class.getName();
+			case CHAR :
+				return Character.class.getName();
+			case DOUBLE :
+				return Double.class.getName();
+			case FLOAT :
+				return Float.class.getName();
+			case INT :
+				return Integer.class.getName();
+			case LONG :
+				return Long.class.getName();
+			case SHORT :
+				return Short.class.getName();
+			default :
+				throw new IllegalStateException();
 		}
 	}
 
 	@Override
-	public String visitArray(ArrayType t, Void p) {
+	public String visitArray(ArrayType t, Void p)
+	{
 		return t.getComponentType().accept(this, p) + "[]";
 	}
 
@@ -65,23 +69,27 @@ public class TypeResolver extends AbstractTypeVisitor<String, Void> {
 	public String visitExecutable(ExecutableType t, Void p) {
 		return t.getReturnType().accept(this, null);
 	}
-
+	
+	
 	@Override
-	public String visitDeclared(DeclaredType t, Void p) {
-		String fqn = ((TypeElement) t.asElement()).getQualifiedName()
-				.toString();
-
+	public String visitDeclared(DeclaredType t, Void p)
+	{
+		String fqn = ((TypeElement)t.asElement()).getQualifiedName().toString();
+		
 		if (visited.contains(t)) {
 			return fqn;
 		}
-
+		
 		visited.add(t);
-
+		
 		List<? extends TypeMirror> args = t.getTypeArguments();
-		if (args.size() > 0) {
+		if (args.size() > 0)
+		{
 			fqn = fqn + "<";
-			for (int i = 0, l = args.size(); i < l; i++) {
-				if (i > 0) {
+			for (int i = 0, l = args.size(); i < l; i++)
+			{
+				if (i > 0)
+				{
 					fqn += ",";
 				}
 				TypeMirror argType = args.get(i);
@@ -93,30 +101,31 @@ public class TypeResolver extends AbstractTypeVisitor<String, Void> {
 		return fqn;
 	}
 
-	public String visitTypeVariable(TypeVariable t, Void p) {
-		TypeVariable tv = (TypeVariable) t;
+	public String visitTypeVariable(TypeVariable t, Void p)
+	{
+		TypeVariable tv = (TypeVariable)t;
 		TypeMirror lb = tv.getLowerBound();
 		TypeKind lbk = lb.getKind();
-		if (TypeKind.NONE.equals(lbk) == false
-				&& TypeKind.NULL.equals(lbk) == false) {
-			return " ? super " + lb.accept(this, null);
-		} else {
-			return " ? extends " + tv.getUpperBound().accept(this, null);
+		if (TypeKind.NONE.equals(lbk) == false && TypeKind.NULL.equals(lbk) == false)
+		{
+			return " ? super "+lb.accept(this, null);
+		}
+		else
+		{
+			return " ? extends "+tv.getUpperBound().accept(this, null);
 		}
 	}
 
 	@Override
-	public String visitWildcard(WildcardType t, Void p) {
-		if (t.getSuperBound() != null) {
-			return " ? super " + t.getSuperBound().accept(this, null);
-		} else {
-			return " ? extends " + t.getExtendsBound().accept(this, null);
+	public String visitWildcard(WildcardType t, Void p)
+	{
+		if (t.getSuperBound() != null)
+		{
+			return " ? super "+t.getSuperBound().accept(this, null);
 		}
-	}
-
-	@Override
-	public String visitError(ErrorType t, Void p) {
-		return "/* FIXME MetaGen could not process this type: " + t.toString() + ". Substituting with Object */ "
-				+ Object.class.getName();
+		else
+		{
+			return " ? extends "+t.getExtendsBound().accept(this, null);
+		}
 	}
 }

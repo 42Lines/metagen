@@ -1,15 +1,13 @@
 /**
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package net.ftlines.metagen.wicket;
@@ -28,15 +26,15 @@ import org.apache.wicket.model.PropertyModel;
  * 
  * <pre>
  * IModel&lt;User&gt; user;
- * IModel&lt;String&gt; name = new MetaModel&lt;User&gt;(user).get(User_.profile).get(
- * 		Profile_.firstName);
+ * IModel&lt;String&gt; name = new MetaModel&lt;User&gt;(user).get(User_.profile).get(Profile_.firstName);
  * </pre>
  * 
  * @author igor
  * 
  * @param <T>
  */
-public class MetaModel<T> extends PropertyModel<T> {
+public class MetaModel<T> extends PropertyModel<T>
+{
 
 	/**
 	 * Constructor
@@ -44,47 +42,50 @@ public class MetaModel<T> extends PropertyModel<T> {
 	 * @param root
 	 *            root model object
 	 */
-	public MetaModel(Object root) {
+	public MetaModel(Object root)
+	{
 		super(root, null);
 	}
 
-	private MetaModel(Object root, String path) {
+	private MetaModel(Object root, String path)
+	{
 		super(root, path);
 	}
 
 	/**
-	 * Assigns a default value to this model that will be returned instead of
-	 * {@code null}
+	 * Assigns a default value to this model that will be returned instead of {@code null}
 	 * 
 	 * @param defaultValue
 	 * @return
 	 */
-	public MetaModel<T> withDefault(T defaultValue) {
+	public MetaModel<T> withDefault(T defaultValue)
+	{
 		// Args.notNull(defaultValue, "defaultValue");
 		return new DefaultModel<T>(this, new ValueModel<T>(defaultValue));
 	}
 
 	/**
-	 * Assigns a default value to this model that will be returned instead of
-	 * {@code null}
+	 * Assigns a default value to this model that will be returned instead of {@code null}
 	 * 
 	 * @param defaultValue
 	 * @return
 	 */
-	public MetaModel<T> withDefault(IModel<T> defaultValue) {
+	public MetaModel<T> withDefault(IModel<T> defaultValue)
+	{
 		// Args.notNull(defaultValue, "defaultValue");
 		return new DefaultModel<T>(this, defaultValue);
 	}
 
 	/**
-	 * Creates a new instance of {@link MetaModel} that points to the specified
-	 * attribute of the model it was called on
+	 * Creates a new instance of {@link MetaModel} that points to the specified attribute of the
+	 * model it was called on
 	 * 
 	 * @param <V>
 	 * @param attribute
 	 * @return
 	 */
-	public <V> MetaModel<V> get(SingularProperty<? super T, V> attribute) {
+	public <V> MetaModel<V> get(SingularProperty<? super T, V> attribute)
+	{
 		return new MetaModel<V>(this, attribute.getName());
 	}
 
@@ -95,7 +96,8 @@ public class MetaModel<T> extends PropertyModel<T> {
 	 * @param source
 	 * @return
 	 */
-	public static <T> MetaModel<T> of(T source) {
+	public static <T> MetaModel<T> of(T source)
+	{
 		return new MetaModel<T>(source);
 	}
 
@@ -106,7 +108,8 @@ public class MetaModel<T> extends PropertyModel<T> {
 	 * @param source
 	 * @return
 	 */
-	public static <T> MetaModel<T> of(IModel<T> source) {
+	public static <T> MetaModel<T> of(IModel<T> source)
+	{
 		return new MetaModel<T>(source);
 	}
 
@@ -117,22 +120,26 @@ public class MetaModel<T> extends PropertyModel<T> {
 	 * 
 	 * @param <T>
 	 */
-	public static class DefaultModel<T> extends MetaModel<T> {
+	public static class DefaultModel<T> extends MetaModel<T>
+	{
 		private final IModel<T> defaultValue;
 
-		public DefaultModel(IModel<T> model, IModel<T> defaultValue) {
+		public DefaultModel(IModel<T> model, IModel<T> defaultValue)
+		{
 			super(model);
 			this.defaultValue = defaultValue;
 		}
 
 		@Override
-		public T getObject() {
+		public T getObject()
+		{
 			T value = super.getObject();
 			return (value != null) ? value : defaultValue.getObject();
 		}
 
 		@Override
-		public void detach() {
+		public void detach()
+		{
 			super.detach();
 			defaultValue.detach();
 		}
@@ -144,24 +151,29 @@ public class MetaModel<T> extends PropertyModel<T> {
 	 * @author igor
 	 * 
 	 */
-	private static class ValueModel<V> implements IModel<V> {
+	private static class ValueModel<V> implements IModel<V>
+	{
 		private V value;
 
-		public ValueModel(V value) {
+		public ValueModel(V value)
+		{
 			this.value = value;
 		}
 
 		@Override
-		public void detach() {
+		public void detach()
+		{
 		}
 
 		@Override
-		public V getObject() {
+		public V getObject()
+		{
 			return value;
 		}
 
 		@Override
-		public void setObject(V object) {
+		public void setObject(V object)
+		{
 			value = object;
 		}
 

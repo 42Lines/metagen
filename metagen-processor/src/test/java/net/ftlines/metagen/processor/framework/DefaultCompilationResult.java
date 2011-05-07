@@ -1,15 +1,13 @@
 /**
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package net.ftlines.metagen.processor.framework;
@@ -27,26 +25,32 @@ import java.util.List;
 import javax.tools.Diagnostic;
 import javax.tools.DiagnosticCollector;
 
-public class DefaultCompilationResult implements CompilationResult {
+public class DefaultCompilationResult implements CompilationResult
+{
 	private final File outputDir;
 	private final DiagnosticCollector collector;
 	private final ClassLoader cloader;
 
-	public DefaultCompilationResult(File outputDir,
-			DiagnosticCollector collector) {
+	public DefaultCompilationResult(File outputDir, DiagnosticCollector collector)
+	{
 		this.outputDir = outputDir;
 		this.collector = collector;
 
-		try {
+		try
+		{
 			URL url = outputDir.toURL();
 			cloader = new URLClassLoader(new URL[] { url });
-		} catch (MalformedURLException e) {
+		}
+		catch (MalformedURLException e)
+		{
 			throw new RuntimeException(e);
 		}
 
 	}
 
-	public List<Diagnostic<?>> getDiagnostics() {
+	@Override
+	public List<Diagnostic<?>> getDiagnostics()
+	{
 		return Collections.unmodifiableList(collector.getDiagnostics());
 	}
 
@@ -56,13 +60,16 @@ public class DefaultCompilationResult implements CompilationResult {
 	 * @see binder.framework.CompilationResult#isClean()
 	 */
 	@Override
-	public boolean isClean() {
-		for (Diagnostic<?> diagnostic : getDiagnostics()) {
-			switch (diagnostic.getKind()) {
-			case ERROR:
-			case MANDATORY_WARNING:
-			case WARNING:
-				return false;
+	public boolean isClean()
+	{
+		for (Diagnostic<?> diagnostic : getDiagnostics())
+		{
+			switch (diagnostic.getKind())
+			{
+				case ERROR :
+				case MANDATORY_WARNING :
+				case WARNING :
+					return false;
 			}
 		}
 		return true;
@@ -72,32 +79,35 @@ public class DefaultCompilationResult implements CompilationResult {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see binder.framework.CompilationResult#getFile(java.lang.Class,
-	 * java.lang.String)
+	 * @see binder.framework.CompilationResult#getFile(java.lang.Class, java.lang.String)
 	 */
 	@Override
-	public File getOutputFile(String path)
-			throws FileNotFoundException {
+	public File getOutputFile(String path) throws FileNotFoundException
+	{
 		File file = new File(outputDir, path);
-		if (!file.exists()) {
+		if (!file.exists())
+		{
 			throw new FileNotFoundException(file.getAbsolutePath());
 		}
 		return file;
 	}
 
-	public void dumpFile(String path) throws IOException {
+	public void dumpFile(String path) throws IOException
+	{
 		File file = getOutputFile(path);
 		FileInputStream in = new FileInputStream(file);
 		byte[] buff = new byte[1024];
 		int c = 0;
-		while ((c = in.read(buff)) > 0) {
+		while ((c = in.read(buff)) > 0)
+		{
 			System.out.write(buff, 0, c);
 		}
 		in.close();
 	}
 
 	@Override
-	public ClassLoader getCompilationClassLoader() {
+	public ClassLoader getCompilationClassLoader()
+	{
 		return cloader;
 	}
 

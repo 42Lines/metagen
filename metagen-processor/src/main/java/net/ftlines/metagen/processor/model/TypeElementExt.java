@@ -1,15 +1,13 @@
 /**
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package net.ftlines.metagen.processor.model;
@@ -33,26 +31,31 @@ public class TypeElementExt extends ElementExt implements TypeElement
 		super(e);
 	}
 
+	@Override
 	public NestingKind getNestingKind()
 	{
 		return ((TypeElement)e).getNestingKind();
 	}
 
+	@Override
 	public Name getQualifiedName()
 	{
 		return ((TypeElement)e).getQualifiedName();
 	}
 
+	@Override
 	public TypeMirror getSuperclass()
 	{
 		return ((TypeElement)e).getSuperclass();
 	}
 
+	@Override
 	public List<? extends TypeMirror> getInterfaces()
 	{
 		return ((TypeElement)e).getInterfaces();
 	}
 
+	@Override
 	public List<? extends TypeParameterElement> getTypeParameters()
 	{
 		return ((TypeElement)e).getTypeParameters();
@@ -72,6 +75,6 @@ public class TypeElementExt extends ElementExt implements TypeElement
 	{
 		return e.getEnclosingElement().getKind().equals(ElementKind.PACKAGE);
 	}
-	
-	
+
+
 }

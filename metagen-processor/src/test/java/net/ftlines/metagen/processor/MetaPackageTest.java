@@ -1,15 +1,13 @@
 /**
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package net.ftlines.metagen.processor;
@@ -18,16 +16,18 @@ import net.ftlines.metagen.processor.framework.Compilation;
 import net.ftlines.metagen.processor.framework.CompilationPackageTest;
 import net.ftlines.metagen.processor.framework.CompilationResult;
 
-public class MetaPackageTest extends
-		CompilationPackageTest<MetaCompilationResult> {
+public class MetaPackageTest extends CompilationPackageTest<MetaCompilationResult>
+{
 
 	@Override
-	protected void configureCompilation(Compilation compilation) {
+	protected void configureCompilation(Compilation compilation)
+	{
 		super.configureCompilation(compilation);
 	}
 
 	@Override
-	protected MetaCompilationResult configureResult(CompilationResult result) {
+	protected MetaCompilationResult configureResult(CompilationResult result)
+	{
 		return new MetaCompilationResult(result);
 	}
 

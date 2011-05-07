@@ -1,15 +1,13 @@
 /**
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package net.ftlines.metagen.processor.model;
@@ -23,38 +21,47 @@ import javax.lang.model.type.WildcardType;
 
 import net.ftlines.metagen.processor.util.Optional;
 
-public class ElementResolver extends
-		AbstractTypeVisitor<Optional<TypeElement>, Void> {
+public class ElementResolver extends AbstractTypeVisitor<Optional<TypeElement>, Void>
+{
 
 	@Override
-	public Optional<TypeElement> visitDeclared(DeclaredType t, Void p) {
-		return Optional.of((TypeElement) t.asElement());
+	public Optional<TypeElement> visitDeclared(DeclaredType t, Void p)
+	{
+		return Optional.of((TypeElement)t.asElement());
 	}
 
 	@Override
-	public Optional<TypeElement> visit(TypeMirror t, Void p) {
+	public Optional<TypeElement> visit(TypeMirror t, Void p)
+	{
 		return Optional.ofNull();
 	}
 
 	@Override
-	public Optional<TypeElement> visitTypeVariable(TypeVariable t, Void p) {
-		TypeVariable tv = (TypeVariable) t;
+	public Optional<TypeElement> visitTypeVariable(TypeVariable t, Void p)
+	{
+		TypeVariable tv = t;
 		TypeMirror lb = tv.getLowerBound();
 		TypeKind lbk = lb.getKind();
-		if (TypeKind.NONE.equals(lbk) == false
-				&& TypeKind.NULL.equals(lbk) == false) {
+		if (TypeKind.NONE.equals(lbk) == false && TypeKind.NULL.equals(lbk) == false)
+		{
 			return lb.accept(this, null);
-		} else {
+		}
+		else
+		{
 			return tv.getUpperBound().accept(this, null);
 		}
 
 	}
 
 	@Override
-	public Optional<TypeElement> visitWildcard(WildcardType t, Void p) {
-		if (t.getSuperBound() != null) {
+	public Optional<TypeElement> visitWildcard(WildcardType t, Void p)
+	{
+		if (t.getSuperBound() != null)
+		{
 			return t.getSuperBound().accept(this, null);
-		} else {
+		}
+		else
+		{
 			return t.getExtendsBound().accept(this, null);
 		}
 	}

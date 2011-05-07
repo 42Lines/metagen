@@ -1,15 +1,13 @@
 /**
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package net.ftlines.metagen.processor;
@@ -35,30 +33,34 @@ import net.ftlines.metagen.processor.tree.visitor.SuperclassResolvingVisitor;
 import net.ftlines.metagen.processor.tree.visitor.TrimmingVisitor;
 import net.ftlines.metagen.processor.tree.visitor.ValidatingVisitor;
 
-public class MetaProcessor implements Processor {
+public class MetaProcessor implements Processor
+{
 	private ProcessingEnvironment environment;
 	private PropertyResolvers resolvers;
 
 	@Override
-	public boolean process(Set<? extends TypeElement> annotations,
-			RoundEnvironment round) {
+	public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment round)
+	{
 
 		BeanSpace beans = new BeanSpace();
 
 		// TODO this should prob delegate to beanspace.add(element);
 		// TODO beanspace should check if element is supported and error
 		// otherwise
-		for (TypeElement annotation : annotations) {
-			for (Element annotated : round.getElementsAnnotatedWith(annotation)) {
-				switch (annotated.getKind()) {
-				case CLASS:
-				case ENUM:
-					beans.add((TypeElement) annotated);
-					break;
-				case FIELD:
-				case METHOD:
-					beans.add((TypeElement) annotated.getEnclosingElement());
-					break;
+		for (TypeElement annotation : annotations)
+		{
+			for (Element annotated : round.getElementsAnnotatedWith(annotation))
+			{
+				switch (annotated.getKind())
+				{
+					case CLASS :
+					case ENUM :
+						beans.add((TypeElement)annotated);
+						break;
+					case FIELD :
+					case METHOD :
+						beans.add((TypeElement)annotated.getEnclosingElement());
+						break;
 				}
 			}
 		}
@@ -77,30 +79,34 @@ public class MetaProcessor implements Processor {
 	}
 
 	@Override
-	public Set<String> getSupportedOptions() {
+	public Set<String> getSupportedOptions()
+	{
 		return Collections.emptySet();
 	}
 
 	@Override
-	public Set<String> getSupportedAnnotationTypes() {
+	public Set<String> getSupportedAnnotationTypes()
+	{
 		return resolvers.getSupportedAnnotationTypes();
 	}
 
 	@Override
-	public SourceVersion getSupportedSourceVersion() {
+	public SourceVersion getSupportedSourceVersion()
+	{
 		return SourceVersion.RELEASE_6;
 	}
 
 	@Override
-	public void init(ProcessingEnvironment processingEnv) {
+	public void init(ProcessingEnvironment processingEnv)
+	{
 		environment = processingEnv;
 		resolvers = new PropertyResolvers();
 	}
 
 	@Override
-	public Iterable<? extends Completion> getCompletions(Element element,
-			AnnotationMirror annotation, ExecutableElement member,
-			String userText) {
+	public Iterable<? extends Completion> getCompletions(Element element, AnnotationMirror annotation,
+		ExecutableElement member, String userText)
+	{
 		return Collections.emptyList();
 	}
 }

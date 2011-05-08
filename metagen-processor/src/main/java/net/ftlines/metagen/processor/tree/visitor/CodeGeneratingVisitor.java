@@ -13,6 +13,9 @@
 package net.ftlines.metagen.processor.tree.visitor;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
@@ -38,6 +41,8 @@ public class CodeGeneratingVisitor implements Visitor
 	private final ProcessingEnvironment env;
 
 	private SourceWriter writer;
+
+	private Stack<List<Property>> properties = new Stack<List<Property>>();
 
 	public CodeGeneratingVisitor(ProcessingEnvironment env)
 	{
@@ -74,6 +79,7 @@ public class CodeGeneratingVisitor implements Visitor
 
 			writer.startClass(Visibility.PUBLIC, name.getLocal(), scn);
 
+			afterEnterBean(node);
 		}
 		catch (IOException e)
 		{
@@ -110,6 +116,8 @@ public class CodeGeneratingVisitor implements Visitor
 				? Constants.getMetaClassName(node.getSuperclass().get().getElement()) : null);
 
 			writer.startNestedClass(Visibility.PUBLIC, name.getLocal(), scn);
+
+			afterEnterBean(node);
 		}
 		catch (IOException e)
 		{
@@ -136,6 +144,8 @@ public class CodeGeneratingVisitor implements Visitor
 	@Override
 	public void enterProperty(Property node)
 	{
+		properties.peek().add(node);
+
 		Element element = node.getAccessor();
 
 		String type = node.getType().accept(new TypeResolver(), null);
@@ -168,6 +178,24 @@ public class CodeGeneratingVisitor implements Visitor
 		writer.line("%s static final String simpleName=\"%s\";", node.getVisibility().getKeyword(), node.getName()
 			.getLocal());
 		writer.endClass();
+
+		writer.line();
+		Optional<QualifiedName> scn = Optional.of(node.getSuperclass().isSet() ? new QualifiedName(
+			Constants.getMetaClassName(node.getSuperclass().get().getElement()).getQualified() + ".P") : null);
+		writer.startNestedClass(node.getVisibility(), "P", scn);
+		for (Property property : properties.peek())
+		{
+			writer.line("%s static final String %s=\"%s\";", property.getVisibility().getKeyword(),
+				property.getHandle(), property.getHandle());
+		}
+		properties.pop();
+		writer.endClass();
+
+	}
+
+	private void afterEnterBean(AbstractBean node) throws IOException
+	{
+		properties.push(new ArrayList<Property>());
 	}
 
 }

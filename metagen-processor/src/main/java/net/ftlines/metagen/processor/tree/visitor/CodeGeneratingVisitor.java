@@ -23,6 +23,7 @@ import net.ftlines.metagen.processor.Constants;
 import net.ftlines.metagen.processor.model.QualifiedName;
 import net.ftlines.metagen.processor.model.TypeResolver;
 import net.ftlines.metagen.processor.model.Visibility;
+import net.ftlines.metagen.processor.tree.AbstractBean;
 import net.ftlines.metagen.processor.tree.BeanSpace;
 import net.ftlines.metagen.processor.tree.NestedBean;
 import net.ftlines.metagen.processor.tree.Property;
@@ -86,7 +87,7 @@ public class CodeGeneratingVisitor implements Visitor
 	{
 		try
 		{
-
+			beforeExitBean(node);
 			writer.endClass();
 			writer.flush();
 			writer.close();
@@ -122,6 +123,7 @@ public class CodeGeneratingVisitor implements Visitor
 	{
 		try
 		{
+			beforeExitBean(node);
 			writer.endClass();
 		}
 		catch (IOException e)
@@ -129,6 +131,7 @@ public class CodeGeneratingVisitor implements Visitor
 			throw new RuntimeException(e);
 		}
 	}
+
 
 	@Override
 	public void enterProperty(Property node)
@@ -154,6 +157,17 @@ public class CodeGeneratingVisitor implements Visitor
 	public void exitProperty(Property node)
 	{
 
+	}
+
+	private void beforeExitBean(AbstractBean node) throws IOException
+	{
+		writer.line();
+		writer.startNestedClass(node.getVisibility(), "C", Optional.<QualifiedName> ofNull());
+		writer.line("%s static final String name=\"%s\";", node.getVisibility().getKeyword(), node.getName()
+			.getQualified());
+		writer.line("%s static final String simpleName=\"%s\";", node.getVisibility().getKeyword(), node.getName()
+			.getLocal());
+		writer.endClass();
 	}
 
 }

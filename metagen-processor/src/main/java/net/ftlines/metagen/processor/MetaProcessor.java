@@ -13,6 +13,7 @@
 package net.ftlines.metagen.processor;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.annotation.processing.Completion;
@@ -25,6 +26,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 
+import net.ftlines.metagen.annot.Meta;
 import net.ftlines.metagen.processor.resolver.PropertyResolvers;
 import net.ftlines.metagen.processor.tree.BeanSpace;
 import net.ftlines.metagen.processor.tree.visitor.CodeGeneratingVisitor;
@@ -87,7 +89,9 @@ public class MetaProcessor implements Processor
 	@Override
 	public Set<String> getSupportedAnnotationTypes()
 	{
-		return resolvers.getSupportedAnnotationTypes();
+		HashSet<String> annotations = new HashSet<String>(resolvers.getSupportedAnnotationTypes());
+		annotations.add(Meta.class.getName());
+		return annotations;
 	}
 
 	@Override

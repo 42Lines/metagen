@@ -14,6 +14,7 @@ package net.ftlines.metagen.processor.tree.visitor;
 
 import java.util.Stack;
 
+import net.ftlines.metagen.annot.Meta;
 import net.ftlines.metagen.processor.tree.AbstractBean;
 import net.ftlines.metagen.processor.tree.BeanSpace;
 
@@ -48,7 +49,13 @@ public class TrimmingVisitor extends BeanVisitorAdapter
 		{
 			return;
 		}
-
+		
+		// metadata was specifically requested for this bean
+		if (bean.getElement().getAnnotation(Meta.class) != null)
+		{
+			return;
+		}
+		
 		// remove this bean because its empty
 
 		if (beans.isEmpty())

@@ -12,10 +12,8 @@
 
 package net.ftlines.metagen.processor.trim;
 
-import static net.ftlines.metagen.processor.MetaAsserts.assertMetaClassGenerated;
-import static net.ftlines.metagen.processor.MetaAsserts.assertMetaClassNotGenerated;
-import static net.ftlines.metagen.processor.MetaAsserts.assertMetaPropertyGenerated;
-import static org.junit.Assert.assertTrue;
+import static net.ftlines.metagen.processor.MetaAsserts.*;
+import static org.junit.Assert.*;
 import net.ftlines.metagen.processor.MetaPackageTest;
 
 import org.junit.Test;
@@ -43,6 +41,14 @@ public class NestedClassTest extends MetaPackageTest
 		assertMetaClassGenerated(result, Bean2.Five.class);
 		assertMetaPropertyGenerated(result, Bean2.Five.class, "p");
 		assertMetaClassNotGenerated(result, Bean2.Five.Six.class);
+	}
+
+	@Test
+	public void metaAnnotation()
+	{
+		assertMetaClassGenerated(result, Bean3.class);
+		assertMetaClassGenerated(result, Bean3.One.class);
+		assertMetaClassGenerated(result, Bean3.One.Two.class);
 	}
 
 }

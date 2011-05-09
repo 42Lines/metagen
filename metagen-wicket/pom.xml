@@ -42,8 +42,11 @@
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket</artifactId>
 			<version>1.4.16</version>
-			<type>jar</type>
-			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.wicket</groupId>
+			<artifactId>wicket-extensions</artifactId>
+			<version>1.4.16</version>
 		</dependency>
 	</dependencies>
 

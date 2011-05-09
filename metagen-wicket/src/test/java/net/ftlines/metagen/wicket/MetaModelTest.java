@@ -12,7 +12,7 @@
 
 package net.ftlines.metagen.wicket;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.apache.wicket.model.IModel;
 import org.junit.Test;
@@ -31,6 +31,63 @@ public class MetaModelTest
 		person.setAddress(address);
 
 		IModel<String> street = MetaModel.of(person).get(PersonMeta.address).get(AddressMeta.street);
+
+		assertEquals(address.getStreet(), street.getObject());
+	}
+
+	@Test
+	public void rootAccess()
+	{
+		Person person = new Person();
+		person.setName("person");
+
+		IModel<Person> model = MetaModel.of(person);
+
+		assertEquals(person, model.getObject());
+	}
+
+	@Test
+	public void nullHanding()
+	{
+		Person person = new Person();
+		person.setName("person");
+		person.setAddress(null);
+
+		IModel<String> street = MetaModel.of(person).get(PersonMeta.address).get(AddressMeta.street);
+
+		assertEquals(null, street.getObject());
+	}
+
+	@Test
+	public void defaultValue_last()
+	{
+		Person person = new Person();
+		person.setName("person");
+		person.setAddress(null);
+
+		IModel<String> street = MetaModel.of(person)
+			.get(PersonMeta.address)
+			.get(AddressMeta.street)
+			.withDefault("street");
+
+		assertEquals("street", street.getObject());
+	}
+
+	@Test
+	public void defaultValue_chained()
+	{
+		Address address = new Address();
+		address.setStreet("street");
+		address.setCity("city");
+
+		Person person = new Person();
+		person.setName("person");
+		person.setAddress(null);
+
+		IModel<String> street = MetaModel.of(person)
+			.get(PersonMeta.address)
+			.withDefault(address)
+			.get(AddressMeta.street);
 
 		assertEquals(address.getStreet(), street.getObject());
 	}

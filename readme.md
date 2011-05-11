@@ -34,6 +34,7 @@ After the above command has been executed normal commands can be used, such as
 
 #### Installation
 Add the following dependencies into your pom.xml
+
 	<dependency>
 		<groupId>net.ftlines.metagen</groupId>
 		<artifactId>metagen-core</artifactId>
@@ -51,6 +52,7 @@ Add the following dependencies into your pom.xml
 	</dependency>
 
 Add the following to your build plugins in your pom.xml
+
     <plugin>
         <groupId>org.bsc.maven</groupId>
         <artifactId>maven-processor-plugin</artifactId>

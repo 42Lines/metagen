@@ -82,9 +82,4 @@ Add the following to your build plugins in your pom.xml
 				</executions>
 			</plugin>
 
-#### TODO
-*	The code is messy, especially with regard to ElementExt and friends. Clean it up.
-*	Need unit tests for current feature set
-*	Meta classes do not properly follow hierarchy (do not extend each other where appropriate)
-*	Meta classes do not support inner classes
 

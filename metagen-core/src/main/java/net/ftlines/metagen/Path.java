@@ -12,6 +12,8 @@
 
 package net.ftlines.metagen;
 
+import java.io.Serializable;
+
 
 /**
  * Builds a compile-time-safe property path expression using metagen's metadata. This object is
@@ -25,7 +27,7 @@ package net.ftlines.metagen;
  *            type of property this path is pointing to, eg evaluation this path against an instance
  *            of {@code R} yields an instance of {@code T}
  */
-public class Path<R, T>
+public class Path<R, T> implements Serializable
 {
 	private static final String SEPARATOR = ".";
 	private final String path;

@@ -35,7 +35,7 @@ public class MetaTextColumn<R> extends AbstractMetaColumn<R, Object>
 	 * @param path
 	 * @param sortProperty
 	 */
-	public MetaTextColumn(IModel<String> displayModel, Path<R, Object> path, String sortProperty)
+	public MetaTextColumn(IModel<String> displayModel, Path<R, ?> path, String sortProperty)
 	{
 		super(displayModel, path, sortProperty);
 	}

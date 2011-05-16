@@ -43,6 +43,7 @@ public class CodeGeneratingVisitor implements Visitor
 	private SourceWriter writer;
 
 	private Stack<List<Property>> properties = new Stack<List<Property>>();
+	private Stack<AbstractBean> beans = new Stack<AbstractBean>();
 
 	public CodeGeneratingVisitor(ProcessingEnvironment env)
 	{
@@ -153,13 +154,36 @@ public class CodeGeneratingVisitor implements Visitor
 		QualifiedName containerName = new QualifiedName(node.getContainer());
 		try
 		{
-			writer.line("%s static final %s<%s,%s> %s = new %s(\"%s\");", visibility.getKeyword(), Constants.SINGULAR,
-				containerName.getQualified(), type, node.getHandle(), Constants.SINGULAR, node.getName());
+			int hasGetter = 0;
+			if (node.getGetter() != null)
+			{
+				if (node.getGetter().getSimpleName().toString().startsWith("get"))
+				{
+					hasGetter = 1;
+				}
+				else
+				{
+					hasGetter = 2;
+				}
+			}
+			String setterName = name(node.getSetter());
+			String getterName = name(node.getGetter());
+			String fieldName = name(node.getField());
+			writer.line("%s static final %s<%s,%s> %s = new %s(\"%s\", %s.class, %s, %s, %s);",
+				visibility.getKeyword(), Constants.SINGULAR, containerName.getQualified(), type, node.getHandle(),
+				Constants.SINGULAR, node.getName(), beans.peek().getName().getQualified(), fieldName, getterName,
+				setterName);
 		}
 		catch (IOException e)
 		{
 			throw new RuntimeException(e);
 		}
+
+	}
+
+	private static String name(Element e)
+	{
+		return e == null ? "null" : "\"" + e.getSimpleName().toString() + "\"";
 
 	}
 
@@ -190,11 +214,13 @@ public class CodeGeneratingVisitor implements Visitor
 		}
 		properties.pop();
 		writer.endClass();
+		beans.pop();
 
 	}
 
 	private void afterEnterBean(AbstractBean node) throws IOException
 	{
+		beans.push(node);
 		properties.push(new ArrayList<Property>());
 	}
 

@@ -20,11 +20,10 @@ package net.ftlines.metagen;
  * @param <R>
  *            type of the attribute
  */
-public class SingularProperty<C, R> extends Property<C>
+public class SingularProperty<C, R> extends Property<C, R>
 {
-
-	public SingularProperty(String name)
+	public SingularProperty(String name, Class<?> container, String fieldName, String getterName, String setterName)
 	{
-		super(name);
+		super(name, container, fieldName, getterName, setterName);
 	}
 }

@@ -53,15 +53,24 @@ public class MetaProcessor implements Processor
 		{
 			for (Element annotated : round.getElementsAnnotatedWith(annotation))
 			{
+				TypeElement element = null;
 				switch (annotated.getKind())
 				{
 					case CLASS :
 					case ENUM :
-						beans.add((TypeElement)annotated);
+						element = (TypeElement)annotated;
+						if (accept(element))
+						{
+							beans.add(element);
+						}
 						break;
 					case FIELD :
 					case METHOD :
-						beans.add((TypeElement)annotated.getEnclosingElement());
+						element = (TypeElement)annotated.getEnclosingElement();
+						if (accept(element))
+						{
+							beans.add(element);
+						}
 						break;
 				}
 			}
@@ -78,6 +87,11 @@ public class MetaProcessor implements Processor
 		// return false so we do not claim annotaitons like @Entity and
 		// @MappedSuperClass
 		return false;
+	}
+
+	protected boolean accept(TypeElement element)
+	{
+		return true;
 	}
 
 	@Override

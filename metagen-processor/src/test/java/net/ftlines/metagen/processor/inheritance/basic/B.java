@@ -10,12 +10,9 @@
  * the License.
  */
 
-package net.ftlines.metagen.processor.inheritance;
+package net.ftlines.metagen.processor.inheritance.basic;
 
-import net.ftlines.metagen.annot.Property;
-
-public class E extends C<Long>
+public class B<T extends Number> extends A<T>
 {
-	@Property
-	int e;
+
 }

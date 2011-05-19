@@ -10,11 +10,11 @@
  * the License.
  */
 
-package net.ftlines.metagen.processor.inheritance;
+package net.ftlines.metagen.processor.inheritance.closure;
 
 import net.ftlines.metagen.annot.Property;
 
-public class A<T extends Number>
+public class A
 {
 	@Property
 	public int a;

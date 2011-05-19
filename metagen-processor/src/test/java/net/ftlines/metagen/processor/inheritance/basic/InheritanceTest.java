@@ -10,7 +10,7 @@
  * the License.
  */
 
-package net.ftlines.metagen.processor.inheritance;
+package net.ftlines.metagen.processor.inheritance.basic;
 
 import static net.ftlines.metagen.processor.MetaAsserts.assertMetaClassGenerated;
 import static net.ftlines.metagen.processor.MetaAsserts.assertMetaClassInhertance;

@@ -13,15 +13,26 @@
 package net.ftlines.metagen.processor.tree;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.lang.model.element.TypeElement;
 
+import net.ftlines.metagen.processor.model.ElementResolver;
 import net.ftlines.metagen.processor.util.Optional;
 
 public class BeanSpace implements Node
 {
 	private final Map<TypeElement, TopLevelBean> beans = new HashMap<TypeElement, TopLevelBean>();
+
+	private final Set<String> ignoredPackages = new HashSet<String>();
+
+	public BeanSpace()
+	{
+		ignoredPackages.add("java.");
+		ignoredPackages.add("javax.");
+	}
 
 	public void add(TypeElement element)
 	{
@@ -39,24 +50,38 @@ public class BeanSpace implements Node
 		{
 			case TOP_LEVEL :
 				TopLevelBean node = beans.get(element);
-				if (node == null && add)
+				if (node == null && add && valid(element))
 				{
 					node = new TopLevelBean(element);
 					beans.put(element, node);
+					addSuperClass(element);
 				}
 				return node;
 			case MEMBER :
 				AbstractBean parent = recursiveGetOrAdd((TypeElement)element.getEnclosingElement(), add);
 				NestedBean nested = parent.getNestedBeans().get(element);
-				if (nested == null && add)
+				if (nested == null && add && valid(element))
 				{
 					nested = new NestedBean(element);
 					parent.getNestedBeans().put(element, nested);
+					addSuperClass(element);
 				}
 				return nested;
 			default :
 				throw new IllegalStateException("Tried to create bean node for element: " + element +
 					" with unsupported nesting kind: " + element.getNestingKind());
+		}
+	}
+
+	private void addSuperClass(TypeElement element)
+	{
+		if (element.getSuperclass() != null)
+		{
+			Optional<TypeElement> superclass = element.getSuperclass().accept(new ElementResolver(), null);
+			if (superclass.isSet())
+			{
+				recursiveGetOrAdd(superclass.get(), true);
+			}
 		}
 	}
 
@@ -74,6 +99,19 @@ public class BeanSpace implements Node
 	public void remove(TypeElement element)
 	{
 		beans.remove(element);
+	}
+
+	private boolean valid(TypeElement element)
+	{
+		final String fqn = element.getQualifiedName().toString();
+		for (String ignoredPackage : ignoredPackages)
+		{
+			if (fqn.startsWith(ignoredPackage))
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 
 }

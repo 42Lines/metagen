@@ -141,6 +141,37 @@ public class Property<C, R>
 		}
 	}
 
+	public Class<?> getType()
+	{
+		if (getter != null)
+		{
+			return getter.getReturnType();
+		}
+		else if (setter != null)
+		{
+			return setter.getParameterTypes()[0];
+		}
+		else
+		{
+			return field.getType();
+		}
+	}
+
+	public Class<?> getDeclaringClass()
+	{
+		if (getter != null)
+		{
+			return getter.getDeclaringClass();
+		}
+		else if (setter != null)
+		{
+			return setter.getDeclaringClass();
+		}
+		else
+		{
+			return field.getDeclaringClass();
+		}
+	}
 
 	private static int visibility(Member member)
 	{

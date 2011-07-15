@@ -16,7 +16,7 @@ import net.ftlines.metagen.processor.framework.Compilation;
 import net.ftlines.metagen.processor.framework.CompilationPackageTest;
 import net.ftlines.metagen.processor.framework.CompilationResult;
 
-public class MetaPackageTest extends CompilationPackageTest<MetaCompilationResult>
+public abstract class MetaPackageTest extends CompilationPackageTest<MetaCompilationResult>
 {
 
 	@Override

@@ -10,15 +10,15 @@
  * the License.
  */
 
-package net.ftlines.metagen.processor.unclean.privclazz;
+package net.ftlines.metagen.processor.unclean.reserved.success;
 
 import net.ftlines.metagen.annot.Bean;
 
-public class TestBean
+@Bean
+public class SimpleBean
 {
-	@Bean
-	private static class One
+	public boolean isFinal()
 	{
-		int p;
+		return true;
 	}
 }

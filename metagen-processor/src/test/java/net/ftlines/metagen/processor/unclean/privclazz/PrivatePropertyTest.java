@@ -26,7 +26,7 @@ public class PrivatePropertyTest extends MetaPackageTest
 	@Test
 	public void test()
 	{
-		assertDiagnostic(result, Diagnostic.Kind.ERROR, "'p'", TestBean.class.getName() + ".One", "private",
+		assertDiagnostic(result, Diagnostic.Kind.ERROR, "'p'", SimpleBean.class.getName() + ".One", "private",
 			"invisible");
 	}
 }

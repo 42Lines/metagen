@@ -15,7 +15,7 @@ package net.ftlines.metagen.processor.property.visibility;
 import net.ftlines.metagen.annot.Bean;
 
 @Bean
-public class TestBean
+public class SimpleBean
 {
 	public int publicProperty;
 	protected int protectedProperty;

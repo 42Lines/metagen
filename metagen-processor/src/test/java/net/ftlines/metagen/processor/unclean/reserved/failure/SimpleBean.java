@@ -10,14 +10,19 @@
  * the License.
  */
 
-package net.ftlines.metagen.processor.unclean.reserved.success;
+package net.ftlines.metagen.processor.unclean.reserved.failure;
 
 import net.ftlines.metagen.annot.Bean;
 
 @Bean
-public class TestBean
+public class SimpleBean
 {
-	public boolean isFinal()
+	public boolean isVolatile()
+	{
+		return true;
+	}
+
+	public boolean isVolatile_()
 	{
 		return true;
 	}

@@ -32,9 +32,9 @@ public class ReservedKeywordRenameSuccessTest extends MetaPackageTest
 	{
 		// final property should be renamed to final_ with a warning
 
-		assertDiagnostic(result, Diagnostic.Kind.WARNING, "'final'", "'final_'", "renamed", TestBean.class.getName());
+		assertDiagnostic(result, Diagnostic.Kind.WARNING, "'final'", "'final_'", "renamed", SimpleBean.class.getName());
 
-		assertMetaPropertyGenerated(result, TestBean.class, "final_");
+		assertMetaPropertyGenerated(result, SimpleBean.class, "final_");
 	}
 
 }

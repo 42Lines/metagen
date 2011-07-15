@@ -29,7 +29,7 @@ public class ReservedKeywordRenameFailedTest extends MetaPackageTest
 		// volatile property cannot be renamed to volatile_ because it is also
 		// taken
 
-		assertDiagnostic(result, Diagnostic.Kind.ERROR, "'volatile'", "'volatile_'", TestBean.class.getName());
+		assertDiagnostic(result, Diagnostic.Kind.ERROR, "'volatile'", "'volatile_'", SimpleBean.class.getName());
 	}
 
 }

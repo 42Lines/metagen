@@ -10,12 +10,15 @@
  * the License.
  */
 
-package net.ftlines.metagen.processor.unclean.privprop;
+package net.ftlines.metagen.processor.unclean.privclazz;
 
-import net.ftlines.metagen.annot.Property;
+import net.ftlines.metagen.annot.Bean;
 
-public class TestBean
+public class SimpleBean
 {
-	@Property
-	private int p;
+	@Bean
+	private static class One
+	{
+		int p;
+	}
 }

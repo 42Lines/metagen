@@ -31,13 +31,13 @@ public class VisibilityTest extends MetaPackageTest
 	{
 		assertTrue(result.isClean());
 
-		Field field = result.getMetaField(TestBean.class, "publicProperty");
+		Field field = result.getMetaField(SimpleBean.class, "publicProperty");
 		assertTrue((field.getModifiers() & Modifier.PUBLIC) > 0);
 
-		field = result.getMetaField(TestBean.class, "protectedProperty");
+		field = result.getMetaField(SimpleBean.class, "protectedProperty");
 		assertTrue((field.getModifiers() & Modifier.PROTECTED) > 0);
 
-		field = result.getMetaField(TestBean.class, "defaultProperty");
+		field = result.getMetaField(SimpleBean.class, "defaultProperty");
 		assertTrue((field.getModifiers() & Modifier.PUBLIC) == 0);
 		assertTrue((field.getModifiers() & Modifier.PROTECTED) == 0);
 		assertTrue((field.getModifiers() & Modifier.PRIVATE) == 0);

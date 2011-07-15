@@ -25,6 +25,7 @@ import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
+import javax.tools.Diagnostic.Kind;
 
 import net.ftlines.metagen.annot.Meta;
 import net.ftlines.metagen.processor.resolver.PropertyResolvers;
@@ -44,49 +45,58 @@ public class MetaProcessor implements Processor
 	public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment round)
 	{
 
-		BeanSpace beans = new BeanSpace();
+		environment.getMessager().printMessage(Kind.NOTE, "MetaGen");
 
-		// TODO this should prob delegate to beanspace.add(element);
-		// TODO beanspace should check if element is supported and error
-		// otherwise
-		for (TypeElement annotation : annotations)
+		BeanSpace beans = new BeanSpace();
+		try
 		{
-			for (Element annotated : round.getElementsAnnotatedWith(annotation))
+			// TODO this should prob delegate to beanspace.add(element);
+			// TODO beanspace should check if element is supported and error
+			// otherwise
+			for (TypeElement annotation : annotations)
 			{
-				TypeElement element = null;
-				switch (annotated.getKind())
+				for (Element annotated : round.getElementsAnnotatedWith(annotation))
 				{
-					case CLASS :
-					case ENUM :
-						element = (TypeElement)annotated;
-						if (accept(element))
-						{
-							beans.add(element);
-						}
-						break;
-					case FIELD :
-					case METHOD :
-						element = (TypeElement)annotated.getEnclosingElement();
-						if (accept(element))
-						{
-							beans.add(element);
-						}
-						break;
+					TypeElement element = null;
+					switch (annotated.getKind())
+					{
+						case CLASS :
+						case ENUM :
+							element = (TypeElement)annotated;
+							if (accept(element))
+							{
+								beans.add(element);
+							}
+							break;
+						case FIELD :
+						case METHOD :
+							element = (TypeElement)annotated.getEnclosingElement();
+							if (accept(element))
+							{
+								beans.add(element);
+							}
+							break;
+					}
 				}
 			}
+
+			beans.accept(new PropertyResolvingVisitor(resolvers));
+			beans.accept(new TrimmingVisitor());
+			// beans.accept(new PrintVisitor());
+			beans.accept(new ValidatingVisitor(environment));
+			beans.accept(new TrimmingVisitor());
+			beans.accept(new SuperclassResolvingVisitor());
+			beans.accept(new CodeGeneratingVisitor(environment));
+
+			// return false so we do not claim annotaitons like @Entity and
+			// @MappedSuperClass
+			return false;
 		}
-
-		beans.accept(new PropertyResolvingVisitor(resolvers));
-		beans.accept(new TrimmingVisitor());
-		// beans.accept(new PrintVisitor());
-		beans.accept(new ValidatingVisitor(environment));
-		beans.accept(new TrimmingVisitor());
-		beans.accept(new SuperclassResolvingVisitor());
-		beans.accept(new CodeGeneratingVisitor(environment));
-
-		// return false so we do not claim annotaitons like @Entity and
-		// @MappedSuperClass
-		return false;
+		catch (RuntimeException e)
+		{
+			environment.getMessager().printMessage(Kind.ERROR, e.getMessage());
+			throw e;
+		}
 	}
 
 	protected boolean accept(TypeElement element)

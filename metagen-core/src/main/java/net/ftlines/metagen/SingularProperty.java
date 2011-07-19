@@ -12,6 +12,8 @@
 
 package net.ftlines.metagen;
 
+import java.io.ObjectStreamException;
+
 /**
  * @author igor
  * 
@@ -25,5 +27,34 @@ public class SingularProperty<C, R> extends Property<C, R>
 	public SingularProperty(String name, Class<?> container, String fieldName, String getterName, String setterName)
 	{
 		super(name, container, fieldName, getterName, setterName);
+	}
+
+
+	Object writeReplace() throws ObjectStreamException
+	{
+		return new SerializedSingularProperty(this);
+	}
+
+	static class SerializedSingularProperty extends SerializedProperty
+	{
+
+		public SerializedSingularProperty(SingularProperty<?,?> p)
+		{
+			super(p);
+		}
+
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		Object readResolve() throws ObjectStreamException
+		{
+			try
+			{
+				return new SingularProperty(n, Class.forName(cn), fn, gn, sn);
+			}
+			catch (ClassNotFoundException e)
+			{
+				throw new RuntimeException("Could not deserialize SingularProperty", e);
+			}
+		}
+
 	}
 }

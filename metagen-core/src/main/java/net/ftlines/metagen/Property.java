@@ -12,6 +12,7 @@
 
 package net.ftlines.metagen;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
@@ -26,7 +27,7 @@ import java.lang.reflect.Modifier;
  * @param <R>
  *            type of the attribute
  */
-public class Property<C, R>
+public abstract class Property<C, R> implements Serializable
 {
 	private final String name;
 	private Field field = null;
@@ -201,6 +202,32 @@ public class Property<C, R>
 	private static String accessorName(String prefix, String field)
 	{
 		return prefix + field.substring(0, 1).toUpperCase() + field.substring(1);
+	}
+
+	static class SerializedProperty implements Serializable
+	{
+		String n, cn, fn, gn, sn;
+
+		public SerializedProperty(Property<?,?> p)
+		{
+			n = p.getName();
+			if (p.getField() != null)
+			{
+				cn = p.getField().getDeclaringClass().getName();
+				fn = p.getField().getName();
+			}
+			if (p.getGetter() != null)
+			{
+				cn = cn != null ? cn : p.getGetter().getDeclaringClass().getName();
+				gn = p.getGetter().getName();
+			}
+			if (p.getSetter() != null)
+			{
+				cn = cn != null ? cn : p.getSetter().getDeclaringClass().getName();
+				sn = p.getSetter().getName();
+			}
+		}
+
 	}
 
 }

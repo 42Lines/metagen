@@ -92,7 +92,7 @@
 				<artifactId>maven-release-plugin</artifactId>
 				<configuration>
 					<goals>deploy</goals>
-					<autoversionsubmodules>true</autoversionsubmodules>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
 				</configuration>
 			</plugin>
 		</plugins>

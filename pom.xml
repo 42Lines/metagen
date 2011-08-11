@@ -87,6 +87,14 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupid>org.apache.maven.plugins</groupid>
+				<artifactid>maven-release-plugin</artifactid>
+				<configuration>
+					<goals>deploy</goals>
+					<autoversionsubmodules>true</autoversionsubmodules>
+				</configuration>
+			</plugin>
 		</plugins>
 		<pluginManagement>
 			<plugins>

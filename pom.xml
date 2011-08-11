@@ -88,8 +88,8 @@
 				</executions>
 			</plugin>
 			<plugin>
-				<groupid>org.apache.maven.plugins</groupid>
-				<artifactid>maven-release-plugin</artifactid>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
 				<configuration>
 					<goals>deploy</goals>
 					<autoversionsubmodules>true</autoversionsubmodules>

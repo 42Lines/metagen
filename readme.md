@@ -26,12 +26,6 @@ The processor supports the following triggers that will generate meta classes:
 
 The annotation processor is still in early stages of development
 
-#### Building
-Because this is an annotation processor there are some hoops to jump through compared to other projects. Namely, the project has to be installed like this:
-    mvn install -Dmaven.test.skip=true
-After the above command has been executed normal commands can be used, such as
-    mvn eclipse:eclipse
-
 #### Installation
 Add the following dependencies into your pom.xml
 
@@ -51,6 +45,8 @@ Add the following dependencies into your pom.xml
 		<version>${metagen.version}</version>
 	</dependency>
 
+See here for available versions: http://search.maven.org/#search%7Cga%7C1%7Cnet.ftlines.metagen
+	
 Add the following to your build plugins in your pom.xml
 
     <plugin>
@@ -89,4 +85,9 @@ Add the following to your build plugins in your pom.xml
         </executions>
     </plugin>
 
+#### Building MetaGen from source
+Because this is an annotation processor there are some hoops to jump through compared to other projects. Namely, the project has to be installed like this:
+    mvn install -Dmaven.test.skip=true
+After the above command has been executed normal commands can be used, such as
+    mvn eclipse:eclipse
 

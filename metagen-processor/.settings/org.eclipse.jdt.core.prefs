@@ -1,4 +1,4 @@
-#Wed Jun 22 11:38:16 PDT 2011
+#Tue Sep 20 13:20:45 PDT 2011
 eclipse.preferences.version=1
 encoding//src/main/java=UTF-8
 encoding//src/main/resources=UTF-8
@@ -6,6 +6,7 @@ encoding//src/test/java=UTF-8
 encoding//src/test/resources=UTF-8
 org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.6
 org.eclipse.jdt.core.compiler.compliance=1.6
+org.eclipse.jdt.core.compiler.problem.forbiddenReference=warning
 org.eclipse.jdt.core.compiler.source=1.6
 org.eclipse.jdt.core.formatter.align_type_members_on_columns=false
 org.eclipse.jdt.core.formatter.alignment_for_arguments_in_allocation_expression=16

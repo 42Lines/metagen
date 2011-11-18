@@ -75,7 +75,26 @@ Add the following to your build plugins in your pom.xml
             </execution>
         </executions>
     </plugin>
-
+    <!-- make sure target/metamodel is on the source path -->
+    <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>1.3</version>
+        <executions>
+            <execution>
+                <id>add-source</id>
+                <phase>generate-sources</phase>
+                <goals>
+                    <goal>add-source</goal>
+                </goals>
+                <configuration>
+                    <sources>
+                        <source>target/metamodel</source>
+                    </sources>
+                </configuration>
+            </execution>
+        </executions>
+    </plugin>
 You may also need to add a plugin repository to get the 2.0.5 version of the maven processor:
 
     <pluginRepository>

@@ -49,6 +49,15 @@ See here for available versions: http://search.maven.org/#search%7Cga%7C1%7Cnet.
 	
 Add the following to your build plugins in your pom.xml
 
+    <!-- disable default annotation processing by javac -->
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+            <compilerArgument>-proc:none</compilerArgument>
+       </configuration>
+    </plugin>
+    <!-- use maven-processor to run apt processors -->
     <plugin>
         <groupId>org.bsc.maven</groupId>
         <artifactId>maven-processor-plugin</artifactId>
@@ -62,25 +71,6 @@ Add the following to your build plugins in your pom.xml
                 <phase>generate-sources</phase>
                 <configuration>
                     <outputDirectory>target/metamodel</outputDirectory>
-                </configuration>
-            </execution>
-        </executions>
-    </plugin>
-    <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <version>1.3</version>
-        <executions>
-            <execution>
-                <id>add-source</id>
-                <phase>generate-sources</phase>
-                <goals>
-                    <goal>add-source</goal>
-                </goals>
-                <configuration>
-                    <sources>
-                        <source>target/metamodel</source>
-                    </sources>
                 </configuration>
             </execution>
         </executions>

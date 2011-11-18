@@ -52,6 +52,7 @@ Add the following to your build plugins in your pom.xml
     <plugin>
         <groupId>org.bsc.maven</groupId>
         <artifactId>maven-processor-plugin</artifactId>
+        <version>2.0.5</version>
         <executions>
             <execution>
                 <id>process</id>
@@ -84,6 +85,13 @@ Add the following to your build plugins in your pom.xml
             </execution>
         </executions>
     </plugin>
+
+You may also need to add a plugin repository to get the 2.0.5 version of the maven processor:
+
+    <pluginRepository>
+        <id>sonatype-repo</id>
+        <url>https://oss.sonatype.org/content/repositories/releases</url>
+    </pluginRepository>
 
 #### Building MetaGen from source
 Because this is an annotation processor there are some hoops to jump through compared to other projects. Namely, the project has to be installed like this:

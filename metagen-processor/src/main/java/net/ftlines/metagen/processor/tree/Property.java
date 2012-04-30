@@ -12,6 +12,9 @@
 
 package net.ftlines.metagen.processor.tree;
 
+import java.util.Collection;
+import java.util.HashSet;
+
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
@@ -21,6 +24,8 @@ import net.ftlines.metagen.processor.model.Visibility;
 public class Property implements Node
 {
 	private final String name;
+	
+	public static final Collection<Class<?>> SUPPORTED_ANNOTATIONS = new HashSet<Class<?>>() {{add(Deprecated.class);}};
 
 	/**
 	 * name of the field that will hold the property definition in the meta class
@@ -30,6 +35,7 @@ public class Property implements Node
 	private Element field;
 	private Element getter;
 	private Element setter;
+	private Collection<Class<?>> additionalAnnotations = new HashSet<Class<?>>();
 
 	public Property(String name)
 	{
@@ -118,4 +124,13 @@ public class Property implements Node
 		this.handle = handle;
 	}
 
+	public void addAnnotation(Class<?> annotation)
+	{
+		additionalAnnotations.add(annotation);
+	}
+	
+	public Collection<Class<?>> getAdditionalAnnotations()
+	{
+		return additionalAnnotations;
+	}
 }

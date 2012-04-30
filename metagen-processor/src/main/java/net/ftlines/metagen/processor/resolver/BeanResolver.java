@@ -71,6 +71,14 @@ public class BeanResolver implements PropertyResolver
 				{
 					property.setField(enclosed);
 				}
+				
+				for (Class<?> annotation : Property.SUPPORTED_ANNOTATIONS)
+				{
+					if (ext.hasAnnotation(annotation.getName()))
+					{
+						property.addAnnotation(annotation);
+					}
+				}
 			}
 		}
 	}

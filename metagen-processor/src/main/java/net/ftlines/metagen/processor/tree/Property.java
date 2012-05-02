@@ -30,6 +30,7 @@ public class Property implements Node
 	private Element field;
 	private Element getter;
 	private Element setter;
+	private boolean deprecated = false;
 
 	public Property(String name)
 	{
@@ -118,4 +119,13 @@ public class Property implements Node
 		this.handle = handle;
 	}
 
+	public boolean isDeprecated()
+	{
+		return deprecated;
+	}
+
+	public void setDeprecated(boolean deprecated)
+	{
+		this.deprecated = deprecated;
+	}
 }

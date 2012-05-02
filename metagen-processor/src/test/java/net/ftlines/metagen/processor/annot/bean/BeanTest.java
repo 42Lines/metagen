@@ -14,6 +14,9 @@ package net.ftlines.metagen.processor.annot.bean;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+
+import java.lang.reflect.Field;
+
 import net.ftlines.metagen.Property;
 import net.ftlines.metagen.processor.MetaPackageTest;
 
@@ -31,5 +34,31 @@ public class BeanTest extends MetaPackageTest
 		assertNotNull(property1);
 		Property property2 = result.getMetaProperty(Bean.class, "property2");
 		assertNotNull(property2);
+	}
+	
+	@Test
+	public void testBeanWithGetterOnly() throws Exception
+	{
+		assertTrue(result.isClean());
+		
+		Property property1 = result.getMetaProperty(BeanWithGetterOnly.class, "property1");
+		assertNotNull(property1);
+		assertTrue(String.class.equals(property1.getType()));
+	}
+	
+	@Test
+	public void testBeanWithDeprecatedProperties() throws Exception
+	{
+		assertTrue(result.isClean());
+		
+		Class<?> clazz = result.getMetaClass(BeanWithDeprecatedProperties.class);
+		
+		Field property1 = clazz.getDeclaredField("property1");
+		assertNotNull(property1);
+		assertNotNull(property1.getAnnotation(Deprecated.class));
+
+		Field property2 = clazz.getDeclaredField("property2");
+		assertNotNull(property2);
+		assertNotNull(property2.getAnnotation(Deprecated.class));
 	}
 }

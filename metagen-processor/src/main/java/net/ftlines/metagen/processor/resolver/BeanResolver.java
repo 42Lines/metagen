@@ -71,6 +71,11 @@ public class BeanResolver implements PropertyResolver
 				{
 					property.setField(enclosed);
 				}
+				
+				if (ext.hasAnnotation(Deprecated.class.getName()))
+				{
+					property.setDeprecated(true);
+				}
 			}
 		}
 	}

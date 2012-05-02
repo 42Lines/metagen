@@ -169,6 +169,10 @@ public class CodeGeneratingVisitor implements Visitor
 			String setterName = name(node.getSetter());
 			String getterName = name(node.getGetter());
 			String fieldName = name(node.getField());
+			if (node.isDeprecated())
+			{
+				writer.line("@Deprecated");
+			}
 			writer.line("%s static final %s<%s,%s> %s = new %s(\"%s\", %s.class, %s, %s, %s);",
 				visibility.getKeyword(), Constants.SINGULAR, containerName.getQualified(), type, node.getHandle(),
 				Constants.SINGULAR, node.getName(), beans.peek().getName().getQualified(), fieldName, getterName,

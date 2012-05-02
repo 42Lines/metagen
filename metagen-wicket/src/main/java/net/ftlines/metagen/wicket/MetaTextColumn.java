@@ -46,7 +46,7 @@ public class MetaTextColumn<R> extends AbstractMetaColumn<R, Object>
 	 * @param displayModel
 	 * @param path
 	 */
-	public MetaTextColumn(IModel<String> displayModel, Path<R, Object> path)
+	public MetaTextColumn(IModel<String> displayModel, Path<R, ?> path)
 	{
 		super(displayModel, path);
 	}

@@ -5,7 +5,7 @@
 	<parent>
 	<groupId>net.ftlines.metagen</groupId>
 	<artifactId>metagen-parent</artifactId>
-	<version>1.3-SNAPSHOT</version>
+	<version>1.3</version>
 	</parent>
 	<groupId>net.ftlines.metagen</groupId>
 	<artifactId>metagen-core</artifactId>

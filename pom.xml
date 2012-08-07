@@ -7,7 +7,7 @@
 	</parent>
 	<groupId>net.ftlines.metagen</groupId>
 	<artifactId>metagen-parent</artifactId>
-	<version>1.3-SNAPSHOT</version>
+	<version>1.3</version>
 	<packaging>pom</packaging>
 	<name>MetaGen</name>
 	<description>MetaGen is an annotation processor that generates metadata about classes.</description>

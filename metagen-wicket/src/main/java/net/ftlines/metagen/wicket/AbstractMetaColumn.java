@@ -18,6 +18,7 @@ import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulato
 import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 /**
@@ -29,7 +30,7 @@ import org.apache.wicket.model.PropertyModel;
  * @param <R>
  * @param <T>
  */
-public abstract class AbstractMetaColumn<R, T> extends AbstractColumn<R>
+public abstract class AbstractMetaColumn<R, T, S> extends AbstractColumn<R, S>
 {
 	private final Path<R, ? extends T> path;
 
@@ -40,7 +41,7 @@ public abstract class AbstractMetaColumn<R, T> extends AbstractColumn<R>
 	 * @param path
 	 * @param sortProperty
 	 */
-	public AbstractMetaColumn(IModel<String> displayModel, Path<R, ? extends T> path, String sortProperty)
+	public AbstractMetaColumn(IModel<String> displayModel, Path<R, ? extends T> path, S sortProperty)
 	{
 		super(displayModel, sortProperty);
 		this.path = path;
@@ -58,6 +59,28 @@ public abstract class AbstractMetaColumn<R, T> extends AbstractColumn<R>
 		this.path = path;
 	}
 
+	/**
+	 * Constructor
+	 * 
+	 * @param header
+	 * @param path
+	 * @param sortProperty
+	 */
+	public AbstractMetaColumn(String header, Path<R, ? extends T> path, S sortProperty)
+	{
+		this(Model.of(header), path, sortProperty);
+	}
+
+	/**
+	 * Constructor
+	 * 
+	 * @param displayModel
+	 * @param path
+	 */
+	public AbstractMetaColumn(String header, Path<R, ? extends T> path)
+	{
+		this(Model.of(header), path);
+	}
 	@Override
 	public final void populateItem(Item<ICellPopulator<R>> cellItem, String componentId, IModel<R> rowModel)
 	{

@@ -1,9 +1,9 @@
 /**
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- *
+ * 
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -26,29 +26,27 @@ import org.apache.wicket.model.IModel;
  * 
  * @param <R>
  */
-public class MetaTextColumn<R> extends AbstractMetaColumn<R, Object>
+public class MetaTextColumn<R, S> extends AbstractMetaColumn<R, Object, S>
 {
-	/**
-	 * Constructor
-	 * 
-	 * @param displayModel
-	 * @param path
-	 * @param sortProperty
-	 */
-	public MetaTextColumn(IModel<String> displayModel, Path<R, ?> path, String sortProperty)
+
+	public MetaTextColumn(IModel<String> displayModel, Path<R, ? extends Object> path, S sortProperty)
 	{
 		super(displayModel, path, sortProperty);
 	}
 
-	/**
-	 * Constructor
-	 * 
-	 * @param displayModel
-	 * @param path
-	 */
-	public MetaTextColumn(IModel<String> displayModel, Path<R, ?> path)
+	public MetaTextColumn(IModel<String> displayModel, Path<R, ? extends Object> path)
 	{
 		super(displayModel, path);
+	}
+
+	public MetaTextColumn(String header, Path<R, ? extends Object> path, S sortProperty)
+	{
+		super(header, path, sortProperty);
+	}
+
+	public MetaTextColumn(String header, Path<R, ? extends Object> path)
+	{
+		super(header, path);
 	}
 
 	@Override
@@ -67,9 +65,9 @@ public class MetaTextColumn<R> extends AbstractMetaColumn<R, Object>
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static <R> MetaTextColumn<R> of(IModel<String> label, Path<R, ?> path, String sortData)
+	public static <R,S> MetaTextColumn<R,S> of(IModel<String> label, Path<R, ?> path, S sortData)
 	{
-		return new MetaTextColumn<R>(label, (Path<R, Object>)path, sortData);
+		return new MetaTextColumn<R,S>(label, (Path<R, Object>)path, sortData);
 	}
 
 	/**
@@ -81,8 +79,37 @@ public class MetaTextColumn<R> extends AbstractMetaColumn<R, Object>
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static <R> MetaTextColumn<R> of(IModel<String> label, Path<R, ?> path)
+	public static <R,S> MetaTextColumn<R,S> of(IModel<String> label, Path<R, ?> path)
 	{
-		return new MetaTextColumn<R>(label, (Path<R, Object>)path);
+		return new MetaTextColumn<R,S>(label, (Path<R, Object>)path);
 	}
+
+	/**
+	 * Factory method
+	 * 
+	 * @param label
+	 * @param path
+	 * @param sortData
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public static <R,S> MetaTextColumn<R,S> of(String label, Path<R, ?> path, S sortData)
+	{
+		return new MetaTextColumn<R,S>(label, (Path<R, Object>)path, sortData);
+	}
+
+	/**
+	 * Factory method
+	 * 
+	 * @param label
+	 * @param path
+	 * @param sortData
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public static <R,S> MetaTextColumn<R,S> of(String label, Path<R, ?> path)
+	{
+		return new MetaTextColumn<R,S>(label, (Path<R, Object>)path);
+	}
+
 }

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         id="metagenBuilder"
+         name="Metagen Builder"
+         point="org.eclipse.core.resources.builders">
+      <builder
+            hasNature="true"
+            isConfigurable="false">
+         <run
+               class="org.ftlines.metagen.eclipse.Builder">
+         </run>
+      </builder>
+   </extension>
+   <extension
+         id="metagenNature"
+         name="Metagen Nature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="org.ftlines.metagen.eclipse.Nature">
+         </run>
+      </runtime>
+      <builder
+            id="metagen-eclipse.metagenBuilder">
+      </builder>
+   </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            adaptable="true"
+            objectClass="org.eclipse.core.resources.IProject"
+            nameFilter="*"
+            id="metagen-eclipse.contribution1">
+         <visibility>
+             <not>
+                 <objectState
+                       name="nature"
+                       value="metagen-eclipse.metagenNature">
+                 </objectState>
+             </not>
+         </visibility>
+         <action
+               label="Add Metagen Nature"
+               class="org.ftlines.metagen.eclipse.ToggleNatureAction"
+               menubarPath="additions"
+               enablesFor="+"
+               id="metagen-eclipse.addRemoveNatureAction">
+         </action>
+      </objectContribution>
+      <objectContribution
+            adaptable="true"
+            objectClass="org.eclipse.core.resources.IProject"
+            nameFilter="*"
+            id="metagen-eclipse.contribution1">
+            <visibility>
+                 <objectState
+                       name="nature"
+                       value="metagen-eclipse.metagenNature">
+                 </objectState>
+         </visibility>
+         <action
+               label="Remove Metagen Nature"
+               class="org.ftlines.metagen.eclipse.ToggleNatureAction"
+               menubarPath="additions"
+               enablesFor="+"
+               id="metagen-eclipse.addRemoveNatureAction">
+         </action>
+      </objectContribution>
+   </extension>
+   <extension
+         id="metagenProblem"
+         name="Metagen Problem"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.core.resources.problemmarker">
+      </super>
+      <persistent
+            value="true">
+      </persistent>
+   </extension>
+   <extension
+         point="org.eclipse.ui.ide.projectNatureImages">
+      <image
+            icon="icons/metagen-nature.png"
+            id="metagen-eclipse.nature.image"
+            natureId="metagen-eclipse.metagenNature">
+      </image>
+   </extension>
+
+</plugin>

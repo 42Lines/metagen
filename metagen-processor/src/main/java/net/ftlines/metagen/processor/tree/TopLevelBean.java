@@ -25,10 +25,12 @@ public class TopLevelBean extends AbstractBean
 	@Override
 	public void accept(Visitor visitor)
 	{
-		visitor.enterTopLevelBean(this);
-		visitProperties(visitor);
-		visitNestedBeans(visitor);
-		visitor.exitTopLevel(this);
+		if (visitor.enterTopLevelBean(this))
+		{
+			visitProperties(visitor);
+			visitNestedBeans(visitor);
+			visitor.exitTopLevel(this);
+		}
 	}
 
 }

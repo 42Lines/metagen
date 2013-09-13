@@ -49,10 +49,11 @@ public class PrintVisitor implements Visitor
 	}
 
 	@Override
-	public void enterTopLevelBean(TopLevelBean node)
+	public boolean enterTopLevelBean(TopLevelBean node)
 	{
 		line("Top level node: %s", node.getElement().getQualifiedName());
 		indent++;
+		return true;
 	}
 
 	@Override

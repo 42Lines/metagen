@@ -35,17 +35,24 @@ import net.ftlines.metagen.processor.tree.visitor.PropertyResolvingVisitor;
 import net.ftlines.metagen.processor.tree.visitor.SuperclassResolvingVisitor;
 import net.ftlines.metagen.processor.tree.visitor.TrimmingVisitor;
 import net.ftlines.metagen.processor.tree.visitor.ValidatingVisitor;
+import net.ftlines.metagen.processor.util.Logger;
 
 public class MetaProcessor implements Processor
 {
 	private ProcessingEnvironment environment;
 	private PropertyResolvers resolvers;
 
+	private Logger logger = new Logger(getClass());
+
 	@Override
 	public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment round)
 	{
 
 		environment.getMessager().printMessage(Kind.NOTE, "MetaGen");
+
+		logger.log("");
+		logger.log("STARTED ROUND");
+		logger.log("");
 
 		BeanSpace beans = new BeanSpace();
 		try
@@ -55,6 +62,8 @@ public class MetaProcessor implements Processor
 			// otherwise
 			for (TypeElement annotation : annotations)
 			{
+				logger.log("Processing annotation: %s", annotation.getQualifiedName());
+
 				for (Element annotated : round.getElementsAnnotatedWith(annotation))
 				{
 					TypeElement element = null;
@@ -63,6 +72,9 @@ public class MetaProcessor implements Processor
 						case CLASS :
 						case ENUM :
 							element = (TypeElement)annotated;
+
+							logger.log("Processing annotated class/enum: %s", element.getQualifiedName());
+
 							if (accept(element))
 							{
 								beans.add(element);
@@ -71,11 +83,18 @@ public class MetaProcessor implements Processor
 						case FIELD :
 						case METHOD :
 							element = (TypeElement)annotated.getEnclosingElement();
+
+							logger.log("Processing class/enum: %s derived from annotated element: %s",
+								element.getQualifiedName(), annotated.getSimpleName());
+
 							if (accept(element))
 							{
 								beans.add(element);
 							}
 							break;
+						default :
+							logger.log("Ignored element: %s of kind: %s", annotated.getSimpleName(),
+								annotated.getKind());
 					}
 				}
 			}
@@ -84,16 +103,21 @@ public class MetaProcessor implements Processor
 			beans.accept(new TrimmingVisitor());
 			// beans.accept(new PrintVisitor());
 			beans.accept(new ValidatingVisitor(environment));
-			beans.accept(new TrimmingVisitor());
 			beans.accept(new SuperclassResolvingVisitor());
+			beans.accept(new TrimmingVisitor());
 			beans.accept(new CodeGeneratingVisitor(environment));
 
-			// return false so we do not claim annotaitons like @Entity and
-			// @MappedSuperClass
+
+			logger.log("");
+			logger.log("ROUND COMPLETED [V3]");
+			logger.log("");
+
+			// return false so we do not claim annotaitons like @Entity
 			return false;
 		}
 		catch (RuntimeException e)
 		{
+			logger.log("Error: %s", e.getMessage());
 			environment.getMessager().printMessage(Kind.ERROR, e.getMessage());
 			throw e;
 		}

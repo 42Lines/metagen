@@ -20,7 +20,10 @@ import java.util.Stack;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
+import javax.tools.JavaFileManager.Location;
 import javax.tools.JavaFileObject;
+import javax.tools.Diagnostic.Kind;
+import javax.tools.StandardLocation;
 
 import net.ftlines.metagen.processor.Constants;
 import net.ftlines.metagen.processor.model.QualifiedName;
@@ -32,6 +35,7 @@ import net.ftlines.metagen.processor.tree.NestedBean;
 import net.ftlines.metagen.processor.tree.Property;
 import net.ftlines.metagen.processor.tree.TopLevelBean;
 import net.ftlines.metagen.processor.tree.Visitor;
+import net.ftlines.metagen.processor.util.Logger;
 import net.ftlines.metagen.processor.util.Optional;
 import net.ftlines.metagen.processor.util.SourceWriter;
 
@@ -44,6 +48,8 @@ public class CodeGeneratingVisitor implements Visitor
 
 	private Stack<List<Property>> properties = new Stack<List<Property>>();
 	private Stack<AbstractBean> beans = new Stack<AbstractBean>();
+	
+	private final Logger logger=new Logger(getClass());
 
 	public CodeGeneratingVisitor(ProcessingEnvironment env)
 	{
@@ -61,15 +67,19 @@ public class CodeGeneratingVisitor implements Visitor
 	}
 
 	@Override
-	public void enterTopLevelBean(TopLevelBean node)
+	public boolean enterTopLevelBean(TopLevelBean node)
 	{
 		TypeElement element = node.getElement();
+		//env.getFiler().getResource(StandardLocation.SOURCE_OUTPUT, element., arg2)
 		try
 		{
 			QualifiedName name = Constants.getMetaClassName(node.getElement());
 
-			JavaFileObject source = env.getFiler().createSourceFile(name.getQualified(), node.getElement());
+			logger.log("Generating source file for: %s", name.getQualified());
+			logger.log("   Found: %d inner beans", node.getNestedBeans().size());
 
+			JavaFileObject source = env.getFiler().createSourceFile(name.getQualified(), node.getElement());
+			
 			writer = new SourceWriter(source.openOutputStream());
 
 			writer.header(node.getName().getNamespace());
@@ -80,12 +90,16 @@ public class CodeGeneratingVisitor implements Visitor
 
 			writer.startClass(Visibility.PUBLIC, name.getLocal(), scn);
 
+			logger.log("    Writing out top level class: %s", name.getLocal());
+			
 			afterEnterBean(node);
+			return true;
 		}
 		catch (IOException e)
 		{
-			// TODO handle this
-			throw new RuntimeException(e);
+			env.getMessager().printMessage(Kind.WARNING, "Error writing meta source for: "+element.getQualifiedName()+", skipping");
+			logger.log("    Error: %s", e.getMessage());
+			return false;
 		}
 	}
 
@@ -118,6 +132,8 @@ public class CodeGeneratingVisitor implements Visitor
 
 			writer.startNestedClass(Visibility.PUBLIC, name.getLocal(), scn);
 
+			logger.log("    Writing out inner class: %s", name.getLocal());
+			
 			afterEnterBean(node);
 		}
 		catch (IOException e)

@@ -20,6 +20,7 @@ import java.util.Set;
 import javax.lang.model.element.TypeElement;
 
 import net.ftlines.metagen.processor.model.ElementResolver;
+import net.ftlines.metagen.processor.util.Logger;
 import net.ftlines.metagen.processor.util.Optional;
 
 public class BeanSpace implements Node
@@ -27,6 +28,8 @@ public class BeanSpace implements Node
 	private final Map<TypeElement, TopLevelBean> beans = new HashMap<TypeElement, TopLevelBean>();
 
 	private final Set<String> ignoredPackages = new HashSet<String>();
+
+	private Logger logger = new Logger(getClass());
 
 	public BeanSpace()
 	{
@@ -54,6 +57,7 @@ public class BeanSpace implements Node
 				{
 					node = new TopLevelBean(element);
 					beans.put(element, node);
+					logger.log("Added top level bean: %s", element.getQualifiedName());
 					addSuperClass(element);
 				}
 				return node;
@@ -64,6 +68,9 @@ public class BeanSpace implements Node
 				{
 					nested = new NestedBean(element);
 					parent.getNestedBeans().put(element, nested);
+
+					logger.log("Added: %s to: %s", element.getQualifiedName(), parent.getElement().getQualifiedName());
+
 					addSuperClass(element);
 				}
 				return nested;

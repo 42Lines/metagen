@@ -18,7 +18,7 @@ public interface Visitor
 
 	void exitBeanSpace(BeanSpace space);
 
-	void enterTopLevelBean(TopLevelBean node);
+	boolean enterTopLevelBean(TopLevelBean node);
 
 	void exitTopLevel(TopLevelBean node);
 

@@ -15,6 +15,7 @@ package net.ftlines.metagen.processor.util;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import net.ftlines.metagen.processor.MetaProcessor;
 import net.ftlines.metagen.processor.model.QualifiedName;
 import net.ftlines.metagen.processor.model.Visibility;
 
@@ -93,6 +94,8 @@ public class SourceWriter
 	public SourceWriter header(String packageName) throws IOException
 	{
 		line("package %s;", packageName);
+		line("");
+		line("@javax.annotation.Generated(\"" + MetaProcessor.class.getName() + "\")");
 		return line("");
 	}
 

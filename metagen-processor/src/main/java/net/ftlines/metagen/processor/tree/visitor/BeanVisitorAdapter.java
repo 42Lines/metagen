@@ -37,9 +37,9 @@ public abstract class BeanVisitorAdapter implements Visitor
 	}
 
 	@Override
-	public void enterTopLevelBean(TopLevelBean node)
+	public boolean enterTopLevelBean(TopLevelBean node)
 	{
-		enterBean(node);
+		enterBean(node); return true;
 	}
 
 	@Override

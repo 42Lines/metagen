@@ -17,10 +17,12 @@ import java.util.Stack;
 import net.ftlines.metagen.annot.Meta;
 import net.ftlines.metagen.processor.tree.AbstractBean;
 import net.ftlines.metagen.processor.tree.BeanSpace;
+import net.ftlines.metagen.processor.util.Logger;
 
 public class TrimmingVisitor extends BeanVisitorAdapter
 {
-
+	private final Logger logger=new Logger(getClass());
+	
 	private BeanSpace space;
 	private Stack<AbstractBean> beans = new Stack<AbstractBean>();
 
@@ -62,11 +64,15 @@ public class TrimmingVisitor extends BeanVisitorAdapter
 		{
 			// top level bean
 			space.remove(bean.getElement());
+			
+			logger.log("Trimmed top level bean: %s", bean.getElement().getQualifiedName());
 		}
 		else
 		{
 			// nested bean
 			beans.peek().getNestedBeans().remove(bean.getElement());
+			
+			logger.log("Trimmed nested bean: %s from: %s", bean.getElement().getQualifiedName(), beans.peek().getNestedBeans());
 		}
 	}
 

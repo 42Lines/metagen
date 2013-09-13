@@ -53,7 +53,12 @@ public class MetaTextColumn<R, S> extends AbstractMetaColumn<R, Object, S>
 	public final void internalPopulateItem(Item<ICellPopulator<R>> cellItem, String componentId,
 		IModel<Object> cellModel)
 	{
-		cellItem.add(new Label(componentId, cellModel));
+		cellItem.add(createLabel(componentId, cellModel));
+	}
+
+	protected Label createLabel(String componentId, IModel<? extends Object> cellModel)
+	{
+		return new Label(componentId, cellModel);
 	}
 
 	/**

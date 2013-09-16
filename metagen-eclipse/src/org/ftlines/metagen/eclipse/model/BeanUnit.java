@@ -60,6 +60,7 @@ public class BeanUnit extends BeanContainer {
 				return;
 			}
 
+			// check if we need to extend a super meta class
 			ITypeBinding cursor = type.getSuperclass();
 			while (cursor != null) {
 				Bean superbean = new Bean(getVisibility(cursor.getModifiers()), cursor.getQualifiedName());
@@ -67,21 +68,30 @@ public class BeanUnit extends BeanContainer {
 					break;
 				}
 				if (superbean.willGenerateMeta()) {
-					// TODO cleanup
-					String supername = "";
-					ITypeBinding decl = cursor;
-					ITypeBinding declprev = decl;
-					while (decl != null) {
-						declprev = decl;
-						supername = "." + decl.getErasure().getName() + "Meta" + supername;
-						decl = decl.getDeclaringClass();
-					}
-					supername = declprev.getPackage().getName() + supername;
+					String supername = getMetaSuperName(cursor);
 					bean.setSuperclass(supername);
 					break;
 				}
 				cursor = cursor.getSuperclass();
 			}
+		}
+
+		/**
+		 * Build the name of the meta superclass. For example, given <code>B</code> in <code>foo.bar.A.B</code> it will return
+		 * <code>foo.bar.AMeta.BMeta</code>
+		 * 
+		 * @param type
+		 * @return
+		 */
+		private String getMetaSuperName(ITypeBinding type) {
+			String supername = "";
+			ITypeBinding cursor = type;
+			while (cursor != null) {
+				supername = "." + cursor.getErasure().getName() + "Meta" + supername;
+				cursor = cursor.getDeclaringClass();
+			}
+			supername = type.getPackage().getName() + supername;
+			return supername;
 		}
 
 		private boolean populateBean(ITypeBinding type, Bean bean) {

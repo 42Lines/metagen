@@ -10,11 +10,25 @@ public class Bean extends BeanContainer {
 
 	private Map<String, Property> properties;
 
-	private Visibility visibility;
+	private final Visibility visibility;
+
+	private String superclass;
 
 	public Bean(Visibility visibility, String name) {
 		this.name = name;
 		this.visibility = visibility;
+	}
+
+	public boolean willGenerateMeta() {
+		return getProperties() != null || isForced() || (getBeans() != null && getBeans().size() > 0);
+	}
+
+	public String getSuperclass() {
+		return superclass;
+	}
+
+	public void setSuperclass(String superclass) {
+		this.superclass = superclass;
 	}
 
 	public boolean isForced() {

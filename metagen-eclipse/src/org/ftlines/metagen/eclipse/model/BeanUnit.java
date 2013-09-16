@@ -56,10 +56,28 @@ public class BeanUnit extends BeanContainer {
 
 			Bean bean = new Bean(getVisibility(type.getModifiers()), type.getQualifiedName());
 			beans.push(bean);
+			if (!populateBean(type, bean)) {
+				return;
+			}
 
-			ITypeBinding cursor = type;
+			ITypeBinding cursor = type.getSuperclass();
 			while (cursor != null) {
-				if (!populateBean(cursor, bean)) {
+				Bean superbean = new Bean(getVisibility(cursor.getModifiers()), cursor.getQualifiedName());
+				if (!populateBean(cursor, superbean)) {
+					break;
+				}
+				if (superbean.willGenerateMeta()) {
+					// TODO cleanup
+					String supername = "";
+					ITypeBinding decl = cursor;
+					ITypeBinding declprev = decl;
+					while (decl != null) {
+						declprev = decl;
+						supername = "." + decl.getErasure().getName() + "Meta" + supername;
+						decl = decl.getDeclaringClass();
+					}
+					supername = declprev.getPackage().getName() + supername;
+					bean.setSuperclass(supername);
 					break;
 				}
 				cursor = cursor.getSuperclass();
@@ -112,7 +130,8 @@ public class BeanUnit extends BeanContainer {
 				if (property) {
 					ITypeBinding fieldType = field.getType();
 					String fieldTypeName = new TypeResolver(fieldType).resolve();
-					Property prop = new Property(getVisibility(field.getModifiers()), fieldTypeName, field.getName());
+					Property prop = new Property(getVisibility(field.getModifiers()), field.getDeclaringClass().getQualifiedName(),
+							fieldTypeName, field.getName());
 					prop.setDeprecated(deprecated);
 					prop.setFieldName(field.getName());
 					bean.addProperty(prop);
@@ -162,7 +181,8 @@ public class BeanUnit extends BeanContainer {
 					ITypeBinding returnType = method.getReturnType();
 					String typeName = new TypeResolver(returnType).resolve();
 					if (prop == null) {
-						prop = new Property(getVisibility(method.getModifiers()), typeName, name);
+						prop = new Property(getVisibility(method.getModifiers()), method.getDeclaringClass().getQualifiedName(), typeName,
+								name);
 						bean.addProperty(prop);
 					} else {
 						prop.relaxVisibility(getVisibility(method.getModifiers()));
@@ -194,8 +214,12 @@ public class BeanUnit extends BeanContainer {
 				name = Character.toLowerCase(name.charAt(3)) + name.substring(4);
 				Property property = bean.getProperty(name);
 				if (property != null) {
-					property.setSetterName(method.getName());
-					property.relaxVisibility(getVisibility(method.getModifiers()));
+
+					String typeName = new TypeResolver(method.getParameterTypes()[0]).resolve();
+					if (typeName.equals(property.getType())) {
+						property.setSetterName(method.getName());
+						property.relaxVisibility(getVisibility(method.getModifiers()));
+					}
 				}
 			}
 
@@ -210,7 +234,7 @@ public class BeanUnit extends BeanContainer {
 			}
 
 			// TODO this check should be moved into Bean - Bean.isEmpty()
-			if (bean.getProperties() != null || bean.isForced() || (bean.getBeans() != null && bean.getBeans().size() > 0)) {
+			if (bean.willGenerateMeta()) {
 				if (beans.size() > 0) {
 					beans.peek().add(bean);
 				} else {
@@ -270,7 +294,11 @@ public class BeanUnit extends BeanContainer {
 		if (nested) {
 			source.append(" static ");
 		}
-		source.append(" class " + bean.getSimpleName() + "Meta {\n");
+		source.append(" class " + bean.getSimpleName() + "Meta ");
+		if (bean.getSuperclass() != null) {
+			source.append(" extends " + bean.getSuperclass());
+		}
+		source.append("{\n");
 
 		source.append("public static class C {\n");
 		source.append("public static final String name=\"" + bean.getName() + "\";\n");
@@ -290,7 +318,7 @@ public class BeanUnit extends BeanContainer {
 				source.append("<").append(bean.getName()).append(", ").append(property.getBoxedType()).append("> ");
 				source.append(property.getSafeName()).append(" = new ").append(Constants.SINGULAR_PROPERTY);
 				// source.append("<").append(bean.getName()).append(", ").append(property.getBoxedType()).append(">");
-				source.append("(\"").append(property.getName()).append("\", " + bean.getName() + ".class");
+				source.append("(\"").append(property.getName()).append("\", " + property.getOwner() + ".class");
 
 				source.append(", ");
 				if (property.getFieldName() != null) {

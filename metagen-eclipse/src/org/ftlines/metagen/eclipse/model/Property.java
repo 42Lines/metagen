@@ -25,9 +25,10 @@ public class Property {
 		UNSAFE_NAMES_TO_SAFE.put("protected", "protected_");
 		UNSAFE_NAMES_TO_SAFE.put("package", "package_");
 		UNSAFE_NAMES_TO_SAFE.put("final", "final_");
-		
+
 	}
 
+	private final String owner;
 	private String type;
 	private String fieldName, getterName, setterName;
 	private final String name;
@@ -35,10 +36,15 @@ public class Property {
 	private boolean deprecated;
 	private Visibility visibility;
 
-	public Property(Visibility visibility, String type, String name) {
+	public Property(Visibility visibility, String owner, String type, String name) {
+		this.owner = owner;
 		this.visibility = visibility;
 		this.type = type;
 		this.name = name;
+	}
+
+	public String getOwner() {
+		return owner;
 	}
 
 	public String getBoxedType() {

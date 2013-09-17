@@ -1,14 +1,14 @@
 package org.ftlines.metagen.eclipse.model;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class Bean extends BeanContainer {
 	private final String name;
 
 	private boolean forced;
 
-	private Map<String, Property> properties;
+	private TreeMap<String, Property> properties;
 
 	private final Visibility visibility;
 
@@ -58,7 +58,7 @@ public class Bean extends BeanContainer {
 
 	public void addProperty(Property property) {
 		if (properties == null) {
-			properties = new HashMap<String, Property>();
+			properties = new TreeMap<String, Property>();
 		}
 		properties.put(property.getName(), property);
 	}

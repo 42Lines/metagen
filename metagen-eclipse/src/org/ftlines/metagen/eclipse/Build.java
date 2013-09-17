@@ -20,7 +20,6 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
-import org.ftlines.metagen.eclipse.model.BeanUnit;
 import org.ftlines.metagen.eclipse.model.ErrorCollector;
 
 public class Build implements ErrorCollector {
@@ -113,11 +112,11 @@ public class Build implements ErrorCollector {
 
 		monitor.subTask("Metagen: generating meta for: " + cu.getElementName());
 
-		ASTNode ast = parse(cu);
-
-		BeanUnit beanUnit = new BeanUnit(cu, ast);
-
-		beanUnit.discover(this);
+		BeanUnit beanUnit = new BeanUnit(cu);
+		if (beanUnit.canPossiblyGenerateMeta()) {
+			ASTNode ast = parse(cu);
+			beanUnit.discover(ast, this);
+		}
 
 		IFile metaFile = getMetaFile(cu);
 

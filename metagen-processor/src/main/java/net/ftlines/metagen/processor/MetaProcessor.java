@@ -100,16 +100,21 @@ public class MetaProcessor implements Processor
 			}
 
 			beans.accept(new PropertyResolvingVisitor(resolvers));
-			beans.accept(new TrimmingVisitor());
 			// beans.accept(new PrintVisitor());
 			beans.accept(new ValidatingVisitor(environment));
 			beans.accept(new SuperclassResolvingVisitor());
-			beans.accept(new TrimmingVisitor());
+			
+			// we do not trim, what can happen that if A extends B but has no properties its meta
+			// will be trimmed and BMeta will not extend AMeta which can be problematic
+			// so we do not trim to err on the side of generating more meta files rather then trying
+			// to figure out why a meta does not inherit from superclass
+			// beans.accept(new TrimmingVisitor());
+			
 			beans.accept(new CodeGeneratingVisitor(environment));
 
 
 			logger.log("");
-			logger.log("ROUND COMPLETED [V3]");
+			logger.log("ROUND COMPLETED");
 			logger.log("");
 
 			// return false so we do not claim annotaitons like @Entity

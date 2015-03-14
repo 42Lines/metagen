@@ -22,6 +22,7 @@ import javax.lang.model.type.PrimitiveType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.TypeVariable;
 import javax.lang.model.type.TypeVisitor;
+import javax.lang.model.type.UnionType;
 import javax.lang.model.type.WildcardType;
 
 public class TracingTypeVisitor<R, P> implements TypeVisitor<R, P>
@@ -149,6 +150,15 @@ public class TracingTypeVisitor<R, P> implements TypeVisitor<R, P>
 		log("visitUnknown(TypeMirror=[%s], P p=[%s])", t.toString(), p);
 		if (next != null)
 			return next.visitUnknown(t, p);
+		return null;
+	}
+
+	@Override
+	public R visitUnion(UnionType t, P p)
+	{
+		log("visitUnion(TypeMirror=[%s], P p=[%s])", t.toString(), p);
+		if (next != null)
+			return next.visitUnion(t, p);
 		return null;
 	}
 

@@ -22,6 +22,7 @@ import javax.lang.model.type.PrimitiveType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.TypeVariable;
 import javax.lang.model.type.TypeVisitor;
+import javax.lang.model.type.UnionType;
 import javax.lang.model.type.WildcardType;
 
 public class AbstractTypeVisitor<R, P> implements TypeVisitor<R, P>
@@ -97,6 +98,13 @@ public class AbstractTypeVisitor<R, P> implements TypeVisitor<R, P>
 	public R visitUnknown(TypeMirror t, P p)
 	{
 		return visit(t, p);
+	}
+
+	@Override
+	public R visitUnion(UnionType t, P p)
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

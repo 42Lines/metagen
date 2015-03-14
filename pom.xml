@@ -56,25 +56,6 @@
 				<version>2.0.2</version>
 			</plugin>
 			<plugin>
-				<groupId>com.mycila.maven-license-plugin</groupId>
-				<artifactId>maven-license-plugin</artifactId>
-				<configuration>
-					<header>license-header.txt</header>
-					<failIfMissing>true</failIfMissing>
-					<excludes>
-						<exclude>license-header.txt</exclude>
-						<exclude>build-number.txt</exclude>
-					</excludes>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
 				<executions>

@@ -101,7 +101,23 @@ public class Property implements Node
 		{
 			return visibility;
 		}
-		return Visibility.of(getAccessor());
+
+		// use the most relaxed visibility
+		visibility = Visibility.PRIVATE;
+		if (getGetter() != null)
+		{
+			visibility = Visibility.max(visibility, Visibility.of(getGetter()));
+		}
+		if (getSetter() != null)
+		{
+			visibility = Visibility.max(visibility, Visibility.of(getSetter()));
+		}
+		if (getField() != null)
+		{
+			visibility = Visibility.max(visibility, Visibility.of(getField()));
+		}
+
+		return visibility;
 	}
 
 	public void setVisibility(Visibility visibility)

@@ -163,25 +163,11 @@ public class CodeGeneratingVisitor implements Visitor
 	{
 		properties.peek().add(node);
 
-		Element element = node.getAccessor();
-
 		String type = node.getType().accept(new TypeResolver(), null);
 		Visibility visibility = node.getVisibility();
 		QualifiedName containerName = new QualifiedName(node.getContainer());
 		try
 		{
-			int hasGetter = 0;
-			if (node.getGetter() != null)
-			{
-				if (node.getGetter().getSimpleName().toString().startsWith("get"))
-				{
-					hasGetter = 1;
-				}
-				else
-				{
-					hasGetter = 2;
-				}
-			}
 			String setterName = name(node.getSetter());
 			String getterName = name(node.getGetter());
 			String fieldName = name(node.getField());

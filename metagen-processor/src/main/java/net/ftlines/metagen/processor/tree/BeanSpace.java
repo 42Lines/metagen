@@ -17,6 +17,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
 
 import net.ftlines.metagen.processor.model.ElementResolver;
@@ -25,7 +26,7 @@ import net.ftlines.metagen.processor.util.Optional;
 
 public class BeanSpace implements Node
 {
-	private final Map<TypeElement, TopLevelBean> beans = new HashMap<TypeElement, TopLevelBean>();
+	private final Map<Name, TopLevelBean> beans = new HashMap<Name, TopLevelBean>();
 
 	private final Set<String> ignoredPackages = new HashSet<String>();
 
@@ -49,15 +50,16 @@ public class BeanSpace implements Node
 
 	private AbstractBean recursiveGetOrAdd(TypeElement element, boolean add)
 	{
+		Name name = element.getQualifiedName();
 		switch (element.getNestingKind())
 		{
 			case TOP_LEVEL :
-				TopLevelBean node = beans.get(element);
+				TopLevelBean node = beans.get(name);
 				if (node == null && add && valid(element))
 				{
 					node = new TopLevelBean(element);
-					beans.put(element, node);
-					logger.log("Added top level bean: %s", element.getQualifiedName());
+					beans.put(name, node);
+					logger.log("Added top level bean: %s", name);
 					addSuperClass(element);
 				}
 				return node;
@@ -69,7 +71,7 @@ public class BeanSpace implements Node
 					nested = new NestedBean(element);
 					parent.getNestedBeans().put(element, nested);
 
-					logger.log("Added: %s to: %s", element.getQualifiedName(), parent.getElement().getQualifiedName());
+					logger.log("Added: %s to: %s", name, parent.getElement().getQualifiedName());
 
 					addSuperClass(element);
 				}
@@ -105,7 +107,7 @@ public class BeanSpace implements Node
 
 	public void remove(TypeElement element)
 	{
-		beans.remove(element);
+		beans.remove(element.getQualifiedName());
 	}
 
 	private boolean valid(TypeElement element)

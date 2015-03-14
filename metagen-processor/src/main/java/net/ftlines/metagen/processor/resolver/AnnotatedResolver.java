@@ -65,7 +65,7 @@ public class AnnotatedResolver implements PropertyResolver
 				}
 
 				// force visibility
-				property.setVisibility(Visibility.of(enclosed));
+				//property.setVisibility(Visibility.of(enclosed));
 			}
 		}
 	}

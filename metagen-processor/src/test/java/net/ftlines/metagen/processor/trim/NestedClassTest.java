@@ -21,13 +21,14 @@ import org.junit.Test;
 public class NestedClassTest extends MetaPackageTest
 {
 
-	@Test
-	public void trimmedTopLevel() throws Exception
-	{
-		assertTrue(result.isClean());
-		assertMetaClassNotGenerated(result, Bean.One.class);
-		assertMetaClassNotGenerated(result, Bean.class);
-	}
+// no longer trim
+//	@Test
+//	public void trimmedTopLevel() throws Exception
+//	{
+//		assertTrue(result.isClean());
+//		assertMetaClassNotGenerated(result, Bean.One.class);
+//		assertMetaClassNotGenerated(result, Bean.class);
+//	}
 
 	@Test
 	public void beansWithGaps() throws Exception

@@ -31,6 +31,7 @@ import net.ftlines.metagen.annot.Meta;
 import net.ftlines.metagen.processor.resolver.PropertyResolvers;
 import net.ftlines.metagen.processor.tree.BeanSpace;
 import net.ftlines.metagen.processor.tree.visitor.CodeGeneratingVisitor;
+import net.ftlines.metagen.processor.tree.visitor.PrintVisitor;
 import net.ftlines.metagen.processor.tree.visitor.PropertyResolvingVisitor;
 import net.ftlines.metagen.processor.tree.visitor.SuperclassResolvingVisitor;
 import net.ftlines.metagen.processor.tree.visitor.TrimmingVisitor;
@@ -100,15 +101,13 @@ public class MetaProcessor implements Processor
 			}
 
 			beans.accept(new PropertyResolvingVisitor(resolvers));
-			// beans.accept(new PrintVisitor());
+			//beans.accept(new PrintVisitor());
+			beans.accept(new TrimmingVisitor());
+
 			beans.accept(new ValidatingVisitor(environment));
 			beans.accept(new SuperclassResolvingVisitor());
 			
-			// we do not trim, what can happen that if A extends B but has no properties its meta
-			// will be trimmed and BMeta will not extend AMeta which can be problematic
-			// so we do not trim to err on the side of generating more meta files rather then trying
-			// to figure out why a meta does not inherit from superclass
-			// beans.accept(new TrimmingVisitor());
+			beans.accept(new TrimmingVisitor());
 			
 			beans.accept(new CodeGeneratingVisitor(environment));
 
@@ -150,7 +149,7 @@ public class MetaProcessor implements Processor
 	@Override
 	public SourceVersion getSupportedSourceVersion()
 	{
-		return SourceVersion.RELEASE_6;
+		return SourceVersion.RELEASE_7;
 	}
 
 	@Override

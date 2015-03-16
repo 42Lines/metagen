@@ -53,8 +53,8 @@ public class VisibilityTest extends MetaPackageTest
 		Field field = result.getMetaField(OverrideBean.class, "p1");
 		assertTrue((field.getModifiers() & Modifier.PUBLIC) > 0);
 
-		// p2 gets visibility of annotated member - protected field
+		// p2 gets most relaxed visibility - public getter
 		field = result.getMetaField(OverrideBean.class, "p2");
-		assertTrue((field.getModifiers() & Modifier.PROTECTED) > 0);
+		assertTrue((field.getModifiers() & Modifier.PUBLIC) > 0);
 	}
 }

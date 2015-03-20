@@ -11,9 +11,12 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jdt.core.Flags;
+import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IMemberValuePair;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
@@ -169,10 +172,57 @@ public class Build implements ErrorCollector {
 	}
 
 	public void deleteAllMetaFiles() throws CoreException {
-		IFolder resource = project.getFolder(rootPath);
-		for (IResource member : resource.members()) {
-			delete(member);
+		IFolder root = project.getFolder(rootPath);
+		deleteAllMetaFiles(root);
+	}
+
+	private void deleteAllMetaFiles(IResource resource) throws CoreException {
+		if (resource instanceof IContainer) {
+			for (IResource child : ((IContainer) resource).members()) {
+				deleteAllMetaFiles(child);
+			}
+			return;
 		}
+
+		ICompilationUnit unit = getCompilationUnit(resource);
+		boolean delete = false;
+		if (unit != null) {
+			IType type = unit.findPrimaryType();
+			if (type != null) {
+				IAnnotation annotation = type.getAnnotation("javax.annotation.Generated");
+				if (annotation != null && annotation.exists()) {
+					for (IMemberValuePair pair : annotation.getMemberValuePairs()) {
+						String memberName = pair.getMemberName();
+						Object value = pair.getValue();
+						if ("value".equals(memberName) && value != null && value.toString().contains("metagen")) {
+							delete = true;
+							break;
+						}
+					}
+				}
+				if (!delete) {
+					IType c = type.getType("C");
+					if (c != null && c.exists()) {
+						if ((c.getFlags() & Flags.AccStatic) == 0) {
+							c = null;
+						}
+					}
+					IType p = type.getType("P");
+					if (p != null && p.exists()) {
+						if ((p.getFlags() & Flags.AccStatic) == 0) {
+							p = null;
+						}
+					}
+					if (c != null && c.exists() && p != null && p.exists()) {
+						delete = true;
+					}
+				}
+			}
+		}
+		if (delete) {
+			delete(resource);
+		}
+
 	}
 
 	private void delete(IResource resource) throws CoreException {

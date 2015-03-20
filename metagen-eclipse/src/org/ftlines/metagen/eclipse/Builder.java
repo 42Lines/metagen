@@ -66,11 +66,26 @@ public class Builder extends IncrementalProjectBuilder {
 
 	private IClasspathEntry findMetagenClassPathEntry() throws JavaModelException {
 		IJavaProject project = JavaCore.create(getProject());
+
+		IClasspathEntry metagen = null;
+		IClasspathEntry annotations = null;
+
 		for (IClasspathEntry classpath : project.getRawClasspath()) {
-			if (classpath.getEntryKind() == IClasspathEntry.CPE_SOURCE && "metagen".equals(classpath.getPath().lastSegment())) {
-				return classpath;
+			if (classpath.getEntryKind() == IClasspathEntry.CPE_SOURCE) {
+				if ("metagen".equals(classpath.getPath().lastSegment())) {
+					metagen = classpath;
+				} else if ("annotations".equals(classpath.getPath().lastSegment())) {
+					annotations = classpath;
+				}
 			}
 		}
+
+		if (metagen != null) {
+			return metagen;
+		} else if (annotations != null) {
+			return annotations;
+		}
+
 		return null;
 	}
 

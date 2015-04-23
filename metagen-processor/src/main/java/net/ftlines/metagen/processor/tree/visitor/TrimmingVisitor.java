@@ -13,7 +13,12 @@
 package net.ftlines.metagen.processor.tree.visitor;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
+
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeMirror;
 
 import net.ftlines.metagen.annot.Meta;
 import net.ftlines.metagen.processor.tree.AbstractBean;
@@ -54,6 +59,22 @@ public class TrimmingVisitor extends BeanVisitorAdapter
 				bean.remove(property);
 			}
 		}
+
+		// remove setters for which there is no field type and for which the return type of the getter doesn't match
+		// the type of the setter
+		for (String propertyName : new ArrayList<String>(bean.getProperties().keySet()))
+		{
+			Property property = bean.getProperties().get(propertyName);
+			if (property.getField() == null && property.getGetter() != null && property.getSetter() != null)
+			{
+				List<? extends VariableElement> parameters = ((ExecutableElement)property.getSetter()).getParameters();
+				if (parameters.size() != 1 || !((ExecutableElement)property.getGetter()).getReturnType().toString().equals(parameters.get(0).asType().toString()))
+				{
+					property.setSetter(null);
+				}
+			}
+		}
+
 
 
 		if (bean.getProperties().isEmpty() == false)

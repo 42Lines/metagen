@@ -16,6 +16,7 @@ import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.ErrorType;
 import javax.lang.model.type.ExecutableType;
+import javax.lang.model.type.IntersectionType;
 import javax.lang.model.type.NoType;
 import javax.lang.model.type.NullType;
 import javax.lang.model.type.PrimitiveType;
@@ -103,8 +104,13 @@ public class AbstractTypeVisitor<R, P> implements TypeVisitor<R, P>
 	@Override
 	public R visitUnion(UnionType t, P p)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return visit(t, p);
+	}
+
+	@Override
+	public R visitIntersection(IntersectionType t, P p)
+	{
+		return visit(t, p);
 	}
 
 }

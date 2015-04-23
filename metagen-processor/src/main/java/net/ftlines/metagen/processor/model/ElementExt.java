@@ -174,7 +174,7 @@ public class ElementExt implements Element
 		{
 			return false;
 		}
-
+ 
 		ExecutableElement ex = (ExecutableElement)e;
 
 		if (ex.getParameters().size() != 1)
@@ -200,7 +200,7 @@ public class ElementExt implements Element
 
 	public boolean isProperty()
 	{
-		return !isStatic() && (isField() || isGetter());
+		return !isStatic() && (isField() || isGetter() || isSetter());
 	}
 
 	public String getPropertyName()
@@ -294,6 +294,12 @@ public class ElementExt implements Element
 		{
 			return Visibility.DEFAULT;
 		}
+	}
+
+	@Override
+	public <A extends Annotation> A[] getAnnotationsByType(Class<A> annotationType)
+	{
+		return e.getAnnotationsByType(annotationType);
 	}
 
 }

@@ -12,17 +12,19 @@
 
 package net.ftlines.metagen.processor.tree.visitor;
 
+import java.util.ArrayList;
 import java.util.Stack;
 
 import net.ftlines.metagen.annot.Meta;
 import net.ftlines.metagen.processor.tree.AbstractBean;
 import net.ftlines.metagen.processor.tree.BeanSpace;
+import net.ftlines.metagen.processor.tree.Property;
 import net.ftlines.metagen.processor.util.Logger;
 
 public class TrimmingVisitor extends BeanVisitorAdapter
 {
-	private final Logger logger=new Logger(getClass());
-	
+	private final Logger logger = new Logger(getClass());
+
 	private BeanSpace space;
 	private Stack<AbstractBean> beans = new Stack<AbstractBean>();
 
@@ -43,6 +45,17 @@ public class TrimmingVisitor extends BeanVisitorAdapter
 	{
 		beans.pop();
 
+		// remove setter only properties
+		for (String propertyName : new ArrayList<String>(bean.getProperties().keySet()))
+		{
+			Property property = bean.getProperties().get(propertyName);
+			if (property.getSetter() != null && property.getGetter() == null && property.getField() == null)
+			{
+				bean.remove(property);
+			}
+		}
+
+
 		if (bean.getProperties().isEmpty() == false)
 		{
 			return;
@@ -51,28 +64,29 @@ public class TrimmingVisitor extends BeanVisitorAdapter
 		{
 			return;
 		}
-		
+
 		// metadata was specifically requested for this bean
 		if (bean.getElement().getAnnotation(Meta.class) != null)
 		{
 			return;
 		}
-		
+
 		// remove this bean because its empty
 
 		if (beans.isEmpty())
 		{
 			// top level bean
 			space.remove(bean.getElement());
-			
+
 			logger.log("Trimmed top level bean: %s", bean.getElement().getQualifiedName());
 		}
 		else
 		{
 			// nested bean
 			beans.peek().getNestedBeans().remove(bean.getElement());
-			
-			logger.log("Trimmed nested bean: %s from: %s", bean.getElement().getQualifiedName(), beans.peek().getNestedBeans());
+
+			logger.log("Trimmed nested bean: %s from: %s", bean.getElement().getQualifiedName(), beans.peek()
+				.getNestedBeans());
 		}
 	}
 

@@ -121,6 +121,7 @@ public class MetaProcessor implements Processor
 		}
 		catch (RuntimeException e)
 		{
+			e.printStackTrace();
 			logger.log("Error: %s", e.getMessage());
 			environment.getMessager().printMessage(Kind.ERROR, e.getMessage());
 			throw e;
@@ -149,7 +150,7 @@ public class MetaProcessor implements Processor
 	@Override
 	public SourceVersion getSupportedSourceVersion()
 	{
-		return SourceVersion.RELEASE_7;
+		return SourceVersion.RELEASE_8;
 	}
 
 	@Override

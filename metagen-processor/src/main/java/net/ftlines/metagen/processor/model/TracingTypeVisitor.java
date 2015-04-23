@@ -16,6 +16,7 @@ import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.ErrorType;
 import javax.lang.model.type.ExecutableType;
+import javax.lang.model.type.IntersectionType;
 import javax.lang.model.type.NoType;
 import javax.lang.model.type.NullType;
 import javax.lang.model.type.PrimitiveType;
@@ -159,6 +160,15 @@ public class TracingTypeVisitor<R, P> implements TypeVisitor<R, P>
 		log("visitUnion(TypeMirror=[%s], P p=[%s])", t.toString(), p);
 		if (next != null)
 			return next.visitUnion(t, p);
+		return null;
+	}
+
+	@Override
+	public R visitIntersection(IntersectionType t, P p)
+	{
+		log("visitIntersection(TypeMirror=[%s], P p=[%s])", t.toString(), p);
+		if (next != null)
+			return next.visitIntersection(t, p);
 		return null;
 	}
 

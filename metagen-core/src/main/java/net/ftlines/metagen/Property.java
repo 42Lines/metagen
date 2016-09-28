@@ -49,8 +49,16 @@ public abstract class Property<C, R> implements Serializable
 			}
 			if (setterName != null)
 			{
-				setter = container.getDeclaredMethod(setterName,
-					(field != null) ? field.getType() : getter.getReturnType());
+				Class<?> type = (field != null) ? field.getType() : getter.getReturnType();
+				try
+				{
+					setter = container.getDeclaredMethod(setterName, type);
+				}
+				catch (NoSuchMethodException e)
+				{
+					Class<?> alternateType = getAutoboxAlternative(type);
+					setter = container.getDeclaredMethod(setterName, alternateType);
+				}
 			}
 		}
 		catch (Exception e)
@@ -113,8 +121,8 @@ public abstract class Property<C, R> implements Serializable
 		}
 		catch (Exception e)
 		{
-			throw new RuntimeException(
-				"Exception while getting value of property: " + name + " of object: " + instance, e);
+			throw new RuntimeException("Exception while getting value of property: " + name + " of object: " + instance,
+				e);
 		}
 	}
 
@@ -199,6 +207,78 @@ public abstract class Property<C, R> implements Serializable
 		}
 	}
 
+	private static Class<?> getAutoboxAlternative(Class<?> type)
+	{
+		if (Boolean.class.equals(type))
+		{
+			return Boolean.TYPE;
+		}
+		else if (Boolean.TYPE.equals(type))
+		{
+			return Boolean.class;
+		}
+		else if (Integer.class.equals(type))
+		{
+			return Integer.TYPE;
+		}
+		else if (Integer.TYPE.equals(type))
+		{
+			return Integer.class;
+		}
+		else if (Long.class.equals(type))
+		{
+			return Long.TYPE;
+		}
+		else if (Long.TYPE.equals(type))
+		{
+			return Long.class;
+		}
+		else if (Float.class.equals(type))
+		{
+			return Float.TYPE;
+		}
+		else if (Float.TYPE.equals(type))
+		{
+			return Float.class;
+		}
+		else if (Double.class.equals(type))
+		{
+			return Double.TYPE;
+		}
+		else if (Double.TYPE.equals(type))
+		{
+			return Double.class;
+		}
+		else if (Short.class.equals(type))
+		{
+			return Short.TYPE;
+		}
+		else if (Short.TYPE.equals(type))
+		{
+			return Short.class;
+		}
+		else if (Byte.class.equals(type))
+		{
+			return Byte.TYPE;
+		}
+		else if (Byte.TYPE.equals(type))
+		{
+			return Byte.class;
+		}
+		else if (Character.class.equals(type))
+		{
+			return Character.TYPE;
+		}
+		else if (Character.TYPE.equals(type))
+		{
+			return Character.class;
+		}
+		else
+		{
+			return null;
+		}
+	}
+
 	private static String accessorName(String prefix, String field)
 	{
 		return prefix + field.substring(0, 1).toUpperCase() + field.substring(1);
@@ -208,7 +288,7 @@ public abstract class Property<C, R> implements Serializable
 	{
 		String n, cn, fn, gn, sn;
 
-		public SerializedProperty(Property<?,?> p)
+		public SerializedProperty(Property<?, ?> p)
 		{
 			n = p.getName();
 			if (p.getField() != null)

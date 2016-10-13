@@ -182,11 +182,6 @@ public class ElementExt implements Element
 			return false;
 		}
 
-		if (!ex.getReturnType().getKind().equals(TypeKind.VOID))
-		{
-			return false;
-		}
-
 		String name = getName();
 		boolean get = name.startsWith("set") && name.length() > 3 && Character.isUpperCase(name.charAt(3));
 

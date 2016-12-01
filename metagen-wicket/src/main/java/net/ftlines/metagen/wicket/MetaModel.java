@@ -42,16 +42,37 @@ public class MetaModel<T> extends PropertyModel<T>
 	 * @param root
 	 *            root model object
 	 */
-	public MetaModel(Object root)
+
+	public MetaModel(IModel root)
 	{
 		super(root, null);
 	}
 
-	private MetaModel(Object root, String path)
+	public MetaModel(MetaModelWrappable root)
+	{
+		super(root, null);
+	}
+
+	public MetaModel(org.apache.wicket.Component root)
+	{
+		super(root, null);
+	}
+
+
+	private MetaModel(IModel root, String path)
 	{
 		super(root, path);
 	}
 
+	private MetaModel(MetaModelWrappable root, String path)
+	{
+		super(root, path);
+	}
+
+	private MetaModel(org.apache.wicket.Component root, String path)
+	{
+		super(root, path);
+	}
 	/**
 	 * Assigns a default value to this model that will be returned instead of {@code null}
 	 * 
@@ -96,19 +117,17 @@ public class MetaModel<T> extends PropertyModel<T>
 	 * @param source
 	 * @return
 	 */
-	public static <T> MetaModel<T> of(T source)
+	public static <T> MetaModel<T> of(IModel<T> source)
 	{
 		return new MetaModel<T>(source);
 	}
 
-	/**
-	 * Convenience factory to cut down on generics noise
-	 * 
-	 * @param <T>
-	 * @param source
-	 * @return
-	 */
-	public static <T> MetaModel<T> of(IModel<T> source)
+	public static <T extends MetaModelWrappable> MetaModel<T> of(T source)
+	{
+		return new MetaModel<T>(source);
+	}
+
+	public static <T extends org.apache.wicket.Component> MetaModel<T> of(T source)
 	{
 		return new MetaModel<T>(source);
 	}

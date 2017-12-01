@@ -123,9 +123,11 @@ public class TypeResolver extends AbstractTypeVisitor<String, Void>
 		{
 			return " ? super " + t.getSuperBound().accept(this, null);
 		}
-		else
+		else if (t.getExtendsBound()!=null)
 		{
 			return " ? extends " + t.getExtendsBound().accept(this, null);
+		} else {
+			return " ? ";
 		}
 	}
 

@@ -2,10 +2,10 @@
 <feature
       id="metagen.eclipse.feature"
       label="Metagen Eclipse Feature"
-      version="1.0.1">
+      version="1.0.3">
 
    <description url="http://www.example.com/description">
-      [Enter Feature Description here.]
+      Metagen Eclipse Builder
    </description>
 
    <copyright url="http://www.example.com/copyright">

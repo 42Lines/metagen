@@ -37,7 +37,9 @@ public class TypeResolver {
 
 				// ? extends Foo or ? super Foo
 
-				if (type.isUpperbound()) {
+				if (type.getBound() == null) {
+					return "?";
+				} else if (type.isUpperbound()) {
 					return "? extends " + internalResolve(type.getBound());
 				} else {
 					return "? super " + internalResolve(type.getBound());

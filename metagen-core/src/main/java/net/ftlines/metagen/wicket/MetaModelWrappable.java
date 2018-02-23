@@ -12,16 +12,15 @@
 
 package net.ftlines.metagen.wicket;
 
-import net.ftlines.metagen.SingularProperty;
-
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-
-
 /**
- * A marker interface representing an object that is not an IModel or a wicket Component
- * but that is still appropriate for wrapping in a MetaModel
+ * A marker interface representing an object that is not an IModel or a wicket Component but that is
+ * still appropriate for wrapping in a MetaModel
+ * 
+ * NOTE: THIS IS IN A WICKET PACKAGE TO MAINTAIN BACKWARDS COMPATIBILITY FROM WHEN THIS INTERFACE
+ * LIVED IN metagen-wicket MODULE
+ * 
+ * TODO: Deprecate this and allow MetaModel to take any Object, which will remove the need for this
+ * interface
  */
 public interface MetaModelWrappable
 {

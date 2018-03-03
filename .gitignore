@@ -9,3 +9,5 @@ bin
 *.orig
 test-output
 *.log
+.idea
+.idea/*

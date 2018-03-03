@@ -16,12 +16,10 @@ import net.ftlines.metagen.annot.Property;
 
 public class Bean
 {
-	@Property
-	public int a;
+	@Property public int a;
 
 	protected static class Inner
 	{
-		@Property
-		int a;
+		@Property int a;
 	}
 }

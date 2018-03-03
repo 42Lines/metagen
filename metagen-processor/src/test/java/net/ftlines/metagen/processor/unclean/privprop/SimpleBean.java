@@ -16,6 +16,5 @@ import net.ftlines.metagen.annot.Property;
 
 public class SimpleBean
 {
-	@Property
-	private int p;
+	@Property private int p;
 }

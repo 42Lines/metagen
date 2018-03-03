@@ -19,22 +19,19 @@ public class BeanWithMulti
 
 	public static class One
 	{
-		@Property
-		int p;
+		@Property int p;
 	}
 
 	public static class Two
 	{
-		@Property
-		int p;
+		@Property int p;
 	}
 
 	public static class Three
 	{
 		public static class Four
 		{
-			@Property
-			int p;
+			@Property int p;
 		}
 	}
 }

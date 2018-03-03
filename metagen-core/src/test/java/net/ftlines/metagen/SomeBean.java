@@ -14,8 +14,7 @@ package net.ftlines.metagen;
 
 public class SomeBean
 {
-	@net.ftlines.metagen.annot.Property
-	private Integer value;
+	@net.ftlines.metagen.annot.Property private Integer value;
 
 	public Integer getValue()
 	{
@@ -26,6 +25,6 @@ public class SomeBean
 	{
 		this.value = value;
 	}
-	
-	
+
+
 }

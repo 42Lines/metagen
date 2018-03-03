@@ -12,23 +12,25 @@
 
 package net.ftlines.metagen.processor.trim;
 
-import static net.ftlines.metagen.processor.MetaAsserts.*;
-import static org.junit.Assert.*;
-import net.ftlines.metagen.processor.MetaPackageTest;
+import static net.ftlines.metagen.processor.MetaAsserts.assertMetaClassGenerated;
+import static net.ftlines.metagen.processor.MetaAsserts.assertMetaClassNotGenerated;
+import static net.ftlines.metagen.processor.MetaAsserts.assertMetaPropertyGenerated;
 
 import org.junit.Test;
+
+import net.ftlines.metagen.processor.MetaPackageTest;
 
 public class NestedClassTest extends MetaPackageTest
 {
 
-// no longer trim
-//	@Test
-//	public void trimmedTopLevel() throws Exception
-//	{
-//		assertTrue(result.isClean());
-//		assertMetaClassNotGenerated(result, Bean.One.class);
-//		assertMetaClassNotGenerated(result, Bean.class);
-//	}
+	// no longer trim
+	// @Test
+	// public void trimmedTopLevel() throws Exception
+	// {
+	// assertTrue(result.isClean());
+	// assertMetaClassNotGenerated(result, Person.One.class);
+	// assertMetaClassNotGenerated(result, Person.class);
+	// }
 
 	@Test
 	public void beansWithGaps() throws Exception

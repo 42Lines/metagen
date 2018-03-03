@@ -18,9 +18,9 @@ import java.io.FileNotFoundException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
-import net.ftlines.metagen.processor.MetaPackageTest;
-
 import org.junit.Test;
+
+import net.ftlines.metagen.processor.MetaPackageTest;
 
 public class VisibilityTest extends MetaPackageTest
 {

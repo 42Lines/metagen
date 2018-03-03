@@ -54,8 +54,7 @@ public class ValidatingVisitor extends BeanVisitorAdapter
 		boolean isPrivate = Visibility.PRIVATE.equals(bean.getVisibility());
 		if (isPrivate)
 		{
-			env.getMessager().printMessage(
-				Kind.ERROR,
+			env.getMessager().printMessage(Kind.ERROR,
 				String.format("Property '%s' in class '%s' is invisible because the class is private.", node.getName(),
 					bean.getName().getQualified()));
 			bean.remove(node);
@@ -64,8 +63,7 @@ public class ValidatingVisitor extends BeanVisitorAdapter
 
 		if (Visibility.PRIVATE.equals(node.getVisibility()))
 		{
-			env.getMessager().printMessage(
-				Kind.ERROR,
+			env.getMessager().printMessage(Kind.ERROR,
 				String.format("Property '%s' in class '%s' is invisible because it is private.", node.getName(),
 					bean.getName().getQualified()));
 			bean.remove(node);
@@ -88,19 +86,15 @@ public class ValidatingVisitor extends BeanVisitorAdapter
 			}
 			if (altHandleTaken)
 			{
-				env.getMessager()
-					.printMessage(
-						Kind.ERROR,
-						String.format(
-							"Property '%s' in class '%s' has the same name as a reserved word in Java. Alternate name '%s' has also been taken.",
-							name, bean.getName().getQualified(), altHandle));
+				env.getMessager().printMessage(Kind.ERROR, String.format(
+					"Property '%s' in class '%s' has the same name as a reserved word in Java. Alternate name '%s' has also been taken.",
+					name, bean.getName().getQualified(), altHandle));
 				bean.remove(node);
 			}
 			else
 			{
 				node.setHandle(altHandle);
-				env.getMessager().printMessage(
-					Kind.WARNING,
+				env.getMessager().printMessage(Kind.WARNING,
 					String.format(
 						"Property '%s' in class '%s' has the same name as a reserved word in Java, renamed to '%s'",
 						name, bean.getName().getQualified(), altHandle));

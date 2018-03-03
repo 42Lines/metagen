@@ -25,7 +25,7 @@ public class Logger
 	private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	private final String name;
-	
+
 	public Logger(Class<?> name)
 	{
 		this.name = name.getSimpleName();
@@ -38,7 +38,7 @@ public class Logger
 
 		try
 		{
-			FileOutputStream out=new FileOutputStream("/tmp/metagen.log", true);
+			FileOutputStream out = new FileOutputStream("/tmp/metagen.log", true);
 			PrintWriter log = new PrintWriter(out);
 			log.print(dateFormat.format(new Date()));
 			log.print(" ");

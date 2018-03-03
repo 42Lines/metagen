@@ -20,12 +20,11 @@ import java.util.Stack;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
-import javax.tools.JavaFileManager.Location;
-import javax.tools.JavaFileObject;
 import javax.tools.Diagnostic.Kind;
-import javax.tools.StandardLocation;
+import javax.tools.JavaFileObject;
 
 import net.ftlines.metagen.processor.Constants;
+import net.ftlines.metagen.processor.model.ElementExt;
 import net.ftlines.metagen.processor.model.QualifiedName;
 import net.ftlines.metagen.processor.model.TypeResolver;
 import net.ftlines.metagen.processor.model.Visibility;
@@ -48,8 +47,8 @@ public class CodeGeneratingVisitor implements Visitor
 
 	private Stack<List<Property>> properties = new Stack<List<Property>>();
 	private Stack<AbstractBean> beans = new Stack<AbstractBean>();
-	
-	private final Logger logger=new Logger(getClass());
+
+	private final Logger logger = new Logger(getClass());
 
 	public CodeGeneratingVisitor(ProcessingEnvironment env)
 	{
@@ -70,7 +69,7 @@ public class CodeGeneratingVisitor implements Visitor
 	public boolean enterTopLevelBean(TopLevelBean node)
 	{
 		TypeElement element = node.getElement();
-		//env.getFiler().getResource(StandardLocation.SOURCE_OUTPUT, element., arg2)
+		// env.getFiler().getResource(StandardLocation.SOURCE_OUTPUT, element., arg2)
 		try
 		{
 			QualifiedName name = Constants.getMetaClassName(node.getElement());
@@ -79,7 +78,7 @@ public class CodeGeneratingVisitor implements Visitor
 			logger.log("   Found: %d inner beans", node.getNestedBeans().size());
 
 			JavaFileObject source = env.getFiler().createSourceFile(name.getQualified(), node.getElement());
-			
+
 			writer = new SourceWriter(source.openOutputStream());
 
 			writer.header(node.getName().getNamespace());
@@ -91,13 +90,14 @@ public class CodeGeneratingVisitor implements Visitor
 			writer.startClass(Visibility.PUBLIC, name.getLocal(), scn);
 
 			logger.log("    Writing out top level class: %s", name.getLocal());
-			
+
 			afterEnterBean(node);
 			return true;
 		}
 		catch (IOException e)
 		{
-			env.getMessager().printMessage(Kind.WARNING, "Error writing meta source for: "+element.getQualifiedName()+", skipping");
+			env.getMessager().printMessage(Kind.WARNING,
+				"Error writing meta source for: " + element.getQualifiedName() + ", skipping");
 			logger.log("    Error: %s", e.getMessage());
 			return false;
 		}
@@ -133,7 +133,7 @@ public class CodeGeneratingVisitor implements Visitor
 			writer.startNestedClass(Visibility.PUBLIC, name.getLocal(), scn);
 
 			logger.log("    Writing out inner class: %s", name.getLocal());
-			
+
 			afterEnterBean(node);
 		}
 		catch (IOException e)
@@ -163,11 +163,40 @@ public class CodeGeneratingVisitor implements Visitor
 	{
 		properties.peek().add(node);
 
-		String type = node.getType().accept(new TypeResolver(), null);
+		TypeResolver.ResolvedType type = node.getType().accept(new TypeResolver(), null);
 		Visibility visibility = node.getVisibility();
 		QualifiedName containerName = new QualifiedName(node.getContainer());
 		try
 		{
+			String fieldOptional = "false";
+			String getterOptional = "false";
+			String setterOptional = "false";
+
+			if (node.getField() != null)
+			{
+				if (new ElementExt(node.getField()).resolvePropertyType().isOptional())
+				{
+					fieldOptional = "true";
+				}
+			}
+
+			if (node.getGetter() != null)
+			{
+				if (new ElementExt(node.getGetter()).resolvePropertyType().isOptional())
+				{
+					getterOptional = "true";
+				}
+			}
+
+			if (node.getSetter() != null)
+			{
+				if (new ElementExt(node.getSetter()).resolvePropertyType().isOptional())
+				{
+					setterOptional = "true";
+				}
+			}
+
+
 			String setterName = name(node.getSetter());
 			String getterName = name(node.getGetter());
 			String fieldName = name(node.getField());
@@ -175,10 +204,10 @@ public class CodeGeneratingVisitor implements Visitor
 			{
 				writer.line("@Deprecated");
 			}
-			writer.line("%s static final %s<%s,%s> %s = new %s(\"%s\", %s.class, %s, %s, %s);",
-				visibility.getKeyword(), Constants.SINGULAR, containerName.getQualified(), type, node.getHandle(),
-				Constants.SINGULAR, node.getName(), beans.peek().getName().getQualified(), fieldName, getterName,
-				setterName);
+			writer.line("%s static final %s<%s,%s> %s = new %s(\"%s\", %s.class, %s, %s, %s, %s, %s, %s);",
+				visibility.getKeyword(), Constants.SINGULAR, containerName.getQualified(), type.getType(),
+				node.getHandle(), Constants.SINGULAR, node.getName(), beans.peek().getName().getQualified(), fieldName,
+				fieldOptional, getterName, getterOptional, setterName, setterOptional);
 		}
 		catch (IOException e)
 		{
@@ -203,10 +232,10 @@ public class CodeGeneratingVisitor implements Visitor
 	{
 		writer.line();
 		writer.startNestedClass(node.getVisibility(), "C", Optional.<QualifiedName> ofNull());
-		writer.line("%s static final String name=\"%s\";", node.getVisibility().getKeyword(), node.getName()
-			.getQualified());
-		writer.line("%s static final String simpleName=\"%s\";", node.getVisibility().getKeyword(), node.getName()
-			.getLocal());
+		writer.line("%s static final String name=\"%s\";", node.getVisibility().getKeyword(),
+			node.getName().getQualified());
+		writer.line("%s static final String simpleName=\"%s\";", node.getVisibility().getKeyword(),
+			node.getName().getLocal());
 		writer.endClass();
 
 		writer.line();

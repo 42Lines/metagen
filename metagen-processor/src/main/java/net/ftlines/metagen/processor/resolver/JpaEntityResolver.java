@@ -12,7 +12,6 @@
 
 package net.ftlines.metagen.processor.resolver;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 

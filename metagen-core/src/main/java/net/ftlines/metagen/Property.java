@@ -1,9 +1,9 @@
 /**
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -17,11 +17,12 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Optional;
 
 /**
- * 
+ *
  * @author igor
- * 
+ *
  * @param <C>
  *            type that contains the attribute
  * @param <R>
@@ -32,10 +33,15 @@ public abstract class Property<C, R> implements Serializable
 	private final String name;
 	private Field field = null;
 	private Method getter = null, setter = null;
+	private boolean fieldOptional = false, getterOptional = false, setterOptional = false;
 
-	public Property(String name, Class<?> container, String fieldName, String getterName, String setterName)
+	public Property(String name, Class<?> container, String fieldName, boolean fieldOptional, String getterName,
+		boolean getterOptional, String setterName, boolean setterOptional)
 	{
 		this.name = name;
+		this.fieldOptional = fieldOptional;
+		this.getterOptional = getterOptional;
+		this.setterOptional = setterOptional;
 
 		try
 		{
@@ -101,6 +107,21 @@ public abstract class Property<C, R> implements Serializable
 		return setter;
 	}
 
+	public boolean isFieldOptional()
+	{
+		return fieldOptional;
+	}
+
+	public boolean isGetterOptional()
+	{
+		return getterOptional;
+	}
+
+	public boolean isSetterOptional()
+	{
+		return setterOptional;
+	}
+
 	@SuppressWarnings("unchecked")
 	public R get(C instance)
 	{
@@ -112,11 +133,27 @@ public abstract class Property<C, R> implements Serializable
 		{
 			if (visibility(getter) >= visibility(field))
 			{
-				return (R)getter.invoke(instance);
+				if (getterOptional)
+				{
+					Optional<R> optional = (Optional<R>)getter.invoke(instance);
+					return optional != null ? optional.orElse(null) : null;
+				}
+				else
+				{
+					return (R)getter.invoke(instance);
+				}
 			}
 			else
 			{
-				return (R)field.get(instance);
+				if (fieldOptional)
+				{
+					Optional<R> optional = (Optional<R>)field.get(instance);
+					return optional != null ? optional.orElse(null) : null;
+				}
+				else
+				{
+					return (R)field.get(instance);
+				}
 			}
 		}
 		catch (Exception e)
@@ -136,11 +173,25 @@ public abstract class Property<C, R> implements Serializable
 		{
 			if (visibility(setter) >= visibility(field))
 			{
-				setter.invoke(instance, new Object[] { value });
+				if (setterOptional)
+				{
+					setter.invoke(instance, new Object[] { Optional.ofNullable(value) });
+				}
+				else
+				{
+					setter.invoke(instance, new Object[] { value });
+				}
 			}
 			else
 			{
-				field.set(instance, value);
+				if (fieldOptional)
+				{
+					field.set(instance, Optional.ofNullable(value));
+				}
+				else
+				{
+					field.set(instance, value);
+				}
 			}
 		}
 		catch (Exception e)
@@ -150,37 +201,15 @@ public abstract class Property<C, R> implements Serializable
 		}
 	}
 
-	public Class<?> getType()
-	{
-		if (getter != null)
-		{
-			return getter.getReturnType();
-		}
-		else if (setter != null)
-		{
-			return setter.getParameterTypes()[0];
-		}
-		else
-		{
-			return field.getType();
-		}
-	}
 
-	public Class<?> getDeclaringClass()
-	{
-		if (getter != null)
-		{
-			return getter.getDeclaringClass();
-		}
-		else if (setter != null)
-		{
-			return setter.getDeclaringClass();
-		}
-		else
-		{
-			return field.getDeclaringClass();
-		}
-	}
+	/*
+	 * public Class<?> getType() { if (getter != null) { return getter.getReturnType(); } else if
+	 * (setter != null) { return setter.getParameterTypes()[0]; } else { return field.getType(); } }
+	 * 
+	 * public Class<?> getDeclaringClass() { if (getter != null) { return getter.getDeclaringClass(); }
+	 * else if (setter != null) { return setter.getDeclaringClass(); } else { return
+	 * field.getDeclaringClass(); } }
+	 */
 
 	private static int visibility(Member member)
 	{
@@ -284,9 +313,10 @@ public abstract class Property<C, R> implements Serializable
 		return prefix + field.substring(0, 1).toUpperCase() + field.substring(1);
 	}
 
-	static class SerializedProperty implements Serializable
+	static abstract class SerializedProperty implements Serializable
 	{
 		String n, cn, fn, gn, sn;
+		boolean fo, go, so;
 
 		public SerializedProperty(Property<?, ?> p)
 		{
@@ -306,6 +336,9 @@ public abstract class Property<C, R> implements Serializable
 				cn = cn != null ? cn : p.getSetter().getDeclaringClass().getName();
 				sn = p.getSetter().getName();
 			}
+			fo = p.isFieldOptional();
+			go = p.isGetterOptional();
+			so = p.isSetterOptional();
 		}
 
 	}

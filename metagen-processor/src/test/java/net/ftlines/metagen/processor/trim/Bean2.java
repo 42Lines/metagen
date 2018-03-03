@@ -22,8 +22,7 @@ public class Bean2
 
 		public static class Two
 		{
-			@Property
-			int p;
+			@Property int p;
 
 			public static class Three
 			{
@@ -39,8 +38,7 @@ public class Bean2
 
 	public static class Five
 	{
-		@Property
-		int p;
+		@Property int p;
 
 		public static class Six
 		{

@@ -12,12 +12,12 @@
 
 package net.ftlines.metagen.wicket;
 
-import net.ftlines.metagen.Path;
-
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
+
+import net.ftlines.metagen.Path;
 
 /**
  * A column that displays the property pointed to by {@link Path} in a label
@@ -70,9 +70,9 @@ public class MetaTextColumn<R, S> extends AbstractMetaColumn<R, Object, S>
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static <R,S> MetaTextColumn<R,S> of(IModel<String> label, Path<R, ?> path, S sortData)
+	public static <R, S> MetaTextColumn<R, S> of(IModel<String> label, Path<R, ?> path, S sortData)
 	{
-		return new MetaTextColumn<R,S>(label, (Path<R, Object>)path, sortData);
+		return new MetaTextColumn<R, S>(label, (Path<R, Object>)path, sortData);
 	}
 
 	/**
@@ -84,9 +84,9 @@ public class MetaTextColumn<R, S> extends AbstractMetaColumn<R, Object, S>
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static <R,S> MetaTextColumn<R,S> of(IModel<String> label, Path<R, ?> path)
+	public static <R, S> MetaTextColumn<R, S> of(IModel<String> label, Path<R, ?> path)
 	{
-		return new MetaTextColumn<R,S>(label, (Path<R, Object>)path);
+		return new MetaTextColumn<R, S>(label, (Path<R, Object>)path);
 	}
 
 	/**
@@ -98,9 +98,9 @@ public class MetaTextColumn<R, S> extends AbstractMetaColumn<R, Object, S>
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static <R,S> MetaTextColumn<R,S> of(String label, Path<R, ?> path, S sortData)
+	public static <R, S> MetaTextColumn<R, S> of(String label, Path<R, ?> path, S sortData)
 	{
-		return new MetaTextColumn<R,S>(label, (Path<R, Object>)path, sortData);
+		return new MetaTextColumn<R, S>(label, (Path<R, Object>)path, sortData);
 	}
 
 	/**
@@ -112,9 +112,9 @@ public class MetaTextColumn<R, S> extends AbstractMetaColumn<R, Object, S>
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static <R,S> MetaTextColumn<R,S> of(String label, Path<R, ?> path)
+	public static <R, S> MetaTextColumn<R, S> of(String label, Path<R, ?> path)
 	{
-		return new MetaTextColumn<R,S>(label, (Path<R, Object>)path);
+		return new MetaTextColumn<R, S>(label, (Path<R, Object>)path);
 	}
 
 }

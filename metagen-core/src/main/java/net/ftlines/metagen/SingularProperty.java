@@ -24,9 +24,10 @@ import java.io.ObjectStreamException;
  */
 public class SingularProperty<C, R> extends Property<C, R>
 {
-	public SingularProperty(String name, Class<?> container, String fieldName, String getterName, String setterName)
+	public SingularProperty(String name, Class<?> container, String fieldName, boolean fieldOptional, String getterName,
+		boolean getterOptional, String setterName, boolean setterOptional)
 	{
-		super(name, container, fieldName, getterName, setterName);
+		super(name, container, fieldName, fieldOptional, getterName, getterOptional, setterName, setterOptional);
 	}
 
 
@@ -38,7 +39,7 @@ public class SingularProperty<C, R> extends Property<C, R>
 	static class SerializedSingularProperty extends SerializedProperty
 	{
 
-		public SerializedSingularProperty(SingularProperty<?,?> p)
+		public SerializedSingularProperty(SingularProperty<?, ?> p)
 		{
 			super(p);
 		}
@@ -48,7 +49,7 @@ public class SingularProperty<C, R> extends Property<C, R>
 		{
 			try
 			{
-				return new SingularProperty(n, Class.forName(cn), fn, gn, sn);
+				return new SingularProperty(n, Class.forName(cn), fn, fo, gn, go, sn, so);
 			}
 			catch (ClassNotFoundException e)
 			{

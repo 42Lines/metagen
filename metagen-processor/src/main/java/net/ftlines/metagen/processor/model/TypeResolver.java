@@ -115,11 +115,9 @@ public class TypeResolver extends AbstractTypeVisitor<TypeResolver.ResolvedType,
 	public ResolvedType visitDeclared(DeclaredType t, Void p)
 	{
 		String fqn = ((TypeElement)t.asElement()).getQualifiedName().toString();
-		System.out.println(fqn);
 
 		if (visited.contains(fqn))
 		{
-			System.out.println("short-circuiting");
 			return new ResolvedType(fqn);
 		}
 

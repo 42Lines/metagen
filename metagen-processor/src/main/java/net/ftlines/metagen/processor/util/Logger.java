@@ -11,6 +11,7 @@
  */
 package net.ftlines.metagen.processor.util;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -38,7 +39,8 @@ public class Logger
 
 		try
 		{
-			FileOutputStream out = new FileOutputStream("/tmp/metagen.log", true);
+			File temp=File.createTempFile("metagen", "log");
+			FileOutputStream out=new FileOutputStream(temp, true);
 			PrintWriter log = new PrintWriter(out);
 			log.print(dateFormat.format(new Date()));
 			log.print(" ");

@@ -191,8 +191,8 @@ public class BeanUnit extends BeanContainer {
 						String name = annotation.getAnnotationType().getQualifiedName();
 						if (Constants.PROPERTY.equals(name)) {
 							if ((field.getModifiers() & Modifier.PRIVATE) > 0) {
-								errors.error(compilationUnit.getResource(), 1, "Private fields (" + field.getName()
-										+ ") do not support @Property annotations");
+								errors.error(compilationUnit.getResource(), 1,
+										"Private fields (" + field.getName() + ") do not support @Property annotations");
 							} else {
 								property = true;
 							}
@@ -232,8 +232,8 @@ public class BeanUnit extends BeanContainer {
 					continue;
 				}
 
-				name = set ? Character.toLowerCase(name.charAt(3)) + name.substring(4) : Character.toLowerCase(name.charAt(2))
-						+ name.substring(3);
+				name = set ? Character.toLowerCase(name.charAt(3)) + name.substring(4)
+						: Character.toLowerCase(name.charAt(2)) + name.substring(3);
 
 				// scan annotations of the method
 
@@ -364,7 +364,7 @@ public class BeanUnit extends BeanContainer {
 
 	public void generate(Bean bean, StringBuilder source, boolean nested) {
 		source.append("@SuppressWarnings(\"all\")\n");
-		source.append("@javax.annotation.Generated(\"metagen\")\n");
+		source.append("@" + Constants.GENERATED + "(\"metagen\")\n");
 		source.append(bean.getVisibility().getTerm());
 		if (nested) {
 			source.append(" static ");

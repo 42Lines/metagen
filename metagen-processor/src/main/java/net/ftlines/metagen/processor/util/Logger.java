@@ -20,7 +20,7 @@ import java.util.Date;
 
 public class Logger
 {
-	private static final boolean ENABLED = true;
+	private static final boolean ENABLED = Boolean.parseBoolean(System.getProperty("metagen.log.enabled", "false"));
 
 
 	private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

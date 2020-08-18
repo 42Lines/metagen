@@ -8,7 +8,7 @@ public class Constants {
 	public static final String ENTITY = "javax.persistence.Entity";
 	public static final String MAPPEDSUPERCLASS = "javax.persistence.MappedSuperclass";
 	public static final String SINGULAR_PROPERTY = "net.ftlines.metagen.SingularProperty";
-	public static final String GENERATED = "javax.annotation.Generated";
+	public static final String GENERATED = "javax.annotation.processing.Generated";
 	public static final String IGNORE = "net.ftlines.metagen.annot.Ignore";
 
 }

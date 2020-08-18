@@ -23,6 +23,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
+import org.ftlines.metagen.eclipse.model.Constants;
 import org.ftlines.metagen.eclipse.model.ErrorCollector;
 
 public class Build implements ErrorCollector {
@@ -189,7 +190,7 @@ public class Build implements ErrorCollector {
 		if (unit != null) {
 			IType type = unit.findPrimaryType();
 			if (type != null) {
-				IAnnotation annotation = type.getAnnotation("javax.annotation.Generated");
+				IAnnotation annotation = type.getAnnotation(Constants.GENERATED);
 				if (annotation != null && annotation.exists()) {
 					for (IMemberValuePair pair : annotation.getMemberValuePairs()) {
 						String memberName = pair.getMemberName();

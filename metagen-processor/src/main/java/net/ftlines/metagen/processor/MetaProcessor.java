@@ -149,7 +149,7 @@ public class MetaProcessor implements Processor
 	@Override
 	public SourceVersion getSupportedSourceVersion()
 	{
-		return SourceVersion.RELEASE_8;
+		return SourceVersion.RELEASE_11;
 	}
 
 	@Override

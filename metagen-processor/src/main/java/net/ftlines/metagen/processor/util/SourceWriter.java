@@ -95,7 +95,7 @@ public class SourceWriter
 	{
 		line("package %s;", packageName);
 		line("");
-		line("@javax.annotation.Generated(\"" + MetaProcessor.class.getName() + "\")");
+		line("@javax.annotation.processing.Generated(\"" + MetaProcessor.class.getName() + "\")");
 		return line("");
 	}
 

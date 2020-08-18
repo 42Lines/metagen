@@ -11,3 +11,5 @@ test-output
 *.log
 .idea
 .idea/*
+*.iml
+

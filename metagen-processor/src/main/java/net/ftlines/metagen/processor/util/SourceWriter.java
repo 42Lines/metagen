@@ -75,7 +75,6 @@ public class SourceWriter
 	public SourceWriter startNestedClass(Visibility v, String cn, Optional<QualifiedName> scn) throws IOException
 	{
 		line("");
-		line("@SuppressWarnings({ \"rawtypes\", \"unchecked\" })");
 
 		String start = String.format("%s static class %s", v.getKeyword(), cn);
 		if (scn.isSet())

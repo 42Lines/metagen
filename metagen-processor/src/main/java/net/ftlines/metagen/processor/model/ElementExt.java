@@ -32,7 +32,7 @@ public class ElementExt implements Element
 {
 	protected final Element e;
 
-	public ElementExt(Element e)
+	protected ElementExt(Element e)
 	{
 		this.e = e;
 	}
@@ -174,7 +174,7 @@ public class ElementExt implements Element
 		{
 			return false;
 		}
-
+ 
 		ExecutableElement ex = (ExecutableElement)e;
 
 		if (ex.getParameters().size() != 1)
@@ -224,14 +224,9 @@ public class ElementExt implements Element
 		{
 			return e.asType();
 		}
-		else if (isGetter())
+		else if (isGetter() || isSetter())
 		{
 			return ((ExecutableElement)e).getReturnType();
-		}
-		else if (isSetter())
-		{
-			ExecutableElement exe = (ExecutableElement)e;
-			return exe.getParameters().iterator().next().asType();
 		}
 		else
 		{
@@ -244,13 +239,7 @@ public class ElementExt implements Element
 		return e.getSimpleName().toString();
 	}
 
-	public TypeResolver.ResolvedType resolvePropertyType()
-	{
-		return getPropertyType().accept(new TypeResolver(), null);
-	}
-
-
-	public TypeResolver.ResolvedType resolveType()
+	public String resolveType()
 	{
 		switch (e.getKind())
 		{
@@ -259,8 +248,8 @@ public class ElementExt implements Element
 			case METHOD :
 				return ((ExecutableElement)e).getReturnType().accept(new TypeResolver(), null);
 			default :
-				throw new IllegalArgumentException(
-					"Can only resolve types of fields or methods. Unsupported element: " + e);
+				throw new IllegalArgumentException("Can only resolve types of fields or methods. Unsupported elment: " +
+					e);
 		}
 	}
 

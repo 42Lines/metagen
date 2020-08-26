@@ -67,10 +67,10 @@ public class BeanSpace implements Node
 				AbstractBean parent = recursiveGetOrAdd((TypeElement)element.getEnclosingElement(), add);
 				if (parent == null)
 				{
-					logger.log("Can't recursiveGetOrAdd of %s in %s with add=" + add,
-						((TypeElement)element.getEnclosingElement()).getQualifiedName(), name);
+					logger.log("Can't recursiveGetOrAdd of %s in %s with add="+add,
+						 ((TypeElement)element.getEnclosingElement()).getQualifiedName(),name);
 					return null;
-				}
+ 				}
 				NestedBean nested = parent.getNestedBeans().get(element);
 				if (nested == null && add && valid(element))
 				{

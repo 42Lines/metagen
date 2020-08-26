@@ -9,7 +9,10 @@ bin
 *.orig
 test-output
 *.log
+<<<<<<< HEAD
 .idea
 .idea/*
 *.iml
 
+=======
+>>>>>>> parent of 69ee776... support for java.util.Optional unwrapping

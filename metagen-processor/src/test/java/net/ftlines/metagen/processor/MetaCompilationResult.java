@@ -12,14 +12,9 @@
 
 package net.ftlines.metagen.processor;
 
-import static org.junit.Assert.assertTrue;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 
 import net.ftlines.metagen.Property;
 import net.ftlines.metagen.processor.framework.CompilationResult;
@@ -45,45 +40,21 @@ public class MetaCompilationResult extends ForwardingCompilationResult
 		return getCompilationClassLoader().loadClass(Constants.getMetaClassName(source).getQualified());
 	}
 
-	public Property getMetaProperty(Class<?> source, String propertyName)
-		throws FileNotFoundException, ClassNotFoundException, SecurityException, NoSuchFieldException,
-		IllegalArgumentException, IllegalAccessException
+	public Property getMetaProperty(Class<?> source, String propertyName) throws FileNotFoundException,
+		ClassNotFoundException, SecurityException, NoSuchFieldException, IllegalArgumentException,
+		IllegalAccessException
 	{
 		Field field = getMetaField(source, propertyName);
 		field.setAccessible(true);
 		return (Property)field.get(null);
 	}
 
-	public Field getMetaField(Class<?> source, String propertyName)
-		throws FileNotFoundException, ClassNotFoundException, SecurityException, NoSuchFieldException,
-		IllegalArgumentException, IllegalAccessException
+	public Field getMetaField(Class<?> source, String propertyName) throws FileNotFoundException,
+		ClassNotFoundException, SecurityException, NoSuchFieldException, IllegalArgumentException,
+		IllegalAccessException
 	{
 		Class<?> meta = getMetaClass(source);
 		return meta.getDeclaredField(propertyName);
 	}
-
-	public Method getMetaMethod(Class<?> source, String name, Class<?>... parameters) throws Exception
-	{
-		Class<?> meta = getMetaClass(source);
-		return meta.getDeclaredMethod(name, parameters);
-	}
-
-
-	public Type getPropertyFirstParameterizedType(Class<?> beanType, String propertyName) throws Exception
-	{
-		Field field = getMetaField(beanType, propertyName);
-		assertTrue(field != null);
-
-		Type type = field.getGenericType();
-		assertTrue(type instanceof ParameterizedType);
-
-		ParameterizedType ptype = (ParameterizedType)type;
-
-		assertTrue(ptype.getActualTypeArguments().length == 2);
-
-		Type propertyType = ptype.getActualTypeArguments()[1];
-		return propertyType;
-	}
-
 
 }

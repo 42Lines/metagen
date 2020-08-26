@@ -12,19 +12,16 @@
 
 package net.ftlines.metagen.processor.inheritance.closure;
 
-import static net.ftlines.metagen.processor.MetaAsserts.assertMetaClassGenerated;
-import static net.ftlines.metagen.processor.MetaAsserts.assertMetaClassInhertance;
-import static net.ftlines.metagen.processor.MetaAsserts.assertMetaClassNotGenerated;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static net.ftlines.metagen.processor.MetaAsserts.*;
+import static org.junit.Assert.*;
 
 import javax.lang.model.element.TypeElement;
-
-import org.junit.Test;
 
 import net.ftlines.metagen.processor.MetaPackageTest;
 import net.ftlines.metagen.processor.MetaProcessor;
 import net.ftlines.metagen.processor.framework.Compilation;
+
+import org.junit.Test;
 
 /**
  * This test simulates a partial compilation inside IDE. Since we are processing only {@link C} but

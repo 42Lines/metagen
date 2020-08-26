@@ -15,9 +15,9 @@ package net.ftlines.metagen.processor.framework;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 
-import org.junit.Assert;
-
 import net.ftlines.metagen.processor.util.Optional;
+
+import org.junit.Assert;
 
 public class ReflectionAssert
 {

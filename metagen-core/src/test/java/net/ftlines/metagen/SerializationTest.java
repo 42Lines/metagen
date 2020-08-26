@@ -17,9 +17,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import org.junit.Test;
-
 import junit.framework.Assert;
+
+import org.junit.Test;
 
 public class SerializationTest
 {
@@ -27,7 +27,7 @@ public class SerializationTest
 	public void serialization() throws Exception
 	{
 		SingularProperty<SomeBean, Integer> prop = new SingularProperty<SomeBean, Integer>("value", SomeBean.class,
-			"value", true, "getValue", true, "setValue", true);
+			"value", "getValue", "setValue");
 
 		ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
 		ObjectOutputStream out = new ObjectOutputStream(bytesOut);
@@ -41,7 +41,9 @@ public class SerializationTest
 		Assert.assertEquals(prop.getField(), prop2.getField());
 		Assert.assertEquals(prop.getGetter(), prop2.getGetter());
 		Assert.assertEquals(prop.getSetter(), prop2.getSetter());
+		
+		
 	}
-
+	
 
 }

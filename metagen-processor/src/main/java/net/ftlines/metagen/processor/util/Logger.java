@@ -26,7 +26,7 @@ public class Logger
 	private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	private final String name;
-
+	
 	public Logger(Class<?> name)
 	{
 		this.name = name.getSimpleName();

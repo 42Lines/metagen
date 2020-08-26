@@ -16,5 +16,6 @@ import net.ftlines.metagen.annot.Property;
 
 public class A
 {
-	@Property public int a;
+	@Property
+	public int a;
 }

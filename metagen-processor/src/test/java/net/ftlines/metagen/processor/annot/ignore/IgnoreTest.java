@@ -17,9 +17,9 @@ import static org.junit.Assert.fail;
 
 import java.io.FileNotFoundException;
 
-import org.junit.Test;
-
 import net.ftlines.metagen.processor.MetaPackageTest;
+
+import org.junit.Test;
 
 public class IgnoreTest extends MetaPackageTest
 {

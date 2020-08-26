@@ -19,7 +19,8 @@ import net.ftlines.metagen.annot.Property;
 public class OverrideBean
 {
 	int p1;
-	@Property protected int p2;
+	@Property
+	protected int p2;
 
 	public int getP1()
 	{

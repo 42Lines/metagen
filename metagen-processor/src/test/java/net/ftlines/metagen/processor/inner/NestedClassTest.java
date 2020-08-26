@@ -12,13 +12,11 @@
 
 package net.ftlines.metagen.processor.inner;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Test;
-
+import static org.junit.Assert.*;
 import net.ftlines.metagen.Property;
 import net.ftlines.metagen.processor.MetaPackageTest;
+
+import org.junit.Test;
 
 public class NestedClassTest extends MetaPackageTest
 {
@@ -37,15 +35,15 @@ public class NestedClassTest extends MetaPackageTest
 	@Test
 	public void beansWithGaps() throws Exception
 	{
-		assertNotNull(
-			result.getMetaProperty(BeanWithGaps.BeanWithNoProps.AnotherBeanWithNoProps.BeanWithProp.class, "int2"));
+		assertNotNull(result.getMetaProperty(BeanWithGaps.BeanWithNoProps.AnotherBeanWithNoProps.BeanWithProp.class,
+			"int2"));
 	}
 
 	@Test
 	public void beansStartingWithGaps() throws Exception
 	{
-		assertNotNull(result
-			.getMetaProperty(BeanStartingWithGap.BeanWithNoProps.AnotherBeanWithNoProps.BeanWithProp.class, "int2"));
+		assertNotNull(result.getMetaProperty(
+			BeanStartingWithGap.BeanWithNoProps.AnotherBeanWithNoProps.BeanWithProp.class, "int2"));
 	}
 
 	@Test

@@ -31,6 +31,7 @@ import net.ftlines.metagen.annot.Meta;
 import net.ftlines.metagen.processor.resolver.PropertyResolvers;
 import net.ftlines.metagen.processor.tree.BeanSpace;
 import net.ftlines.metagen.processor.tree.visitor.CodeGeneratingVisitor;
+import net.ftlines.metagen.processor.tree.visitor.PrintVisitor;
 import net.ftlines.metagen.processor.tree.visitor.PropertyResolvingVisitor;
 import net.ftlines.metagen.processor.tree.visitor.SuperclassResolvingVisitor;
 import net.ftlines.metagen.processor.tree.visitor.TrimmingVisitor;
@@ -100,14 +101,14 @@ public class MetaProcessor implements Processor
 			}
 
 			beans.accept(new PropertyResolvingVisitor(resolvers));
-			// beans.accept(new PrintVisitor());
+			//beans.accept(new PrintVisitor());
 			beans.accept(new TrimmingVisitor());
 
 			beans.accept(new ValidatingVisitor(environment));
 			beans.accept(new SuperclassResolvingVisitor());
-
+			
 			beans.accept(new TrimmingVisitor());
-
+			
 			beans.accept(new CodeGeneratingVisitor(environment));
 
 

@@ -12,14 +12,14 @@
 
 package net.ftlines.metagen.wicket;
 
+import net.ftlines.metagen.Path;
+
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
-
-import net.ftlines.metagen.Path;
 
 /**
  * Base class for columns where cell model is based on a {@link Path} expression relative to the row
@@ -81,7 +81,6 @@ public abstract class AbstractMetaColumn<R, T, S> extends AbstractColumn<R, S>
 	{
 		this(Model.of(header), path);
 	}
-
 	@Override
 	public final void populateItem(Item<ICellPopulator<R>> cellItem, String componentId, IModel<R> rowModel)
 	{
@@ -89,15 +88,15 @@ public abstract class AbstractMetaColumn<R, T, S> extends AbstractColumn<R, S>
 	}
 
 	/**
-	 * Same as {@link #populateItem(Item, String, IModel)} but with the model parameter pointing to the
-	 * property of the root object specified by the {@link Path} instead of the root object itself.
+	 * Same as {@link #populateItem(Item, String, IModel)} but with the model parameter pointing to
+	 * the property of the root object specified by the {@link Path} instead of the root object
+	 * itself.
 	 * 
 	 * @param cellItem
 	 * @param componentId
 	 * @param cellModel
 	 */
-	public abstract void internalPopulateItem(Item<ICellPopulator<R>> cellItem, String componentId,
-		IModel<T> cellModel);
+	public abstract void internalPopulateItem(Item<ICellPopulator<R>> cellItem, String componentId, IModel<T> cellModel);
 
 	/**
 	 * Gets the property path this column is bound to

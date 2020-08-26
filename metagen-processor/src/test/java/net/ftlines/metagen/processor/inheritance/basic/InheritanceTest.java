@@ -18,10 +18,9 @@ import static net.ftlines.metagen.processor.MetaAsserts.assertMetaClassNotGenera
 import static net.ftlines.metagen.processor.MetaAsserts.assertMetaPropertyGenerated;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import net.ftlines.metagen.processor.MetaPackageTest;
 
 import org.junit.Test;
-
-import net.ftlines.metagen.processor.MetaPackageTest;
 
 public class InheritanceTest extends MetaPackageTest
 {

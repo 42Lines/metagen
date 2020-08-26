@@ -69,8 +69,8 @@ public class Path<R, T> implements Serializable
 	/**
 	 * Factory method for the root path instance.
 	 * 
-	 * Notice the path does not keep a reference to the {@code clazz} parameter, it is only here to help
-	 * with type inference.
+	 * Notice the path does not keep a reference to the {@code clazz} parameter, it is only here to
+	 * help with type inference.
 	 * 
 	 * @param <V>
 	 * @param clazz

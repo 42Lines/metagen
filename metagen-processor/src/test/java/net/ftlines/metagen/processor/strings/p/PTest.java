@@ -15,14 +15,15 @@ package net.ftlines.metagen.processor.strings.p;
 import static net.ftlines.metagen.processor.MetaAsserts.assertMetaClassGenerated;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
-import org.junit.Test;
-
 import net.ftlines.metagen.processor.MetaPackageTest;
+
+import org.junit.Test;
 
 public class PTest extends MetaPackageTest
 {

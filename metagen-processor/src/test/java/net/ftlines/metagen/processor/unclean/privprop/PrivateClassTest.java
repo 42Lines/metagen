@@ -16,9 +16,9 @@ import static net.ftlines.metagen.processor.MetaAsserts.assertDiagnostic;
 
 import javax.tools.Diagnostic;
 
-import org.junit.Test;
-
 import net.ftlines.metagen.processor.MetaPackageTest;
+
+import org.junit.Test;
 
 public class PrivateClassTest extends MetaPackageTest
 {

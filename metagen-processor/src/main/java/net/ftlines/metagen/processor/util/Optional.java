@@ -40,8 +40,7 @@ import java.util.Iterator;
  * </p>
  * 
  * @author igor
- * @param <T>
- *            type of optional value
+ * @param <T> type of optional value
  */
 public final class Optional<T> implements Iterable<T>
 {
@@ -135,10 +134,8 @@ public final class Optional<T> implements Iterable<T>
 	/**
 	 * Factory method for creating {@link Optional} values
 	 * 
-	 * @param <T>
-	 *            type of optional value
-	 * @param value
-	 *            value to store inside optional
+	 * @param <T> type of optional value
+	 * @param value value to store inside optional
 	 * @return optional that represents the specified value
 	 */
 	@SuppressWarnings("unchecked")
@@ -157,8 +154,7 @@ public final class Optional<T> implements Iterable<T>
 	/**
 	 * Factory method for creating an {@link Optional} value that represents a {@code null}
 	 * 
-	 * @param <Z>
-	 *            type of optional value
+	 * @param <Z> type of optional value
 	 * @return optional that represents a {@code null}
 	 */
 	@SuppressWarnings("unchecked")

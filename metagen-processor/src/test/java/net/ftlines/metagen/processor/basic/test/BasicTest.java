@@ -12,13 +12,13 @@
 
 package net.ftlines.metagen.processor.basic.test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.FileNotFoundException;
 
-import org.junit.Test;
-
 import net.ftlines.metagen.processor.MetaPackageTest;
+
+import org.junit.Test;
 
 
 public class BasicTest extends MetaPackageTest

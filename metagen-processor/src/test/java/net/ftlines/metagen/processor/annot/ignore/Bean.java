@@ -21,5 +21,6 @@ import net.ftlines.metagen.annot.Property;
 @Ignore
 public class Bean<T>
 {
-	@Property protected ArrayList<T> field2;
+	@Property
+	protected ArrayList<T> field2;
 }

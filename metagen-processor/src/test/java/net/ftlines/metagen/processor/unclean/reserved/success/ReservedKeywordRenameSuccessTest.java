@@ -19,9 +19,9 @@ import java.io.FileNotFoundException;
 
 import javax.tools.Diagnostic;
 
-import org.junit.Test;
-
 import net.ftlines.metagen.processor.MetaPackageTest;
+
+import org.junit.Test;
 
 public class ReservedKeywordRenameSuccessTest extends MetaPackageTest
 {
